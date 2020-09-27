@@ -104,6 +104,7 @@ def t_comment(t):
   r'\#.*\n'
   t.lexer.lineno += 1
   pass
+  # No return value. Token discarded.
 
 
 # Ignore space and tab characters.
