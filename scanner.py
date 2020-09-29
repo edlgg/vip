@@ -84,13 +84,13 @@ def t_ID(t):
 
 
 def t_CTE_I(t):
-  r'[-+]?(0|[1-9][0-9]*)'
+  r'(0|-?[1-9][0-9]*)'
   t.value = int(t.value)
   return t
 
 
 def t_CTE_F(t):
-  r'[-+]?(0|[1-9][0-9]*)(\.[0-9]+)?'
+  r'-?([1-9]\d*|0)?(\.\d+)’'
   t.value = float(t.value)
   return t
 
