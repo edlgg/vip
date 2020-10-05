@@ -26,8 +26,7 @@ def p_main(p):
     pass
 
 def p_function_header(p):
-    '''function_header : 
-       FUNCTION ID L_PARENS function_header_aux R_PARENS COLON function_type'''
+    '''function_header : FUNCTION ID L_PARENS function_header_aux R_PARENS COLON function_type'''
     pass
 
 def p_function_header_aux(p):
@@ -59,7 +58,7 @@ def p_function_params_aux(p):
     pass
 
 def p_function_params_aux_2(p):
-    '''function_params_aux2 : COMMA function_params
+    '''function_params_aux_2 : COMMA function_params
                             | empty'''
     pass
 
@@ -100,15 +99,13 @@ def p_type(p):
     pass
 
 def p_array_index(p):
-    '''array_index : L_SQUARE_BRACKET expression R_SQUARE_BRACKET
-                     L_SQUARE_BRACKET expression R_SQUARE_BRACKET
+    '''array_index : L_SQUARE_BRACKET expression R_SQUARE_BRACKET L_SQUARE_BRACKET expression R_SQUARE_BRACKET
                    | L_SQUARE_BRACKET expression R_SQUARE_BRACKET'''
     pass
 
 def p_array_dim(p):
-    '''array_dim : L_SQUARE_BRACKET CTE_I R_SQUARE_BRACKET
-                   L_SQUARE_BRACKET CTE_I R_SQUARE_BRACKET
-                 | L_SQUARE_BRACKET CTE_I R_SQUARE_BRACKET'''
+    '''array_dim : L_SQUARE_BRACKET CONST_I R_SQUARE_BRACKET L_SQUARE_BRACKET CONST_I R_SQUARE_BRACKET
+                 | L_SQUARE_BRACKET CONST_I R_SQUARE_BRACKET'''
     pass
 
 def p_assignment(p):
@@ -177,7 +174,7 @@ def p_expression_aux(p):
     pass
 
 def p_read(p):
-    'read: READ ID'
+    'read : READ ID'
     pass
 
 def p_params_pass(p):
@@ -278,3 +275,16 @@ def p_const(p):
 def p_array_access(p):
     'array_access : ID array_index'
     pass
+
+def p_empty(p):
+  'empty :'
+  pass
+
+
+def p_error(p):
+  print('There is an error:', p)
+  pass
+
+
+# Build parser.
+parser = yacc.yacc(start='program')

@@ -1,0 +1,3015 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> program
+Rule 1     program -> program_aux main
+Rule 2     program_aux -> function
+Rule 3     program_aux -> program_aux function
+Rule 4     program_aux -> empty
+Rule 5     function -> function_header function_body
+Rule 6     main -> FUNCTION MAIN function_body
+Rule 7     function_header -> FUNCTION ID L_PARENS function_header_aux R_PARENS COLON function_type
+Rule 8     function_header_aux -> function_params
+Rule 9     function_header_aux -> empty
+Rule 10    function_body -> L_KEY_BRACKET function_body_aux function_body_aux_2 R_KEY_BRACKET
+Rule 11    function_body_aux -> function_body_aux var
+Rule 12    function_body_aux -> empty
+Rule 13    function_body_aux_2 -> function_body_aux_2 statement
+Rule 14    function_body_aux_2 -> statement
+Rule 15    function_params -> type ID function_params_aux function_params_aux_2
+Rule 16    function_params_aux -> array_index
+Rule 17    function_params_aux -> empty
+Rule 18    function_params_aux_2 -> COMMA function_params
+Rule 19    function_params_aux_2 -> empty
+Rule 20    function_type -> type
+Rule 21    function_type -> VOID
+Rule 22    var -> type ID var_aux var_aux_2
+Rule 23    var_aux -> array_dim
+Rule 24    var_aux -> empty
+Rule 25    var_aux_2 -> var_aux_2 COMMA ID var_aux
+Rule 26    var_aux_2 -> empty
+Rule 27    statement -> statement_aux SEMICOLON
+Rule 28    statement_aux -> assignment
+Rule 29    statement_aux -> function_call
+Rule 30    statement_aux -> return
+Rule 31    statement_aux -> if
+Rule 32    statement_aux -> while
+Rule 33    statement_aux -> print
+Rule 34    type -> INT
+Rule 35    type -> FLOAT
+Rule 36    type -> STRING
+Rule 37    array_index -> L_SQUARE_BRACKET expression R_SQUARE_BRACKET L_SQUARE_BRACKET expression R_SQUARE_BRACKET
+Rule 38    array_index -> L_SQUARE_BRACKET expression R_SQUARE_BRACKET
+Rule 39    array_dim -> L_SQUARE_BRACKET CONST_I R_SQUARE_BRACKET L_SQUARE_BRACKET CONST_I R_SQUARE_BRACKET
+Rule 40    array_dim -> L_SQUARE_BRACKET CONST_I R_SQUARE_BRACKET
+Rule 41    assignment -> ID assignment_aux EQUALS assignment_aux_2
+Rule 42    assignment_aux -> array_index
+Rule 43    assignment_aux -> empty
+Rule 44    assignment_aux_2 -> expression
+Rule 45    assignment_aux_2 -> read
+Rule 46    function_call -> ID params_pass
+Rule 47    return -> RETURN expression
+Rule 48    if -> IF L_PARENS expression R_PARENS block elif else
+Rule 49    elif -> ELIF L_PARENS expression R_PARENS block elif
+Rule 50    elif -> empty
+Rule 51    else -> ELSE block
+Rule 52    else -> empty
+Rule 53    while -> WHILE L_PARENS expression R_PARENS block
+Rule 54    print -> PRINT L_PARENS print_aux R_PARENS
+Rule 55    print_aux -> CONST_STRING print_aux_2
+Rule 56    print_aux -> ID print_aux_2
+Rule 57    print_aux -> empty
+Rule 58    print_aux_2 -> COMMA ID print_aux_2
+Rule 59    print_aux_2 -> COMMA CONST_STRING print_aux_2
+Rule 60    print_aux_2 -> empty
+Rule 61    expression -> exp expression_aux
+Rule 62    expression_aux -> AND exp expression_aux
+Rule 63    expression_aux -> empty
+Rule 64    read -> READ ID
+Rule 65    params_pass -> L_PARENS params_pass_aux R_PARENS
+Rule 66    params_pass_aux -> expression params_pass_aux_2
+Rule 67    params_pass_aux -> empty
+Rule 68    params_pass_aux_2 -> COMMA expression params_pass_aux_2
+Rule 69    params_pass_aux_2 -> empty
+Rule 70    block -> L_KEY_BRACKET statement R_KEY_BRACKET
+Rule 71    exp -> xp exp_aux
+Rule 72    exp_aux -> OR xp exp_aux
+Rule 73    exp_aux -> empty
+Rule 74    xp -> x xp_aux
+Rule 75    xp_aux -> log_op x
+Rule 76    xp_aux -> empty
+Rule 77    x -> term x_aux
+Rule 78    x_aux -> PLUS term x_aux
+Rule 79    x_aux -> MINUS term x_aux
+Rule 80    x_aux -> empty
+Rule 81    log_op -> NOT_EQUAL
+Rule 82    log_op -> IS_EQUAL
+Rule 83    log_op -> GREATER
+Rule 84    log_op -> GREATER_EQ
+Rule 85    log_op -> LESS
+Rule 86    log_op -> LESS_EQ
+Rule 87    term -> factor term_aux
+Rule 88    term_aux -> TIMES factor term_aux
+Rule 89    term_aux -> DIVIDE factor term_aux
+Rule 90    term_aux -> empty
+Rule 91    factor -> factor_aux factor_aux_2
+Rule 92    factor_aux -> NOT
+Rule 93    factor_aux -> empty
+Rule 94    factor_aux_2 -> L_PARENS expression R_PARENS
+Rule 95    factor_aux_2 -> factor_aux_3 const
+Rule 96    factor_aux_3 -> PLUS
+Rule 97    factor_aux_3 -> MINUS
+Rule 98    factor_aux_3 -> empty
+Rule 99    const -> ID
+Rule 100   const -> CONST_I
+Rule 101   const -> CONST_F
+Rule 102   const -> CONST_STRING
+Rule 103   const -> function_call
+Rule 104   const -> array_access
+Rule 105   array_access -> ID array_index
+Rule 106   empty -> <empty>
+
+Terminals, with rules where they appear
+
+AND                  : 62
+COLON                : 7
+COMMA                : 18 25 58 59 68
+CONST_F              : 101
+CONST_I              : 39 39 40 100
+CONST_STRING         : 55 59 102
+DIVIDE               : 89
+ELIF                 : 49
+ELSE                 : 51
+EQUALS               : 41
+FLOAT                : 35
+FUNCTION             : 6 7
+GREATER              : 83
+GREATER_EQ           : 84
+ID                   : 7 15 22 25 41 46 56 58 64 99 105
+IF                   : 48
+INT                  : 34
+IS_EQUAL             : 82
+LESS                 : 85
+LESS_EQ              : 86
+L_KEY_BRACKET        : 10 70
+L_PARENS             : 7 48 49 53 54 65 94
+L_SQUARE_BRACKET     : 37 37 38 39 39 40
+MAIN                 : 6
+MINUS                : 79 97
+NOT                  : 92
+NOT_EQUAL            : 81
+OR                   : 72
+PLUS                 : 78 96
+PRINT                : 54
+READ                 : 64
+RETURN               : 47
+R_KEY_BRACKET        : 10 70
+R_PARENS             : 7 48 49 53 54 65 94
+R_SQUARE_BRACKET     : 37 37 38 39 39 40
+SEMICOLON            : 27
+STRING               : 36
+TIMES                : 88
+VOID                 : 21
+WHILE                : 53
+error                : 
+
+Nonterminals, with rules where they appear
+
+array_access         : 104
+array_dim            : 23
+array_index          : 16 42 105
+assignment           : 28
+assignment_aux       : 41
+assignment_aux_2     : 41
+block                : 48 49 51 53
+const                : 95
+elif                 : 48 49
+else                 : 48
+empty                : 4 9 12 17 19 24 26 43 50 52 57 60 63 67 69 73 76 80 90 93 98
+exp                  : 61 62
+exp_aux              : 71 72
+expression           : 37 37 38 44 47 48 49 53 66 68 94
+expression_aux       : 61 62
+factor               : 87 88 89
+factor_aux           : 91
+factor_aux_2         : 91
+factor_aux_3         : 95
+function             : 2 3
+function_body        : 5 6
+function_body_aux    : 10 11
+function_body_aux_2  : 10 13
+function_call        : 29 103
+function_header      : 5
+function_header_aux  : 7
+function_params      : 8 18
+function_params_aux  : 15
+function_params_aux_2 : 15
+function_type        : 7
+if                   : 31
+log_op               : 75
+main                 : 1
+params_pass          : 46
+params_pass_aux      : 65
+params_pass_aux_2    : 66 68
+print                : 33
+print_aux            : 54
+print_aux_2          : 55 56 58 59
+program              : 0
+program_aux          : 1 3
+read                 : 45
+return               : 30
+statement            : 13 14 70
+statement_aux        : 27
+term                 : 77 78 79
+term_aux             : 87 88 89
+type                 : 15 20 22
+var                  : 11
+var_aux              : 22 25
+var_aux_2            : 22 25
+while                : 32
+x                    : 74 75
+x_aux                : 77 78 79
+xp                   : 71 72
+xp_aux               : 74
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . program
+    (1) program -> . program_aux main
+    (2) program_aux -> . function
+    (3) program_aux -> . program_aux function
+    (4) program_aux -> . empty
+    (5) function -> . function_header function_body
+    (106) empty -> .
+    (7) function_header -> . FUNCTION ID L_PARENS function_header_aux R_PARENS COLON function_type
+
+  ! shift/reduce conflict for FUNCTION resolved as shift
+    FUNCTION        shift and go to state 6
+
+  ! FUNCTION        [ reduce using rule 106 (empty -> .) ]
+
+    program                        shift and go to state 1
+    program_aux                    shift and go to state 2
+    function                       shift and go to state 3
+    empty                          shift and go to state 4
+    function_header                shift and go to state 5
+
+state 1
+
+    (0) S' -> program .
+
+
+
+state 2
+
+    (1) program -> program_aux . main
+    (3) program_aux -> program_aux . function
+    (6) main -> . FUNCTION MAIN function_body
+    (5) function -> . function_header function_body
+    (7) function_header -> . FUNCTION ID L_PARENS function_header_aux R_PARENS COLON function_type
+
+    FUNCTION        shift and go to state 9
+
+    main                           shift and go to state 7
+    function                       shift and go to state 8
+    function_header                shift and go to state 5
+
+state 3
+
+    (2) program_aux -> function .
+
+    FUNCTION        reduce using rule 2 (program_aux -> function .)
+
+
+state 4
+
+    (4) program_aux -> empty .
+
+    FUNCTION        reduce using rule 4 (program_aux -> empty .)
+
+
+state 5
+
+    (5) function -> function_header . function_body
+    (10) function_body -> . L_KEY_BRACKET function_body_aux function_body_aux_2 R_KEY_BRACKET
+
+    L_KEY_BRACKET   shift and go to state 11
+
+    function_body                  shift and go to state 10
+
+state 6
+
+    (7) function_header -> FUNCTION . ID L_PARENS function_header_aux R_PARENS COLON function_type
+
+    ID              shift and go to state 12
+
+
+state 7
+
+    (1) program -> program_aux main .
+
+    $end            reduce using rule 1 (program -> program_aux main .)
+
+
+state 8
+
+    (3) program_aux -> program_aux function .
+
+    FUNCTION        reduce using rule 3 (program_aux -> program_aux function .)
+
+
+state 9
+
+    (6) main -> FUNCTION . MAIN function_body
+    (7) function_header -> FUNCTION . ID L_PARENS function_header_aux R_PARENS COLON function_type
+
+    MAIN            shift and go to state 13
+    ID              shift and go to state 12
+
+
+state 10
+
+    (5) function -> function_header function_body .
+
+    FUNCTION        reduce using rule 5 (function -> function_header function_body .)
+
+
+state 11
+
+    (10) function_body -> L_KEY_BRACKET . function_body_aux function_body_aux_2 R_KEY_BRACKET
+    (11) function_body_aux -> . function_body_aux var
+    (12) function_body_aux -> . empty
+    (106) empty -> .
+
+    INT             reduce using rule 106 (empty -> .)
+    FLOAT           reduce using rule 106 (empty -> .)
+    STRING          reduce using rule 106 (empty -> .)
+    ID              reduce using rule 106 (empty -> .)
+    RETURN          reduce using rule 106 (empty -> .)
+    IF              reduce using rule 106 (empty -> .)
+    WHILE           reduce using rule 106 (empty -> .)
+    PRINT           reduce using rule 106 (empty -> .)
+
+    function_body_aux              shift and go to state 14
+    empty                          shift and go to state 15
+
+state 12
+
+    (7) function_header -> FUNCTION ID . L_PARENS function_header_aux R_PARENS COLON function_type
+
+    L_PARENS        shift and go to state 16
+
+
+state 13
+
+    (6) main -> FUNCTION MAIN . function_body
+    (10) function_body -> . L_KEY_BRACKET function_body_aux function_body_aux_2 R_KEY_BRACKET
+
+    L_KEY_BRACKET   shift and go to state 11
+
+    function_body                  shift and go to state 17
+
+state 14
+
+    (10) function_body -> L_KEY_BRACKET function_body_aux . function_body_aux_2 R_KEY_BRACKET
+    (11) function_body_aux -> function_body_aux . var
+    (13) function_body_aux_2 -> . function_body_aux_2 statement
+    (14) function_body_aux_2 -> . statement
+    (22) var -> . type ID var_aux var_aux_2
+    (27) statement -> . statement_aux SEMICOLON
+    (34) type -> . INT
+    (35) type -> . FLOAT
+    (36) type -> . STRING
+    (28) statement_aux -> . assignment
+    (29) statement_aux -> . function_call
+    (30) statement_aux -> . return
+    (31) statement_aux -> . if
+    (32) statement_aux -> . while
+    (33) statement_aux -> . print
+    (41) assignment -> . ID assignment_aux EQUALS assignment_aux_2
+    (46) function_call -> . ID params_pass
+    (47) return -> . RETURN expression
+    (48) if -> . IF L_PARENS expression R_PARENS block elif else
+    (53) while -> . WHILE L_PARENS expression R_PARENS block
+    (54) print -> . PRINT L_PARENS print_aux R_PARENS
+
+    INT             shift and go to state 24
+    FLOAT           shift and go to state 25
+    STRING          shift and go to state 26
+    ID              shift and go to state 22
+    RETURN          shift and go to state 33
+    IF              shift and go to state 34
+    WHILE           shift and go to state 35
+    PRINT           shift and go to state 36
+
+    function_body_aux_2            shift and go to state 18
+    var                            shift and go to state 19
+    statement                      shift and go to state 20
+    type                           shift and go to state 21
+    statement_aux                  shift and go to state 23
+    assignment                     shift and go to state 27
+    function_call                  shift and go to state 28
+    return                         shift and go to state 29
+    if                             shift and go to state 30
+    while                          shift and go to state 31
+    print                          shift and go to state 32
+
+state 15
+
+    (12) function_body_aux -> empty .
+
+    INT             reduce using rule 12 (function_body_aux -> empty .)
+    FLOAT           reduce using rule 12 (function_body_aux -> empty .)
+    STRING          reduce using rule 12 (function_body_aux -> empty .)
+    ID              reduce using rule 12 (function_body_aux -> empty .)
+    RETURN          reduce using rule 12 (function_body_aux -> empty .)
+    IF              reduce using rule 12 (function_body_aux -> empty .)
+    WHILE           reduce using rule 12 (function_body_aux -> empty .)
+    PRINT           reduce using rule 12 (function_body_aux -> empty .)
+
+
+state 16
+
+    (7) function_header -> FUNCTION ID L_PARENS . function_header_aux R_PARENS COLON function_type
+    (8) function_header_aux -> . function_params
+    (9) function_header_aux -> . empty
+    (15) function_params -> . type ID function_params_aux function_params_aux_2
+    (106) empty -> .
+    (34) type -> . INT
+    (35) type -> . FLOAT
+    (36) type -> . STRING
+
+    R_PARENS        reduce using rule 106 (empty -> .)
+    INT             shift and go to state 24
+    FLOAT           shift and go to state 25
+    STRING          shift and go to state 26
+
+    function_header_aux            shift and go to state 37
+    function_params                shift and go to state 38
+    empty                          shift and go to state 39
+    type                           shift and go to state 40
+
+state 17
+
+    (6) main -> FUNCTION MAIN function_body .
+
+    $end            reduce using rule 6 (main -> FUNCTION MAIN function_body .)
+
+
+state 18
+
+    (10) function_body -> L_KEY_BRACKET function_body_aux function_body_aux_2 . R_KEY_BRACKET
+    (13) function_body_aux_2 -> function_body_aux_2 . statement
+    (27) statement -> . statement_aux SEMICOLON
+    (28) statement_aux -> . assignment
+    (29) statement_aux -> . function_call
+    (30) statement_aux -> . return
+    (31) statement_aux -> . if
+    (32) statement_aux -> . while
+    (33) statement_aux -> . print
+    (41) assignment -> . ID assignment_aux EQUALS assignment_aux_2
+    (46) function_call -> . ID params_pass
+    (47) return -> . RETURN expression
+    (48) if -> . IF L_PARENS expression R_PARENS block elif else
+    (53) while -> . WHILE L_PARENS expression R_PARENS block
+    (54) print -> . PRINT L_PARENS print_aux R_PARENS
+
+    R_KEY_BRACKET   shift and go to state 41
+    ID              shift and go to state 22
+    RETURN          shift and go to state 33
+    IF              shift and go to state 34
+    WHILE           shift and go to state 35
+    PRINT           shift and go to state 36
+
+    statement                      shift and go to state 42
+    statement_aux                  shift and go to state 23
+    assignment                     shift and go to state 27
+    function_call                  shift and go to state 28
+    return                         shift and go to state 29
+    if                             shift and go to state 30
+    while                          shift and go to state 31
+    print                          shift and go to state 32
+
+state 19
+
+    (11) function_body_aux -> function_body_aux var .
+
+    INT             reduce using rule 11 (function_body_aux -> function_body_aux var .)
+    FLOAT           reduce using rule 11 (function_body_aux -> function_body_aux var .)
+    STRING          reduce using rule 11 (function_body_aux -> function_body_aux var .)
+    ID              reduce using rule 11 (function_body_aux -> function_body_aux var .)
+    RETURN          reduce using rule 11 (function_body_aux -> function_body_aux var .)
+    IF              reduce using rule 11 (function_body_aux -> function_body_aux var .)
+    WHILE           reduce using rule 11 (function_body_aux -> function_body_aux var .)
+    PRINT           reduce using rule 11 (function_body_aux -> function_body_aux var .)
+
+
+state 20
+
+    (14) function_body_aux_2 -> statement .
+
+    R_KEY_BRACKET   reduce using rule 14 (function_body_aux_2 -> statement .)
+    ID              reduce using rule 14 (function_body_aux_2 -> statement .)
+    RETURN          reduce using rule 14 (function_body_aux_2 -> statement .)
+    IF              reduce using rule 14 (function_body_aux_2 -> statement .)
+    WHILE           reduce using rule 14 (function_body_aux_2 -> statement .)
+    PRINT           reduce using rule 14 (function_body_aux_2 -> statement .)
+
+
+state 21
+
+    (22) var -> type . ID var_aux var_aux_2
+
+    ID              shift and go to state 43
+
+
+state 22
+
+    (41) assignment -> ID . assignment_aux EQUALS assignment_aux_2
+    (46) function_call -> ID . params_pass
+    (42) assignment_aux -> . array_index
+    (43) assignment_aux -> . empty
+    (65) params_pass -> . L_PARENS params_pass_aux R_PARENS
+    (37) array_index -> . L_SQUARE_BRACKET expression R_SQUARE_BRACKET L_SQUARE_BRACKET expression R_SQUARE_BRACKET
+    (38) array_index -> . L_SQUARE_BRACKET expression R_SQUARE_BRACKET
+    (106) empty -> .
+
+    L_PARENS        shift and go to state 48
+    L_SQUARE_BRACKET shift and go to state 49
+    EQUALS          reduce using rule 106 (empty -> .)
+
+    assignment_aux                 shift and go to state 44
+    params_pass                    shift and go to state 45
+    array_index                    shift and go to state 46
+    empty                          shift and go to state 47
+
+state 23
+
+    (27) statement -> statement_aux . SEMICOLON
+
+    SEMICOLON       shift and go to state 50
+
+
+state 24
+
+    (34) type -> INT .
+
+    ID              reduce using rule 34 (type -> INT .)
+    L_KEY_BRACKET   reduce using rule 34 (type -> INT .)
+
+
+state 25
+
+    (35) type -> FLOAT .
+
+    ID              reduce using rule 35 (type -> FLOAT .)
+    L_KEY_BRACKET   reduce using rule 35 (type -> FLOAT .)
+
+
+state 26
+
+    (36) type -> STRING .
+
+    ID              reduce using rule 36 (type -> STRING .)
+    L_KEY_BRACKET   reduce using rule 36 (type -> STRING .)
+
+
+state 27
+
+    (28) statement_aux -> assignment .
+
+    SEMICOLON       reduce using rule 28 (statement_aux -> assignment .)
+
+
+state 28
+
+    (29) statement_aux -> function_call .
+
+    SEMICOLON       reduce using rule 29 (statement_aux -> function_call .)
+
+
+state 29
+
+    (30) statement_aux -> return .
+
+    SEMICOLON       reduce using rule 30 (statement_aux -> return .)
+
+
+state 30
+
+    (31) statement_aux -> if .
+
+    SEMICOLON       reduce using rule 31 (statement_aux -> if .)
+
+
+state 31
+
+    (32) statement_aux -> while .
+
+    SEMICOLON       reduce using rule 32 (statement_aux -> while .)
+
+
+state 32
+
+    (33) statement_aux -> print .
+
+    SEMICOLON       reduce using rule 33 (statement_aux -> print .)
+
+
+state 33
+
+    (47) return -> RETURN . expression
+    (61) expression -> . exp expression_aux
+    (71) exp -> . xp exp_aux
+    (74) xp -> . x xp_aux
+    (77) x -> . term x_aux
+    (87) term -> . factor term_aux
+    (91) factor -> . factor_aux factor_aux_2
+    (92) factor_aux -> . NOT
+    (93) factor_aux -> . empty
+    (106) empty -> .
+
+    NOT             shift and go to state 58
+    L_PARENS        reduce using rule 106 (empty -> .)
+    PLUS            reduce using rule 106 (empty -> .)
+    MINUS           reduce using rule 106 (empty -> .)
+    ID              reduce using rule 106 (empty -> .)
+    CONST_I         reduce using rule 106 (empty -> .)
+    CONST_F         reduce using rule 106 (empty -> .)
+    CONST_STRING    reduce using rule 106 (empty -> .)
+
+    expression                     shift and go to state 51
+    exp                            shift and go to state 52
+    xp                             shift and go to state 53
+    x                              shift and go to state 54
+    term                           shift and go to state 55
+    factor                         shift and go to state 56
+    factor_aux                     shift and go to state 57
+    empty                          shift and go to state 59
+
+state 34
+
+    (48) if -> IF . L_PARENS expression R_PARENS block elif else
+
+    L_PARENS        shift and go to state 60
+
+
+state 35
+
+    (53) while -> WHILE . L_PARENS expression R_PARENS block
+
+    L_PARENS        shift and go to state 61
+
+
+state 36
+
+    (54) print -> PRINT . L_PARENS print_aux R_PARENS
+
+    L_PARENS        shift and go to state 62
+
+
+state 37
+
+    (7) function_header -> FUNCTION ID L_PARENS function_header_aux . R_PARENS COLON function_type
+
+    R_PARENS        shift and go to state 63
+
+
+state 38
+
+    (8) function_header_aux -> function_params .
+
+    R_PARENS        reduce using rule 8 (function_header_aux -> function_params .)
+
+
+state 39
+
+    (9) function_header_aux -> empty .
+
+    R_PARENS        reduce using rule 9 (function_header_aux -> empty .)
+
+
+state 40
+
+    (15) function_params -> type . ID function_params_aux function_params_aux_2
+
+    ID              shift and go to state 64
+
+
+state 41
+
+    (10) function_body -> L_KEY_BRACKET function_body_aux function_body_aux_2 R_KEY_BRACKET .
+
+    FUNCTION        reduce using rule 10 (function_body -> L_KEY_BRACKET function_body_aux function_body_aux_2 R_KEY_BRACKET .)
+    $end            reduce using rule 10 (function_body -> L_KEY_BRACKET function_body_aux function_body_aux_2 R_KEY_BRACKET .)
+
+
+state 42
+
+    (13) function_body_aux_2 -> function_body_aux_2 statement .
+
+    R_KEY_BRACKET   reduce using rule 13 (function_body_aux_2 -> function_body_aux_2 statement .)
+    ID              reduce using rule 13 (function_body_aux_2 -> function_body_aux_2 statement .)
+    RETURN          reduce using rule 13 (function_body_aux_2 -> function_body_aux_2 statement .)
+    IF              reduce using rule 13 (function_body_aux_2 -> function_body_aux_2 statement .)
+    WHILE           reduce using rule 13 (function_body_aux_2 -> function_body_aux_2 statement .)
+    PRINT           reduce using rule 13 (function_body_aux_2 -> function_body_aux_2 statement .)
+
+
+state 43
+
+    (22) var -> type ID . var_aux var_aux_2
+    (23) var_aux -> . array_dim
+    (24) var_aux -> . empty
+    (39) array_dim -> . L_SQUARE_BRACKET CONST_I R_SQUARE_BRACKET L_SQUARE_BRACKET CONST_I R_SQUARE_BRACKET
+    (40) array_dim -> . L_SQUARE_BRACKET CONST_I R_SQUARE_BRACKET
+    (106) empty -> .
+
+    L_SQUARE_BRACKET shift and go to state 68
+    COMMA           reduce using rule 106 (empty -> .)
+    INT             reduce using rule 106 (empty -> .)
+    FLOAT           reduce using rule 106 (empty -> .)
+    STRING          reduce using rule 106 (empty -> .)
+    ID              reduce using rule 106 (empty -> .)
+    RETURN          reduce using rule 106 (empty -> .)
+    IF              reduce using rule 106 (empty -> .)
+    WHILE           reduce using rule 106 (empty -> .)
+    PRINT           reduce using rule 106 (empty -> .)
+
+    var_aux                        shift and go to state 65
+    array_dim                      shift and go to state 66
+    empty                          shift and go to state 67
+
+state 44
+
+    (41) assignment -> ID assignment_aux . EQUALS assignment_aux_2
+
+    EQUALS          shift and go to state 69
+
+
+state 45
+
+    (46) function_call -> ID params_pass .
+
+    SEMICOLON       reduce using rule 46 (function_call -> ID params_pass .)
+    TIMES           reduce using rule 46 (function_call -> ID params_pass .)
+    DIVIDE          reduce using rule 46 (function_call -> ID params_pass .)
+    PLUS            reduce using rule 46 (function_call -> ID params_pass .)
+    MINUS           reduce using rule 46 (function_call -> ID params_pass .)
+    NOT_EQUAL       reduce using rule 46 (function_call -> ID params_pass .)
+    IS_EQUAL        reduce using rule 46 (function_call -> ID params_pass .)
+    GREATER         reduce using rule 46 (function_call -> ID params_pass .)
+    GREATER_EQ      reduce using rule 46 (function_call -> ID params_pass .)
+    LESS            reduce using rule 46 (function_call -> ID params_pass .)
+    LESS_EQ         reduce using rule 46 (function_call -> ID params_pass .)
+    OR              reduce using rule 46 (function_call -> ID params_pass .)
+    AND             reduce using rule 46 (function_call -> ID params_pass .)
+    COMMA           reduce using rule 46 (function_call -> ID params_pass .)
+    R_PARENS        reduce using rule 46 (function_call -> ID params_pass .)
+    R_SQUARE_BRACKET reduce using rule 46 (function_call -> ID params_pass .)
+
+
+state 46
+
+    (42) assignment_aux -> array_index .
+
+    EQUALS          reduce using rule 42 (assignment_aux -> array_index .)
+
+
+state 47
+
+    (43) assignment_aux -> empty .
+
+    EQUALS          reduce using rule 43 (assignment_aux -> empty .)
+
+
+state 48
+
+    (65) params_pass -> L_PARENS . params_pass_aux R_PARENS
+    (66) params_pass_aux -> . expression params_pass_aux_2
+    (67) params_pass_aux -> . empty
+    (61) expression -> . exp expression_aux
+    (106) empty -> .
+    (71) exp -> . xp exp_aux
+    (74) xp -> . x xp_aux
+    (77) x -> . term x_aux
+    (87) term -> . factor term_aux
+    (91) factor -> . factor_aux factor_aux_2
+    (92) factor_aux -> . NOT
+    (93) factor_aux -> . empty
+
+    R_PARENS        reduce using rule 106 (empty -> .)
+    L_PARENS        reduce using rule 106 (empty -> .)
+    PLUS            reduce using rule 106 (empty -> .)
+    MINUS           reduce using rule 106 (empty -> .)
+    ID              reduce using rule 106 (empty -> .)
+    CONST_I         reduce using rule 106 (empty -> .)
+    CONST_F         reduce using rule 106 (empty -> .)
+    CONST_STRING    reduce using rule 106 (empty -> .)
+    NOT             shift and go to state 58
+
+    params_pass_aux                shift and go to state 70
+    expression                     shift and go to state 71
+    empty                          shift and go to state 72
+    exp                            shift and go to state 52
+    xp                             shift and go to state 53
+    x                              shift and go to state 54
+    term                           shift and go to state 55
+    factor                         shift and go to state 56
+    factor_aux                     shift and go to state 57
+
+state 49
+
+    (37) array_index -> L_SQUARE_BRACKET . expression R_SQUARE_BRACKET L_SQUARE_BRACKET expression R_SQUARE_BRACKET
+    (38) array_index -> L_SQUARE_BRACKET . expression R_SQUARE_BRACKET
+    (61) expression -> . exp expression_aux
+    (71) exp -> . xp exp_aux
+    (74) xp -> . x xp_aux
+    (77) x -> . term x_aux
+    (87) term -> . factor term_aux
+    (91) factor -> . factor_aux factor_aux_2
+    (92) factor_aux -> . NOT
+    (93) factor_aux -> . empty
+    (106) empty -> .
+
+    NOT             shift and go to state 58
+    L_PARENS        reduce using rule 106 (empty -> .)
+    PLUS            reduce using rule 106 (empty -> .)
+    MINUS           reduce using rule 106 (empty -> .)
+    ID              reduce using rule 106 (empty -> .)
+    CONST_I         reduce using rule 106 (empty -> .)
+    CONST_F         reduce using rule 106 (empty -> .)
+    CONST_STRING    reduce using rule 106 (empty -> .)
+
+    expression                     shift and go to state 73
+    exp                            shift and go to state 52
+    xp                             shift and go to state 53
+    x                              shift and go to state 54
+    term                           shift and go to state 55
+    factor                         shift and go to state 56
+    factor_aux                     shift and go to state 57
+    empty                          shift and go to state 59
+
+state 50
+
+    (27) statement -> statement_aux SEMICOLON .
+
+    R_KEY_BRACKET   reduce using rule 27 (statement -> statement_aux SEMICOLON .)
+    ID              reduce using rule 27 (statement -> statement_aux SEMICOLON .)
+    RETURN          reduce using rule 27 (statement -> statement_aux SEMICOLON .)
+    IF              reduce using rule 27 (statement -> statement_aux SEMICOLON .)
+    WHILE           reduce using rule 27 (statement -> statement_aux SEMICOLON .)
+    PRINT           reduce using rule 27 (statement -> statement_aux SEMICOLON .)
+
+
+state 51
+
+    (47) return -> RETURN expression .
+
+    SEMICOLON       reduce using rule 47 (return -> RETURN expression .)
+
+
+state 52
+
+    (61) expression -> exp . expression_aux
+    (62) expression_aux -> . AND exp expression_aux
+    (63) expression_aux -> . empty
+    (106) empty -> .
+
+    AND             shift and go to state 75
+    SEMICOLON       reduce using rule 106 (empty -> .)
+    COMMA           reduce using rule 106 (empty -> .)
+    R_PARENS        reduce using rule 106 (empty -> .)
+    R_SQUARE_BRACKET reduce using rule 106 (empty -> .)
+
+    expression_aux                 shift and go to state 74
+    empty                          shift and go to state 76
+
+state 53
+
+    (71) exp -> xp . exp_aux
+    (72) exp_aux -> . OR xp exp_aux
+    (73) exp_aux -> . empty
+    (106) empty -> .
+
+    OR              shift and go to state 78
+    AND             reduce using rule 106 (empty -> .)
+    SEMICOLON       reduce using rule 106 (empty -> .)
+    COMMA           reduce using rule 106 (empty -> .)
+    R_PARENS        reduce using rule 106 (empty -> .)
+    R_SQUARE_BRACKET reduce using rule 106 (empty -> .)
+
+    exp_aux                        shift and go to state 77
+    empty                          shift and go to state 79
+
+state 54
+
+    (74) xp -> x . xp_aux
+    (75) xp_aux -> . log_op x
+    (76) xp_aux -> . empty
+    (81) log_op -> . NOT_EQUAL
+    (82) log_op -> . IS_EQUAL
+    (83) log_op -> . GREATER
+    (84) log_op -> . GREATER_EQ
+    (85) log_op -> . LESS
+    (86) log_op -> . LESS_EQ
+    (106) empty -> .
+
+    NOT_EQUAL       shift and go to state 83
+    IS_EQUAL        shift and go to state 84
+    GREATER         shift and go to state 85
+    GREATER_EQ      shift and go to state 86
+    LESS            shift and go to state 87
+    LESS_EQ         shift and go to state 88
+    OR              reduce using rule 106 (empty -> .)
+    AND             reduce using rule 106 (empty -> .)
+    SEMICOLON       reduce using rule 106 (empty -> .)
+    COMMA           reduce using rule 106 (empty -> .)
+    R_PARENS        reduce using rule 106 (empty -> .)
+    R_SQUARE_BRACKET reduce using rule 106 (empty -> .)
+
+    xp_aux                         shift and go to state 80
+    log_op                         shift and go to state 81
+    empty                          shift and go to state 82
+
+state 55
+
+    (77) x -> term . x_aux
+    (78) x_aux -> . PLUS term x_aux
+    (79) x_aux -> . MINUS term x_aux
+    (80) x_aux -> . empty
+    (106) empty -> .
+
+    PLUS            shift and go to state 90
+    MINUS           shift and go to state 91
+    NOT_EQUAL       reduce using rule 106 (empty -> .)
+    IS_EQUAL        reduce using rule 106 (empty -> .)
+    GREATER         reduce using rule 106 (empty -> .)
+    GREATER_EQ      reduce using rule 106 (empty -> .)
+    LESS            reduce using rule 106 (empty -> .)
+    LESS_EQ         reduce using rule 106 (empty -> .)
+    OR              reduce using rule 106 (empty -> .)
+    AND             reduce using rule 106 (empty -> .)
+    SEMICOLON       reduce using rule 106 (empty -> .)
+    COMMA           reduce using rule 106 (empty -> .)
+    R_PARENS        reduce using rule 106 (empty -> .)
+    R_SQUARE_BRACKET reduce using rule 106 (empty -> .)
+
+    x_aux                          shift and go to state 89
+    empty                          shift and go to state 92
+
+state 56
+
+    (87) term -> factor . term_aux
+    (88) term_aux -> . TIMES factor term_aux
+    (89) term_aux -> . DIVIDE factor term_aux
+    (90) term_aux -> . empty
+    (106) empty -> .
+
+    TIMES           shift and go to state 94
+    DIVIDE          shift and go to state 95
+    PLUS            reduce using rule 106 (empty -> .)
+    MINUS           reduce using rule 106 (empty -> .)
+    NOT_EQUAL       reduce using rule 106 (empty -> .)
+    IS_EQUAL        reduce using rule 106 (empty -> .)
+    GREATER         reduce using rule 106 (empty -> .)
+    GREATER_EQ      reduce using rule 106 (empty -> .)
+    LESS            reduce using rule 106 (empty -> .)
+    LESS_EQ         reduce using rule 106 (empty -> .)
+    OR              reduce using rule 106 (empty -> .)
+    AND             reduce using rule 106 (empty -> .)
+    SEMICOLON       reduce using rule 106 (empty -> .)
+    COMMA           reduce using rule 106 (empty -> .)
+    R_PARENS        reduce using rule 106 (empty -> .)
+    R_SQUARE_BRACKET reduce using rule 106 (empty -> .)
+
+    term_aux                       shift and go to state 93
+    empty                          shift and go to state 96
+
+state 57
+
+    (91) factor -> factor_aux . factor_aux_2
+    (94) factor_aux_2 -> . L_PARENS expression R_PARENS
+    (95) factor_aux_2 -> . factor_aux_3 const
+    (96) factor_aux_3 -> . PLUS
+    (97) factor_aux_3 -> . MINUS
+    (98) factor_aux_3 -> . empty
+    (106) empty -> .
+
+    L_PARENS        shift and go to state 98
+    PLUS            shift and go to state 100
+    MINUS           shift and go to state 101
+    ID              reduce using rule 106 (empty -> .)
+    CONST_I         reduce using rule 106 (empty -> .)
+    CONST_F         reduce using rule 106 (empty -> .)
+    CONST_STRING    reduce using rule 106 (empty -> .)
+
+    factor_aux_2                   shift and go to state 97
+    factor_aux_3                   shift and go to state 99
+    empty                          shift and go to state 102
+
+state 58
+
+    (92) factor_aux -> NOT .
+
+    L_PARENS        reduce using rule 92 (factor_aux -> NOT .)
+    PLUS            reduce using rule 92 (factor_aux -> NOT .)
+    MINUS           reduce using rule 92 (factor_aux -> NOT .)
+    ID              reduce using rule 92 (factor_aux -> NOT .)
+    CONST_I         reduce using rule 92 (factor_aux -> NOT .)
+    CONST_F         reduce using rule 92 (factor_aux -> NOT .)
+    CONST_STRING    reduce using rule 92 (factor_aux -> NOT .)
+
+
+state 59
+
+    (93) factor_aux -> empty .
+
+    L_PARENS        reduce using rule 93 (factor_aux -> empty .)
+    PLUS            reduce using rule 93 (factor_aux -> empty .)
+    MINUS           reduce using rule 93 (factor_aux -> empty .)
+    ID              reduce using rule 93 (factor_aux -> empty .)
+    CONST_I         reduce using rule 93 (factor_aux -> empty .)
+    CONST_F         reduce using rule 93 (factor_aux -> empty .)
+    CONST_STRING    reduce using rule 93 (factor_aux -> empty .)
+
+
+state 60
+
+    (48) if -> IF L_PARENS . expression R_PARENS block elif else
+    (61) expression -> . exp expression_aux
+    (71) exp -> . xp exp_aux
+    (74) xp -> . x xp_aux
+    (77) x -> . term x_aux
+    (87) term -> . factor term_aux
+    (91) factor -> . factor_aux factor_aux_2
+    (92) factor_aux -> . NOT
+    (93) factor_aux -> . empty
+    (106) empty -> .
+
+    NOT             shift and go to state 58
+    L_PARENS        reduce using rule 106 (empty -> .)
+    PLUS            reduce using rule 106 (empty -> .)
+    MINUS           reduce using rule 106 (empty -> .)
+    ID              reduce using rule 106 (empty -> .)
+    CONST_I         reduce using rule 106 (empty -> .)
+    CONST_F         reduce using rule 106 (empty -> .)
+    CONST_STRING    reduce using rule 106 (empty -> .)
+
+    expression                     shift and go to state 103
+    exp                            shift and go to state 52
+    xp                             shift and go to state 53
+    x                              shift and go to state 54
+    term                           shift and go to state 55
+    factor                         shift and go to state 56
+    factor_aux                     shift and go to state 57
+    empty                          shift and go to state 59
+
+state 61
+
+    (53) while -> WHILE L_PARENS . expression R_PARENS block
+    (61) expression -> . exp expression_aux
+    (71) exp -> . xp exp_aux
+    (74) xp -> . x xp_aux
+    (77) x -> . term x_aux
+    (87) term -> . factor term_aux
+    (91) factor -> . factor_aux factor_aux_2
+    (92) factor_aux -> . NOT
+    (93) factor_aux -> . empty
+    (106) empty -> .
+
+    NOT             shift and go to state 58
+    L_PARENS        reduce using rule 106 (empty -> .)
+    PLUS            reduce using rule 106 (empty -> .)
+    MINUS           reduce using rule 106 (empty -> .)
+    ID              reduce using rule 106 (empty -> .)
+    CONST_I         reduce using rule 106 (empty -> .)
+    CONST_F         reduce using rule 106 (empty -> .)
+    CONST_STRING    reduce using rule 106 (empty -> .)
+
+    expression                     shift and go to state 104
+    exp                            shift and go to state 52
+    xp                             shift and go to state 53
+    x                              shift and go to state 54
+    term                           shift and go to state 55
+    factor                         shift and go to state 56
+    factor_aux                     shift and go to state 57
+    empty                          shift and go to state 59
+
+state 62
+
+    (54) print -> PRINT L_PARENS . print_aux R_PARENS
+    (55) print_aux -> . CONST_STRING print_aux_2
+    (56) print_aux -> . ID print_aux_2
+    (57) print_aux -> . empty
+    (106) empty -> .
+
+    CONST_STRING    shift and go to state 106
+    ID              shift and go to state 107
+    R_PARENS        reduce using rule 106 (empty -> .)
+
+    print_aux                      shift and go to state 105
+    empty                          shift and go to state 108
+
+state 63
+
+    (7) function_header -> FUNCTION ID L_PARENS function_header_aux R_PARENS . COLON function_type
+
+    COLON           shift and go to state 109
+
+
+state 64
+
+    (15) function_params -> type ID . function_params_aux function_params_aux_2
+    (16) function_params_aux -> . array_index
+    (17) function_params_aux -> . empty
+    (37) array_index -> . L_SQUARE_BRACKET expression R_SQUARE_BRACKET L_SQUARE_BRACKET expression R_SQUARE_BRACKET
+    (38) array_index -> . L_SQUARE_BRACKET expression R_SQUARE_BRACKET
+    (106) empty -> .
+
+    L_SQUARE_BRACKET shift and go to state 49
+    COMMA           reduce using rule 106 (empty -> .)
+    R_PARENS        reduce using rule 106 (empty -> .)
+
+    function_params_aux            shift and go to state 110
+    array_index                    shift and go to state 111
+    empty                          shift and go to state 112
+
+state 65
+
+    (22) var -> type ID var_aux . var_aux_2
+    (25) var_aux_2 -> . var_aux_2 COMMA ID var_aux
+    (26) var_aux_2 -> . empty
+    (106) empty -> .
+
+    COMMA           reduce using rule 106 (empty -> .)
+    INT             reduce using rule 106 (empty -> .)
+    FLOAT           reduce using rule 106 (empty -> .)
+    STRING          reduce using rule 106 (empty -> .)
+    ID              reduce using rule 106 (empty -> .)
+    RETURN          reduce using rule 106 (empty -> .)
+    IF              reduce using rule 106 (empty -> .)
+    WHILE           reduce using rule 106 (empty -> .)
+    PRINT           reduce using rule 106 (empty -> .)
+
+    var_aux_2                      shift and go to state 113
+    empty                          shift and go to state 114
+
+state 66
+
+    (23) var_aux -> array_dim .
+
+    COMMA           reduce using rule 23 (var_aux -> array_dim .)
+    INT             reduce using rule 23 (var_aux -> array_dim .)
+    FLOAT           reduce using rule 23 (var_aux -> array_dim .)
+    STRING          reduce using rule 23 (var_aux -> array_dim .)
+    ID              reduce using rule 23 (var_aux -> array_dim .)
+    RETURN          reduce using rule 23 (var_aux -> array_dim .)
+    IF              reduce using rule 23 (var_aux -> array_dim .)
+    WHILE           reduce using rule 23 (var_aux -> array_dim .)
+    PRINT           reduce using rule 23 (var_aux -> array_dim .)
+
+
+state 67
+
+    (24) var_aux -> empty .
+
+    COMMA           reduce using rule 24 (var_aux -> empty .)
+    INT             reduce using rule 24 (var_aux -> empty .)
+    FLOAT           reduce using rule 24 (var_aux -> empty .)
+    STRING          reduce using rule 24 (var_aux -> empty .)
+    ID              reduce using rule 24 (var_aux -> empty .)
+    RETURN          reduce using rule 24 (var_aux -> empty .)
+    IF              reduce using rule 24 (var_aux -> empty .)
+    WHILE           reduce using rule 24 (var_aux -> empty .)
+    PRINT           reduce using rule 24 (var_aux -> empty .)
+
+
+state 68
+
+    (39) array_dim -> L_SQUARE_BRACKET . CONST_I R_SQUARE_BRACKET L_SQUARE_BRACKET CONST_I R_SQUARE_BRACKET
+    (40) array_dim -> L_SQUARE_BRACKET . CONST_I R_SQUARE_BRACKET
+
+    CONST_I         shift and go to state 115
+
+
+state 69
+
+    (41) assignment -> ID assignment_aux EQUALS . assignment_aux_2
+    (44) assignment_aux_2 -> . expression
+    (45) assignment_aux_2 -> . read
+    (61) expression -> . exp expression_aux
+    (64) read -> . READ ID
+    (71) exp -> . xp exp_aux
+    (74) xp -> . x xp_aux
+    (77) x -> . term x_aux
+    (87) term -> . factor term_aux
+    (91) factor -> . factor_aux factor_aux_2
+    (92) factor_aux -> . NOT
+    (93) factor_aux -> . empty
+    (106) empty -> .
+
+    READ            shift and go to state 119
+    NOT             shift and go to state 58
+    L_PARENS        reduce using rule 106 (empty -> .)
+    PLUS            reduce using rule 106 (empty -> .)
+    MINUS           reduce using rule 106 (empty -> .)
+    ID              reduce using rule 106 (empty -> .)
+    CONST_I         reduce using rule 106 (empty -> .)
+    CONST_F         reduce using rule 106 (empty -> .)
+    CONST_STRING    reduce using rule 106 (empty -> .)
+
+    assignment_aux_2               shift and go to state 116
+    expression                     shift and go to state 117
+    read                           shift and go to state 118
+    exp                            shift and go to state 52
+    xp                             shift and go to state 53
+    x                              shift and go to state 54
+    term                           shift and go to state 55
+    factor                         shift and go to state 56
+    factor_aux                     shift and go to state 57
+    empty                          shift and go to state 59
+
+state 70
+
+    (65) params_pass -> L_PARENS params_pass_aux . R_PARENS
+
+    R_PARENS        shift and go to state 120
+
+
+state 71
+
+    (66) params_pass_aux -> expression . params_pass_aux_2
+    (68) params_pass_aux_2 -> . COMMA expression params_pass_aux_2
+    (69) params_pass_aux_2 -> . empty
+    (106) empty -> .
+
+    COMMA           shift and go to state 122
+    R_PARENS        reduce using rule 106 (empty -> .)
+
+    params_pass_aux_2              shift and go to state 121
+    empty                          shift and go to state 123
+
+state 72
+
+    (67) params_pass_aux -> empty .
+    (93) factor_aux -> empty .
+
+    R_PARENS        reduce using rule 67 (params_pass_aux -> empty .)
+    L_PARENS        reduce using rule 93 (factor_aux -> empty .)
+    PLUS            reduce using rule 93 (factor_aux -> empty .)
+    MINUS           reduce using rule 93 (factor_aux -> empty .)
+    ID              reduce using rule 93 (factor_aux -> empty .)
+    CONST_I         reduce using rule 93 (factor_aux -> empty .)
+    CONST_F         reduce using rule 93 (factor_aux -> empty .)
+    CONST_STRING    reduce using rule 93 (factor_aux -> empty .)
+
+
+state 73
+
+    (37) array_index -> L_SQUARE_BRACKET expression . R_SQUARE_BRACKET L_SQUARE_BRACKET expression R_SQUARE_BRACKET
+    (38) array_index -> L_SQUARE_BRACKET expression . R_SQUARE_BRACKET
+
+    R_SQUARE_BRACKET shift and go to state 124
+
+
+state 74
+
+    (61) expression -> exp expression_aux .
+
+    SEMICOLON       reduce using rule 61 (expression -> exp expression_aux .)
+    COMMA           reduce using rule 61 (expression -> exp expression_aux .)
+    R_PARENS        reduce using rule 61 (expression -> exp expression_aux .)
+    R_SQUARE_BRACKET reduce using rule 61 (expression -> exp expression_aux .)
+
+
+state 75
+
+    (62) expression_aux -> AND . exp expression_aux
+    (71) exp -> . xp exp_aux
+    (74) xp -> . x xp_aux
+    (77) x -> . term x_aux
+    (87) term -> . factor term_aux
+    (91) factor -> . factor_aux factor_aux_2
+    (92) factor_aux -> . NOT
+    (93) factor_aux -> . empty
+    (106) empty -> .
+
+    NOT             shift and go to state 58
+    L_PARENS        reduce using rule 106 (empty -> .)
+    PLUS            reduce using rule 106 (empty -> .)
+    MINUS           reduce using rule 106 (empty -> .)
+    ID              reduce using rule 106 (empty -> .)
+    CONST_I         reduce using rule 106 (empty -> .)
+    CONST_F         reduce using rule 106 (empty -> .)
+    CONST_STRING    reduce using rule 106 (empty -> .)
+
+    exp                            shift and go to state 125
+    xp                             shift and go to state 53
+    x                              shift and go to state 54
+    term                           shift and go to state 55
+    factor                         shift and go to state 56
+    factor_aux                     shift and go to state 57
+    empty                          shift and go to state 59
+
+state 76
+
+    (63) expression_aux -> empty .
+
+    SEMICOLON       reduce using rule 63 (expression_aux -> empty .)
+    COMMA           reduce using rule 63 (expression_aux -> empty .)
+    R_PARENS        reduce using rule 63 (expression_aux -> empty .)
+    R_SQUARE_BRACKET reduce using rule 63 (expression_aux -> empty .)
+
+
+state 77
+
+    (71) exp -> xp exp_aux .
+
+    AND             reduce using rule 71 (exp -> xp exp_aux .)
+    SEMICOLON       reduce using rule 71 (exp -> xp exp_aux .)
+    COMMA           reduce using rule 71 (exp -> xp exp_aux .)
+    R_PARENS        reduce using rule 71 (exp -> xp exp_aux .)
+    R_SQUARE_BRACKET reduce using rule 71 (exp -> xp exp_aux .)
+
+
+state 78
+
+    (72) exp_aux -> OR . xp exp_aux
+    (74) xp -> . x xp_aux
+    (77) x -> . term x_aux
+    (87) term -> . factor term_aux
+    (91) factor -> . factor_aux factor_aux_2
+    (92) factor_aux -> . NOT
+    (93) factor_aux -> . empty
+    (106) empty -> .
+
+    NOT             shift and go to state 58
+    L_PARENS        reduce using rule 106 (empty -> .)
+    PLUS            reduce using rule 106 (empty -> .)
+    MINUS           reduce using rule 106 (empty -> .)
+    ID              reduce using rule 106 (empty -> .)
+    CONST_I         reduce using rule 106 (empty -> .)
+    CONST_F         reduce using rule 106 (empty -> .)
+    CONST_STRING    reduce using rule 106 (empty -> .)
+
+    xp                             shift and go to state 126
+    x                              shift and go to state 54
+    term                           shift and go to state 55
+    factor                         shift and go to state 56
+    factor_aux                     shift and go to state 57
+    empty                          shift and go to state 59
+
+state 79
+
+    (73) exp_aux -> empty .
+
+    AND             reduce using rule 73 (exp_aux -> empty .)
+    SEMICOLON       reduce using rule 73 (exp_aux -> empty .)
+    COMMA           reduce using rule 73 (exp_aux -> empty .)
+    R_PARENS        reduce using rule 73 (exp_aux -> empty .)
+    R_SQUARE_BRACKET reduce using rule 73 (exp_aux -> empty .)
+
+
+state 80
+
+    (74) xp -> x xp_aux .
+
+    OR              reduce using rule 74 (xp -> x xp_aux .)
+    AND             reduce using rule 74 (xp -> x xp_aux .)
+    SEMICOLON       reduce using rule 74 (xp -> x xp_aux .)
+    COMMA           reduce using rule 74 (xp -> x xp_aux .)
+    R_PARENS        reduce using rule 74 (xp -> x xp_aux .)
+    R_SQUARE_BRACKET reduce using rule 74 (xp -> x xp_aux .)
+
+
+state 81
+
+    (75) xp_aux -> log_op . x
+    (77) x -> . term x_aux
+    (87) term -> . factor term_aux
+    (91) factor -> . factor_aux factor_aux_2
+    (92) factor_aux -> . NOT
+    (93) factor_aux -> . empty
+    (106) empty -> .
+
+    NOT             shift and go to state 58
+    L_PARENS        reduce using rule 106 (empty -> .)
+    PLUS            reduce using rule 106 (empty -> .)
+    MINUS           reduce using rule 106 (empty -> .)
+    ID              reduce using rule 106 (empty -> .)
+    CONST_I         reduce using rule 106 (empty -> .)
+    CONST_F         reduce using rule 106 (empty -> .)
+    CONST_STRING    reduce using rule 106 (empty -> .)
+
+    x                              shift and go to state 127
+    term                           shift and go to state 55
+    factor                         shift and go to state 56
+    factor_aux                     shift and go to state 57
+    empty                          shift and go to state 59
+
+state 82
+
+    (76) xp_aux -> empty .
+
+    OR              reduce using rule 76 (xp_aux -> empty .)
+    AND             reduce using rule 76 (xp_aux -> empty .)
+    SEMICOLON       reduce using rule 76 (xp_aux -> empty .)
+    COMMA           reduce using rule 76 (xp_aux -> empty .)
+    R_PARENS        reduce using rule 76 (xp_aux -> empty .)
+    R_SQUARE_BRACKET reduce using rule 76 (xp_aux -> empty .)
+
+
+state 83
+
+    (81) log_op -> NOT_EQUAL .
+
+    NOT             reduce using rule 81 (log_op -> NOT_EQUAL .)
+    L_PARENS        reduce using rule 81 (log_op -> NOT_EQUAL .)
+    PLUS            reduce using rule 81 (log_op -> NOT_EQUAL .)
+    MINUS           reduce using rule 81 (log_op -> NOT_EQUAL .)
+    ID              reduce using rule 81 (log_op -> NOT_EQUAL .)
+    CONST_I         reduce using rule 81 (log_op -> NOT_EQUAL .)
+    CONST_F         reduce using rule 81 (log_op -> NOT_EQUAL .)
+    CONST_STRING    reduce using rule 81 (log_op -> NOT_EQUAL .)
+
+
+state 84
+
+    (82) log_op -> IS_EQUAL .
+
+    NOT             reduce using rule 82 (log_op -> IS_EQUAL .)
+    L_PARENS        reduce using rule 82 (log_op -> IS_EQUAL .)
+    PLUS            reduce using rule 82 (log_op -> IS_EQUAL .)
+    MINUS           reduce using rule 82 (log_op -> IS_EQUAL .)
+    ID              reduce using rule 82 (log_op -> IS_EQUAL .)
+    CONST_I         reduce using rule 82 (log_op -> IS_EQUAL .)
+    CONST_F         reduce using rule 82 (log_op -> IS_EQUAL .)
+    CONST_STRING    reduce using rule 82 (log_op -> IS_EQUAL .)
+
+
+state 85
+
+    (83) log_op -> GREATER .
+
+    NOT             reduce using rule 83 (log_op -> GREATER .)
+    L_PARENS        reduce using rule 83 (log_op -> GREATER .)
+    PLUS            reduce using rule 83 (log_op -> GREATER .)
+    MINUS           reduce using rule 83 (log_op -> GREATER .)
+    ID              reduce using rule 83 (log_op -> GREATER .)
+    CONST_I         reduce using rule 83 (log_op -> GREATER .)
+    CONST_F         reduce using rule 83 (log_op -> GREATER .)
+    CONST_STRING    reduce using rule 83 (log_op -> GREATER .)
+
+
+state 86
+
+    (84) log_op -> GREATER_EQ .
+
+    NOT             reduce using rule 84 (log_op -> GREATER_EQ .)
+    L_PARENS        reduce using rule 84 (log_op -> GREATER_EQ .)
+    PLUS            reduce using rule 84 (log_op -> GREATER_EQ .)
+    MINUS           reduce using rule 84 (log_op -> GREATER_EQ .)
+    ID              reduce using rule 84 (log_op -> GREATER_EQ .)
+    CONST_I         reduce using rule 84 (log_op -> GREATER_EQ .)
+    CONST_F         reduce using rule 84 (log_op -> GREATER_EQ .)
+    CONST_STRING    reduce using rule 84 (log_op -> GREATER_EQ .)
+
+
+state 87
+
+    (85) log_op -> LESS .
+
+    NOT             reduce using rule 85 (log_op -> LESS .)
+    L_PARENS        reduce using rule 85 (log_op -> LESS .)
+    PLUS            reduce using rule 85 (log_op -> LESS .)
+    MINUS           reduce using rule 85 (log_op -> LESS .)
+    ID              reduce using rule 85 (log_op -> LESS .)
+    CONST_I         reduce using rule 85 (log_op -> LESS .)
+    CONST_F         reduce using rule 85 (log_op -> LESS .)
+    CONST_STRING    reduce using rule 85 (log_op -> LESS .)
+
+
+state 88
+
+    (86) log_op -> LESS_EQ .
+
+    NOT             reduce using rule 86 (log_op -> LESS_EQ .)
+    L_PARENS        reduce using rule 86 (log_op -> LESS_EQ .)
+    PLUS            reduce using rule 86 (log_op -> LESS_EQ .)
+    MINUS           reduce using rule 86 (log_op -> LESS_EQ .)
+    ID              reduce using rule 86 (log_op -> LESS_EQ .)
+    CONST_I         reduce using rule 86 (log_op -> LESS_EQ .)
+    CONST_F         reduce using rule 86 (log_op -> LESS_EQ .)
+    CONST_STRING    reduce using rule 86 (log_op -> LESS_EQ .)
+
+
+state 89
+
+    (77) x -> term x_aux .
+
+    NOT_EQUAL       reduce using rule 77 (x -> term x_aux .)
+    IS_EQUAL        reduce using rule 77 (x -> term x_aux .)
+    GREATER         reduce using rule 77 (x -> term x_aux .)
+    GREATER_EQ      reduce using rule 77 (x -> term x_aux .)
+    LESS            reduce using rule 77 (x -> term x_aux .)
+    LESS_EQ         reduce using rule 77 (x -> term x_aux .)
+    OR              reduce using rule 77 (x -> term x_aux .)
+    AND             reduce using rule 77 (x -> term x_aux .)
+    SEMICOLON       reduce using rule 77 (x -> term x_aux .)
+    COMMA           reduce using rule 77 (x -> term x_aux .)
+    R_PARENS        reduce using rule 77 (x -> term x_aux .)
+    R_SQUARE_BRACKET reduce using rule 77 (x -> term x_aux .)
+
+
+state 90
+
+    (78) x_aux -> PLUS . term x_aux
+    (87) term -> . factor term_aux
+    (91) factor -> . factor_aux factor_aux_2
+    (92) factor_aux -> . NOT
+    (93) factor_aux -> . empty
+    (106) empty -> .
+
+    NOT             shift and go to state 58
+    L_PARENS        reduce using rule 106 (empty -> .)
+    PLUS            reduce using rule 106 (empty -> .)
+    MINUS           reduce using rule 106 (empty -> .)
+    ID              reduce using rule 106 (empty -> .)
+    CONST_I         reduce using rule 106 (empty -> .)
+    CONST_F         reduce using rule 106 (empty -> .)
+    CONST_STRING    reduce using rule 106 (empty -> .)
+
+    term                           shift and go to state 128
+    factor                         shift and go to state 56
+    factor_aux                     shift and go to state 57
+    empty                          shift and go to state 59
+
+state 91
+
+    (79) x_aux -> MINUS . term x_aux
+    (87) term -> . factor term_aux
+    (91) factor -> . factor_aux factor_aux_2
+    (92) factor_aux -> . NOT
+    (93) factor_aux -> . empty
+    (106) empty -> .
+
+    NOT             shift and go to state 58
+    L_PARENS        reduce using rule 106 (empty -> .)
+    PLUS            reduce using rule 106 (empty -> .)
+    MINUS           reduce using rule 106 (empty -> .)
+    ID              reduce using rule 106 (empty -> .)
+    CONST_I         reduce using rule 106 (empty -> .)
+    CONST_F         reduce using rule 106 (empty -> .)
+    CONST_STRING    reduce using rule 106 (empty -> .)
+
+    term                           shift and go to state 129
+    factor                         shift and go to state 56
+    factor_aux                     shift and go to state 57
+    empty                          shift and go to state 59
+
+state 92
+
+    (80) x_aux -> empty .
+
+    NOT_EQUAL       reduce using rule 80 (x_aux -> empty .)
+    IS_EQUAL        reduce using rule 80 (x_aux -> empty .)
+    GREATER         reduce using rule 80 (x_aux -> empty .)
+    GREATER_EQ      reduce using rule 80 (x_aux -> empty .)
+    LESS            reduce using rule 80 (x_aux -> empty .)
+    LESS_EQ         reduce using rule 80 (x_aux -> empty .)
+    OR              reduce using rule 80 (x_aux -> empty .)
+    AND             reduce using rule 80 (x_aux -> empty .)
+    SEMICOLON       reduce using rule 80 (x_aux -> empty .)
+    COMMA           reduce using rule 80 (x_aux -> empty .)
+    R_PARENS        reduce using rule 80 (x_aux -> empty .)
+    R_SQUARE_BRACKET reduce using rule 80 (x_aux -> empty .)
+
+
+state 93
+
+    (87) term -> factor term_aux .
+
+    PLUS            reduce using rule 87 (term -> factor term_aux .)
+    MINUS           reduce using rule 87 (term -> factor term_aux .)
+    NOT_EQUAL       reduce using rule 87 (term -> factor term_aux .)
+    IS_EQUAL        reduce using rule 87 (term -> factor term_aux .)
+    GREATER         reduce using rule 87 (term -> factor term_aux .)
+    GREATER_EQ      reduce using rule 87 (term -> factor term_aux .)
+    LESS            reduce using rule 87 (term -> factor term_aux .)
+    LESS_EQ         reduce using rule 87 (term -> factor term_aux .)
+    OR              reduce using rule 87 (term -> factor term_aux .)
+    AND             reduce using rule 87 (term -> factor term_aux .)
+    SEMICOLON       reduce using rule 87 (term -> factor term_aux .)
+    COMMA           reduce using rule 87 (term -> factor term_aux .)
+    R_PARENS        reduce using rule 87 (term -> factor term_aux .)
+    R_SQUARE_BRACKET reduce using rule 87 (term -> factor term_aux .)
+
+
+state 94
+
+    (88) term_aux -> TIMES . factor term_aux
+    (91) factor -> . factor_aux factor_aux_2
+    (92) factor_aux -> . NOT
+    (93) factor_aux -> . empty
+    (106) empty -> .
+
+    NOT             shift and go to state 58
+    L_PARENS        reduce using rule 106 (empty -> .)
+    PLUS            reduce using rule 106 (empty -> .)
+    MINUS           reduce using rule 106 (empty -> .)
+    ID              reduce using rule 106 (empty -> .)
+    CONST_I         reduce using rule 106 (empty -> .)
+    CONST_F         reduce using rule 106 (empty -> .)
+    CONST_STRING    reduce using rule 106 (empty -> .)
+
+    factor                         shift and go to state 130
+    factor_aux                     shift and go to state 57
+    empty                          shift and go to state 59
+
+state 95
+
+    (89) term_aux -> DIVIDE . factor term_aux
+    (91) factor -> . factor_aux factor_aux_2
+    (92) factor_aux -> . NOT
+    (93) factor_aux -> . empty
+    (106) empty -> .
+
+    NOT             shift and go to state 58
+    L_PARENS        reduce using rule 106 (empty -> .)
+    PLUS            reduce using rule 106 (empty -> .)
+    MINUS           reduce using rule 106 (empty -> .)
+    ID              reduce using rule 106 (empty -> .)
+    CONST_I         reduce using rule 106 (empty -> .)
+    CONST_F         reduce using rule 106 (empty -> .)
+    CONST_STRING    reduce using rule 106 (empty -> .)
+
+    factor                         shift and go to state 131
+    factor_aux                     shift and go to state 57
+    empty                          shift and go to state 59
+
+state 96
+
+    (90) term_aux -> empty .
+
+    PLUS            reduce using rule 90 (term_aux -> empty .)
+    MINUS           reduce using rule 90 (term_aux -> empty .)
+    NOT_EQUAL       reduce using rule 90 (term_aux -> empty .)
+    IS_EQUAL        reduce using rule 90 (term_aux -> empty .)
+    GREATER         reduce using rule 90 (term_aux -> empty .)
+    GREATER_EQ      reduce using rule 90 (term_aux -> empty .)
+    LESS            reduce using rule 90 (term_aux -> empty .)
+    LESS_EQ         reduce using rule 90 (term_aux -> empty .)
+    OR              reduce using rule 90 (term_aux -> empty .)
+    AND             reduce using rule 90 (term_aux -> empty .)
+    SEMICOLON       reduce using rule 90 (term_aux -> empty .)
+    COMMA           reduce using rule 90 (term_aux -> empty .)
+    R_PARENS        reduce using rule 90 (term_aux -> empty .)
+    R_SQUARE_BRACKET reduce using rule 90 (term_aux -> empty .)
+
+
+state 97
+
+    (91) factor -> factor_aux factor_aux_2 .
+
+    TIMES           reduce using rule 91 (factor -> factor_aux factor_aux_2 .)
+    DIVIDE          reduce using rule 91 (factor -> factor_aux factor_aux_2 .)
+    PLUS            reduce using rule 91 (factor -> factor_aux factor_aux_2 .)
+    MINUS           reduce using rule 91 (factor -> factor_aux factor_aux_2 .)
+    NOT_EQUAL       reduce using rule 91 (factor -> factor_aux factor_aux_2 .)
+    IS_EQUAL        reduce using rule 91 (factor -> factor_aux factor_aux_2 .)
+    GREATER         reduce using rule 91 (factor -> factor_aux factor_aux_2 .)
+    GREATER_EQ      reduce using rule 91 (factor -> factor_aux factor_aux_2 .)
+    LESS            reduce using rule 91 (factor -> factor_aux factor_aux_2 .)
+    LESS_EQ         reduce using rule 91 (factor -> factor_aux factor_aux_2 .)
+    OR              reduce using rule 91 (factor -> factor_aux factor_aux_2 .)
+    AND             reduce using rule 91 (factor -> factor_aux factor_aux_2 .)
+    SEMICOLON       reduce using rule 91 (factor -> factor_aux factor_aux_2 .)
+    COMMA           reduce using rule 91 (factor -> factor_aux factor_aux_2 .)
+    R_PARENS        reduce using rule 91 (factor -> factor_aux factor_aux_2 .)
+    R_SQUARE_BRACKET reduce using rule 91 (factor -> factor_aux factor_aux_2 .)
+
+
+state 98
+
+    (94) factor_aux_2 -> L_PARENS . expression R_PARENS
+    (61) expression -> . exp expression_aux
+    (71) exp -> . xp exp_aux
+    (74) xp -> . x xp_aux
+    (77) x -> . term x_aux
+    (87) term -> . factor term_aux
+    (91) factor -> . factor_aux factor_aux_2
+    (92) factor_aux -> . NOT
+    (93) factor_aux -> . empty
+    (106) empty -> .
+
+    NOT             shift and go to state 58
+    L_PARENS        reduce using rule 106 (empty -> .)
+    PLUS            reduce using rule 106 (empty -> .)
+    MINUS           reduce using rule 106 (empty -> .)
+    ID              reduce using rule 106 (empty -> .)
+    CONST_I         reduce using rule 106 (empty -> .)
+    CONST_F         reduce using rule 106 (empty -> .)
+    CONST_STRING    reduce using rule 106 (empty -> .)
+
+    expression                     shift and go to state 132
+    exp                            shift and go to state 52
+    xp                             shift and go to state 53
+    x                              shift and go to state 54
+    term                           shift and go to state 55
+    factor                         shift and go to state 56
+    factor_aux                     shift and go to state 57
+    empty                          shift and go to state 59
+
+state 99
+
+    (95) factor_aux_2 -> factor_aux_3 . const
+    (99) const -> . ID
+    (100) const -> . CONST_I
+    (101) const -> . CONST_F
+    (102) const -> . CONST_STRING
+    (103) const -> . function_call
+    (104) const -> . array_access
+    (46) function_call -> . ID params_pass
+    (105) array_access -> . ID array_index
+
+    ID              shift and go to state 134
+    CONST_I         shift and go to state 135
+    CONST_F         shift and go to state 136
+    CONST_STRING    shift and go to state 137
+
+    const                          shift and go to state 133
+    function_call                  shift and go to state 138
+    array_access                   shift and go to state 139
+
+state 100
+
+    (96) factor_aux_3 -> PLUS .
+
+    ID              reduce using rule 96 (factor_aux_3 -> PLUS .)
+    CONST_I         reduce using rule 96 (factor_aux_3 -> PLUS .)
+    CONST_F         reduce using rule 96 (factor_aux_3 -> PLUS .)
+    CONST_STRING    reduce using rule 96 (factor_aux_3 -> PLUS .)
+
+
+state 101
+
+    (97) factor_aux_3 -> MINUS .
+
+    ID              reduce using rule 97 (factor_aux_3 -> MINUS .)
+    CONST_I         reduce using rule 97 (factor_aux_3 -> MINUS .)
+    CONST_F         reduce using rule 97 (factor_aux_3 -> MINUS .)
+    CONST_STRING    reduce using rule 97 (factor_aux_3 -> MINUS .)
+
+
+state 102
+
+    (98) factor_aux_3 -> empty .
+
+    ID              reduce using rule 98 (factor_aux_3 -> empty .)
+    CONST_I         reduce using rule 98 (factor_aux_3 -> empty .)
+    CONST_F         reduce using rule 98 (factor_aux_3 -> empty .)
+    CONST_STRING    reduce using rule 98 (factor_aux_3 -> empty .)
+
+
+state 103
+
+    (48) if -> IF L_PARENS expression . R_PARENS block elif else
+
+    R_PARENS        shift and go to state 140
+
+
+state 104
+
+    (53) while -> WHILE L_PARENS expression . R_PARENS block
+
+    R_PARENS        shift and go to state 141
+
+
+state 105
+
+    (54) print -> PRINT L_PARENS print_aux . R_PARENS
+
+    R_PARENS        shift and go to state 142
+
+
+state 106
+
+    (55) print_aux -> CONST_STRING . print_aux_2
+    (58) print_aux_2 -> . COMMA ID print_aux_2
+    (59) print_aux_2 -> . COMMA CONST_STRING print_aux_2
+    (60) print_aux_2 -> . empty
+    (106) empty -> .
+
+    COMMA           shift and go to state 144
+    R_PARENS        reduce using rule 106 (empty -> .)
+
+    print_aux_2                    shift and go to state 143
+    empty                          shift and go to state 145
+
+state 107
+
+    (56) print_aux -> ID . print_aux_2
+    (58) print_aux_2 -> . COMMA ID print_aux_2
+    (59) print_aux_2 -> . COMMA CONST_STRING print_aux_2
+    (60) print_aux_2 -> . empty
+    (106) empty -> .
+
+    COMMA           shift and go to state 144
+    R_PARENS        reduce using rule 106 (empty -> .)
+
+    print_aux_2                    shift and go to state 146
+    empty                          shift and go to state 145
+
+state 108
+
+    (57) print_aux -> empty .
+
+    R_PARENS        reduce using rule 57 (print_aux -> empty .)
+
+
+state 109
+
+    (7) function_header -> FUNCTION ID L_PARENS function_header_aux R_PARENS COLON . function_type
+    (20) function_type -> . type
+    (21) function_type -> . VOID
+    (34) type -> . INT
+    (35) type -> . FLOAT
+    (36) type -> . STRING
+
+    VOID            shift and go to state 149
+    INT             shift and go to state 24
+    FLOAT           shift and go to state 25
+    STRING          shift and go to state 26
+
+    function_type                  shift and go to state 147
+    type                           shift and go to state 148
+
+state 110
+
+    (15) function_params -> type ID function_params_aux . function_params_aux_2
+    (18) function_params_aux_2 -> . COMMA function_params
+    (19) function_params_aux_2 -> . empty
+    (106) empty -> .
+
+    COMMA           shift and go to state 151
+    R_PARENS        reduce using rule 106 (empty -> .)
+
+    function_params_aux_2          shift and go to state 150
+    empty                          shift and go to state 152
+
+state 111
+
+    (16) function_params_aux -> array_index .
+
+    COMMA           reduce using rule 16 (function_params_aux -> array_index .)
+    R_PARENS        reduce using rule 16 (function_params_aux -> array_index .)
+
+
+state 112
+
+    (17) function_params_aux -> empty .
+
+    COMMA           reduce using rule 17 (function_params_aux -> empty .)
+    R_PARENS        reduce using rule 17 (function_params_aux -> empty .)
+
+
+state 113
+
+    (22) var -> type ID var_aux var_aux_2 .
+    (25) var_aux_2 -> var_aux_2 . COMMA ID var_aux
+
+    INT             reduce using rule 22 (var -> type ID var_aux var_aux_2 .)
+    FLOAT           reduce using rule 22 (var -> type ID var_aux var_aux_2 .)
+    STRING          reduce using rule 22 (var -> type ID var_aux var_aux_2 .)
+    ID              reduce using rule 22 (var -> type ID var_aux var_aux_2 .)
+    RETURN          reduce using rule 22 (var -> type ID var_aux var_aux_2 .)
+    IF              reduce using rule 22 (var -> type ID var_aux var_aux_2 .)
+    WHILE           reduce using rule 22 (var -> type ID var_aux var_aux_2 .)
+    PRINT           reduce using rule 22 (var -> type ID var_aux var_aux_2 .)
+    COMMA           shift and go to state 153
+
+
+state 114
+
+    (26) var_aux_2 -> empty .
+
+    COMMA           reduce using rule 26 (var_aux_2 -> empty .)
+    INT             reduce using rule 26 (var_aux_2 -> empty .)
+    FLOAT           reduce using rule 26 (var_aux_2 -> empty .)
+    STRING          reduce using rule 26 (var_aux_2 -> empty .)
+    ID              reduce using rule 26 (var_aux_2 -> empty .)
+    RETURN          reduce using rule 26 (var_aux_2 -> empty .)
+    IF              reduce using rule 26 (var_aux_2 -> empty .)
+    WHILE           reduce using rule 26 (var_aux_2 -> empty .)
+    PRINT           reduce using rule 26 (var_aux_2 -> empty .)
+
+
+state 115
+
+    (39) array_dim -> L_SQUARE_BRACKET CONST_I . R_SQUARE_BRACKET L_SQUARE_BRACKET CONST_I R_SQUARE_BRACKET
+    (40) array_dim -> L_SQUARE_BRACKET CONST_I . R_SQUARE_BRACKET
+
+    R_SQUARE_BRACKET shift and go to state 154
+
+
+state 116
+
+    (41) assignment -> ID assignment_aux EQUALS assignment_aux_2 .
+
+    SEMICOLON       reduce using rule 41 (assignment -> ID assignment_aux EQUALS assignment_aux_2 .)
+
+
+state 117
+
+    (44) assignment_aux_2 -> expression .
+
+    SEMICOLON       reduce using rule 44 (assignment_aux_2 -> expression .)
+
+
+state 118
+
+    (45) assignment_aux_2 -> read .
+
+    SEMICOLON       reduce using rule 45 (assignment_aux_2 -> read .)
+
+
+state 119
+
+    (64) read -> READ . ID
+
+    ID              shift and go to state 155
+
+
+state 120
+
+    (65) params_pass -> L_PARENS params_pass_aux R_PARENS .
+
+    SEMICOLON       reduce using rule 65 (params_pass -> L_PARENS params_pass_aux R_PARENS .)
+    TIMES           reduce using rule 65 (params_pass -> L_PARENS params_pass_aux R_PARENS .)
+    DIVIDE          reduce using rule 65 (params_pass -> L_PARENS params_pass_aux R_PARENS .)
+    PLUS            reduce using rule 65 (params_pass -> L_PARENS params_pass_aux R_PARENS .)
+    MINUS           reduce using rule 65 (params_pass -> L_PARENS params_pass_aux R_PARENS .)
+    NOT_EQUAL       reduce using rule 65 (params_pass -> L_PARENS params_pass_aux R_PARENS .)
+    IS_EQUAL        reduce using rule 65 (params_pass -> L_PARENS params_pass_aux R_PARENS .)
+    GREATER         reduce using rule 65 (params_pass -> L_PARENS params_pass_aux R_PARENS .)
+    GREATER_EQ      reduce using rule 65 (params_pass -> L_PARENS params_pass_aux R_PARENS .)
+    LESS            reduce using rule 65 (params_pass -> L_PARENS params_pass_aux R_PARENS .)
+    LESS_EQ         reduce using rule 65 (params_pass -> L_PARENS params_pass_aux R_PARENS .)
+    OR              reduce using rule 65 (params_pass -> L_PARENS params_pass_aux R_PARENS .)
+    AND             reduce using rule 65 (params_pass -> L_PARENS params_pass_aux R_PARENS .)
+    COMMA           reduce using rule 65 (params_pass -> L_PARENS params_pass_aux R_PARENS .)
+    R_PARENS        reduce using rule 65 (params_pass -> L_PARENS params_pass_aux R_PARENS .)
+    R_SQUARE_BRACKET reduce using rule 65 (params_pass -> L_PARENS params_pass_aux R_PARENS .)
+
+
+state 121
+
+    (66) params_pass_aux -> expression params_pass_aux_2 .
+
+    R_PARENS        reduce using rule 66 (params_pass_aux -> expression params_pass_aux_2 .)
+
+
+state 122
+
+    (68) params_pass_aux_2 -> COMMA . expression params_pass_aux_2
+    (61) expression -> . exp expression_aux
+    (71) exp -> . xp exp_aux
+    (74) xp -> . x xp_aux
+    (77) x -> . term x_aux
+    (87) term -> . factor term_aux
+    (91) factor -> . factor_aux factor_aux_2
+    (92) factor_aux -> . NOT
+    (93) factor_aux -> . empty
+    (106) empty -> .
+
+    NOT             shift and go to state 58
+    L_PARENS        reduce using rule 106 (empty -> .)
+    PLUS            reduce using rule 106 (empty -> .)
+    MINUS           reduce using rule 106 (empty -> .)
+    ID              reduce using rule 106 (empty -> .)
+    CONST_I         reduce using rule 106 (empty -> .)
+    CONST_F         reduce using rule 106 (empty -> .)
+    CONST_STRING    reduce using rule 106 (empty -> .)
+
+    expression                     shift and go to state 156
+    exp                            shift and go to state 52
+    xp                             shift and go to state 53
+    x                              shift and go to state 54
+    term                           shift and go to state 55
+    factor                         shift and go to state 56
+    factor_aux                     shift and go to state 57
+    empty                          shift and go to state 59
+
+state 123
+
+    (69) params_pass_aux_2 -> empty .
+
+    R_PARENS        reduce using rule 69 (params_pass_aux_2 -> empty .)
+
+
+state 124
+
+    (37) array_index -> L_SQUARE_BRACKET expression R_SQUARE_BRACKET . L_SQUARE_BRACKET expression R_SQUARE_BRACKET
+    (38) array_index -> L_SQUARE_BRACKET expression R_SQUARE_BRACKET .
+
+    L_SQUARE_BRACKET shift and go to state 157
+    EQUALS          reduce using rule 38 (array_index -> L_SQUARE_BRACKET expression R_SQUARE_BRACKET .)
+    COMMA           reduce using rule 38 (array_index -> L_SQUARE_BRACKET expression R_SQUARE_BRACKET .)
+    R_PARENS        reduce using rule 38 (array_index -> L_SQUARE_BRACKET expression R_SQUARE_BRACKET .)
+    TIMES           reduce using rule 38 (array_index -> L_SQUARE_BRACKET expression R_SQUARE_BRACKET .)
+    DIVIDE          reduce using rule 38 (array_index -> L_SQUARE_BRACKET expression R_SQUARE_BRACKET .)
+    PLUS            reduce using rule 38 (array_index -> L_SQUARE_BRACKET expression R_SQUARE_BRACKET .)
+    MINUS           reduce using rule 38 (array_index -> L_SQUARE_BRACKET expression R_SQUARE_BRACKET .)
+    NOT_EQUAL       reduce using rule 38 (array_index -> L_SQUARE_BRACKET expression R_SQUARE_BRACKET .)
+    IS_EQUAL        reduce using rule 38 (array_index -> L_SQUARE_BRACKET expression R_SQUARE_BRACKET .)
+    GREATER         reduce using rule 38 (array_index -> L_SQUARE_BRACKET expression R_SQUARE_BRACKET .)
+    GREATER_EQ      reduce using rule 38 (array_index -> L_SQUARE_BRACKET expression R_SQUARE_BRACKET .)
+    LESS            reduce using rule 38 (array_index -> L_SQUARE_BRACKET expression R_SQUARE_BRACKET .)
+    LESS_EQ         reduce using rule 38 (array_index -> L_SQUARE_BRACKET expression R_SQUARE_BRACKET .)
+    OR              reduce using rule 38 (array_index -> L_SQUARE_BRACKET expression R_SQUARE_BRACKET .)
+    AND             reduce using rule 38 (array_index -> L_SQUARE_BRACKET expression R_SQUARE_BRACKET .)
+    SEMICOLON       reduce using rule 38 (array_index -> L_SQUARE_BRACKET expression R_SQUARE_BRACKET .)
+    R_SQUARE_BRACKET reduce using rule 38 (array_index -> L_SQUARE_BRACKET expression R_SQUARE_BRACKET .)
+
+
+state 125
+
+    (62) expression_aux -> AND exp . expression_aux
+    (62) expression_aux -> . AND exp expression_aux
+    (63) expression_aux -> . empty
+    (106) empty -> .
+
+    AND             shift and go to state 75
+    SEMICOLON       reduce using rule 106 (empty -> .)
+    COMMA           reduce using rule 106 (empty -> .)
+    R_PARENS        reduce using rule 106 (empty -> .)
+    R_SQUARE_BRACKET reduce using rule 106 (empty -> .)
+
+    expression_aux                 shift and go to state 158
+    empty                          shift and go to state 76
+
+state 126
+
+    (72) exp_aux -> OR xp . exp_aux
+    (72) exp_aux -> . OR xp exp_aux
+    (73) exp_aux -> . empty
+    (106) empty -> .
+
+    OR              shift and go to state 78
+    AND             reduce using rule 106 (empty -> .)
+    SEMICOLON       reduce using rule 106 (empty -> .)
+    COMMA           reduce using rule 106 (empty -> .)
+    R_PARENS        reduce using rule 106 (empty -> .)
+    R_SQUARE_BRACKET reduce using rule 106 (empty -> .)
+
+    exp_aux                        shift and go to state 159
+    empty                          shift and go to state 79
+
+state 127
+
+    (75) xp_aux -> log_op x .
+
+    OR              reduce using rule 75 (xp_aux -> log_op x .)
+    AND             reduce using rule 75 (xp_aux -> log_op x .)
+    SEMICOLON       reduce using rule 75 (xp_aux -> log_op x .)
+    COMMA           reduce using rule 75 (xp_aux -> log_op x .)
+    R_PARENS        reduce using rule 75 (xp_aux -> log_op x .)
+    R_SQUARE_BRACKET reduce using rule 75 (xp_aux -> log_op x .)
+
+
+state 128
+
+    (78) x_aux -> PLUS term . x_aux
+    (78) x_aux -> . PLUS term x_aux
+    (79) x_aux -> . MINUS term x_aux
+    (80) x_aux -> . empty
+    (106) empty -> .
+
+    PLUS            shift and go to state 90
+    MINUS           shift and go to state 91
+    NOT_EQUAL       reduce using rule 106 (empty -> .)
+    IS_EQUAL        reduce using rule 106 (empty -> .)
+    GREATER         reduce using rule 106 (empty -> .)
+    GREATER_EQ      reduce using rule 106 (empty -> .)
+    LESS            reduce using rule 106 (empty -> .)
+    LESS_EQ         reduce using rule 106 (empty -> .)
+    OR              reduce using rule 106 (empty -> .)
+    AND             reduce using rule 106 (empty -> .)
+    SEMICOLON       reduce using rule 106 (empty -> .)
+    COMMA           reduce using rule 106 (empty -> .)
+    R_PARENS        reduce using rule 106 (empty -> .)
+    R_SQUARE_BRACKET reduce using rule 106 (empty -> .)
+
+    x_aux                          shift and go to state 160
+    empty                          shift and go to state 92
+
+state 129
+
+    (79) x_aux -> MINUS term . x_aux
+    (78) x_aux -> . PLUS term x_aux
+    (79) x_aux -> . MINUS term x_aux
+    (80) x_aux -> . empty
+    (106) empty -> .
+
+    PLUS            shift and go to state 90
+    MINUS           shift and go to state 91
+    NOT_EQUAL       reduce using rule 106 (empty -> .)
+    IS_EQUAL        reduce using rule 106 (empty -> .)
+    GREATER         reduce using rule 106 (empty -> .)
+    GREATER_EQ      reduce using rule 106 (empty -> .)
+    LESS            reduce using rule 106 (empty -> .)
+    LESS_EQ         reduce using rule 106 (empty -> .)
+    OR              reduce using rule 106 (empty -> .)
+    AND             reduce using rule 106 (empty -> .)
+    SEMICOLON       reduce using rule 106 (empty -> .)
+    COMMA           reduce using rule 106 (empty -> .)
+    R_PARENS        reduce using rule 106 (empty -> .)
+    R_SQUARE_BRACKET reduce using rule 106 (empty -> .)
+
+    x_aux                          shift and go to state 161
+    empty                          shift and go to state 92
+
+state 130
+
+    (88) term_aux -> TIMES factor . term_aux
+    (88) term_aux -> . TIMES factor term_aux
+    (89) term_aux -> . DIVIDE factor term_aux
+    (90) term_aux -> . empty
+    (106) empty -> .
+
+    TIMES           shift and go to state 94
+    DIVIDE          shift and go to state 95
+    PLUS            reduce using rule 106 (empty -> .)
+    MINUS           reduce using rule 106 (empty -> .)
+    NOT_EQUAL       reduce using rule 106 (empty -> .)
+    IS_EQUAL        reduce using rule 106 (empty -> .)
+    GREATER         reduce using rule 106 (empty -> .)
+    GREATER_EQ      reduce using rule 106 (empty -> .)
+    LESS            reduce using rule 106 (empty -> .)
+    LESS_EQ         reduce using rule 106 (empty -> .)
+    OR              reduce using rule 106 (empty -> .)
+    AND             reduce using rule 106 (empty -> .)
+    SEMICOLON       reduce using rule 106 (empty -> .)
+    COMMA           reduce using rule 106 (empty -> .)
+    R_PARENS        reduce using rule 106 (empty -> .)
+    R_SQUARE_BRACKET reduce using rule 106 (empty -> .)
+
+    term_aux                       shift and go to state 162
+    empty                          shift and go to state 96
+
+state 131
+
+    (89) term_aux -> DIVIDE factor . term_aux
+    (88) term_aux -> . TIMES factor term_aux
+    (89) term_aux -> . DIVIDE factor term_aux
+    (90) term_aux -> . empty
+    (106) empty -> .
+
+    TIMES           shift and go to state 94
+    DIVIDE          shift and go to state 95
+    PLUS            reduce using rule 106 (empty -> .)
+    MINUS           reduce using rule 106 (empty -> .)
+    NOT_EQUAL       reduce using rule 106 (empty -> .)
+    IS_EQUAL        reduce using rule 106 (empty -> .)
+    GREATER         reduce using rule 106 (empty -> .)
+    GREATER_EQ      reduce using rule 106 (empty -> .)
+    LESS            reduce using rule 106 (empty -> .)
+    LESS_EQ         reduce using rule 106 (empty -> .)
+    OR              reduce using rule 106 (empty -> .)
+    AND             reduce using rule 106 (empty -> .)
+    SEMICOLON       reduce using rule 106 (empty -> .)
+    COMMA           reduce using rule 106 (empty -> .)
+    R_PARENS        reduce using rule 106 (empty -> .)
+    R_SQUARE_BRACKET reduce using rule 106 (empty -> .)
+
+    term_aux                       shift and go to state 163
+    empty                          shift and go to state 96
+
+state 132
+
+    (94) factor_aux_2 -> L_PARENS expression . R_PARENS
+
+    R_PARENS        shift and go to state 164
+
+
+state 133
+
+    (95) factor_aux_2 -> factor_aux_3 const .
+
+    TIMES           reduce using rule 95 (factor_aux_2 -> factor_aux_3 const .)
+    DIVIDE          reduce using rule 95 (factor_aux_2 -> factor_aux_3 const .)
+    PLUS            reduce using rule 95 (factor_aux_2 -> factor_aux_3 const .)
+    MINUS           reduce using rule 95 (factor_aux_2 -> factor_aux_3 const .)
+    NOT_EQUAL       reduce using rule 95 (factor_aux_2 -> factor_aux_3 const .)
+    IS_EQUAL        reduce using rule 95 (factor_aux_2 -> factor_aux_3 const .)
+    GREATER         reduce using rule 95 (factor_aux_2 -> factor_aux_3 const .)
+    GREATER_EQ      reduce using rule 95 (factor_aux_2 -> factor_aux_3 const .)
+    LESS            reduce using rule 95 (factor_aux_2 -> factor_aux_3 const .)
+    LESS_EQ         reduce using rule 95 (factor_aux_2 -> factor_aux_3 const .)
+    OR              reduce using rule 95 (factor_aux_2 -> factor_aux_3 const .)
+    AND             reduce using rule 95 (factor_aux_2 -> factor_aux_3 const .)
+    SEMICOLON       reduce using rule 95 (factor_aux_2 -> factor_aux_3 const .)
+    COMMA           reduce using rule 95 (factor_aux_2 -> factor_aux_3 const .)
+    R_PARENS        reduce using rule 95 (factor_aux_2 -> factor_aux_3 const .)
+    R_SQUARE_BRACKET reduce using rule 95 (factor_aux_2 -> factor_aux_3 const .)
+
+
+state 134
+
+    (99) const -> ID .
+    (46) function_call -> ID . params_pass
+    (105) array_access -> ID . array_index
+    (65) params_pass -> . L_PARENS params_pass_aux R_PARENS
+    (37) array_index -> . L_SQUARE_BRACKET expression R_SQUARE_BRACKET L_SQUARE_BRACKET expression R_SQUARE_BRACKET
+    (38) array_index -> . L_SQUARE_BRACKET expression R_SQUARE_BRACKET
+
+    TIMES           reduce using rule 99 (const -> ID .)
+    DIVIDE          reduce using rule 99 (const -> ID .)
+    PLUS            reduce using rule 99 (const -> ID .)
+    MINUS           reduce using rule 99 (const -> ID .)
+    NOT_EQUAL       reduce using rule 99 (const -> ID .)
+    IS_EQUAL        reduce using rule 99 (const -> ID .)
+    GREATER         reduce using rule 99 (const -> ID .)
+    GREATER_EQ      reduce using rule 99 (const -> ID .)
+    LESS            reduce using rule 99 (const -> ID .)
+    LESS_EQ         reduce using rule 99 (const -> ID .)
+    OR              reduce using rule 99 (const -> ID .)
+    AND             reduce using rule 99 (const -> ID .)
+    SEMICOLON       reduce using rule 99 (const -> ID .)
+    COMMA           reduce using rule 99 (const -> ID .)
+    R_PARENS        reduce using rule 99 (const -> ID .)
+    R_SQUARE_BRACKET reduce using rule 99 (const -> ID .)
+    L_PARENS        shift and go to state 48
+    L_SQUARE_BRACKET shift and go to state 49
+
+    params_pass                    shift and go to state 45
+    array_index                    shift and go to state 165
+
+state 135
+
+    (100) const -> CONST_I .
+
+    TIMES           reduce using rule 100 (const -> CONST_I .)
+    DIVIDE          reduce using rule 100 (const -> CONST_I .)
+    PLUS            reduce using rule 100 (const -> CONST_I .)
+    MINUS           reduce using rule 100 (const -> CONST_I .)
+    NOT_EQUAL       reduce using rule 100 (const -> CONST_I .)
+    IS_EQUAL        reduce using rule 100 (const -> CONST_I .)
+    GREATER         reduce using rule 100 (const -> CONST_I .)
+    GREATER_EQ      reduce using rule 100 (const -> CONST_I .)
+    LESS            reduce using rule 100 (const -> CONST_I .)
+    LESS_EQ         reduce using rule 100 (const -> CONST_I .)
+    OR              reduce using rule 100 (const -> CONST_I .)
+    AND             reduce using rule 100 (const -> CONST_I .)
+    SEMICOLON       reduce using rule 100 (const -> CONST_I .)
+    COMMA           reduce using rule 100 (const -> CONST_I .)
+    R_PARENS        reduce using rule 100 (const -> CONST_I .)
+    R_SQUARE_BRACKET reduce using rule 100 (const -> CONST_I .)
+
+
+state 136
+
+    (101) const -> CONST_F .
+
+    TIMES           reduce using rule 101 (const -> CONST_F .)
+    DIVIDE          reduce using rule 101 (const -> CONST_F .)
+    PLUS            reduce using rule 101 (const -> CONST_F .)
+    MINUS           reduce using rule 101 (const -> CONST_F .)
+    NOT_EQUAL       reduce using rule 101 (const -> CONST_F .)
+    IS_EQUAL        reduce using rule 101 (const -> CONST_F .)
+    GREATER         reduce using rule 101 (const -> CONST_F .)
+    GREATER_EQ      reduce using rule 101 (const -> CONST_F .)
+    LESS            reduce using rule 101 (const -> CONST_F .)
+    LESS_EQ         reduce using rule 101 (const -> CONST_F .)
+    OR              reduce using rule 101 (const -> CONST_F .)
+    AND             reduce using rule 101 (const -> CONST_F .)
+    SEMICOLON       reduce using rule 101 (const -> CONST_F .)
+    COMMA           reduce using rule 101 (const -> CONST_F .)
+    R_PARENS        reduce using rule 101 (const -> CONST_F .)
+    R_SQUARE_BRACKET reduce using rule 101 (const -> CONST_F .)
+
+
+state 137
+
+    (102) const -> CONST_STRING .
+
+    TIMES           reduce using rule 102 (const -> CONST_STRING .)
+    DIVIDE          reduce using rule 102 (const -> CONST_STRING .)
+    PLUS            reduce using rule 102 (const -> CONST_STRING .)
+    MINUS           reduce using rule 102 (const -> CONST_STRING .)
+    NOT_EQUAL       reduce using rule 102 (const -> CONST_STRING .)
+    IS_EQUAL        reduce using rule 102 (const -> CONST_STRING .)
+    GREATER         reduce using rule 102 (const -> CONST_STRING .)
+    GREATER_EQ      reduce using rule 102 (const -> CONST_STRING .)
+    LESS            reduce using rule 102 (const -> CONST_STRING .)
+    LESS_EQ         reduce using rule 102 (const -> CONST_STRING .)
+    OR              reduce using rule 102 (const -> CONST_STRING .)
+    AND             reduce using rule 102 (const -> CONST_STRING .)
+    SEMICOLON       reduce using rule 102 (const -> CONST_STRING .)
+    COMMA           reduce using rule 102 (const -> CONST_STRING .)
+    R_PARENS        reduce using rule 102 (const -> CONST_STRING .)
+    R_SQUARE_BRACKET reduce using rule 102 (const -> CONST_STRING .)
+
+
+state 138
+
+    (103) const -> function_call .
+
+    TIMES           reduce using rule 103 (const -> function_call .)
+    DIVIDE          reduce using rule 103 (const -> function_call .)
+    PLUS            reduce using rule 103 (const -> function_call .)
+    MINUS           reduce using rule 103 (const -> function_call .)
+    NOT_EQUAL       reduce using rule 103 (const -> function_call .)
+    IS_EQUAL        reduce using rule 103 (const -> function_call .)
+    GREATER         reduce using rule 103 (const -> function_call .)
+    GREATER_EQ      reduce using rule 103 (const -> function_call .)
+    LESS            reduce using rule 103 (const -> function_call .)
+    LESS_EQ         reduce using rule 103 (const -> function_call .)
+    OR              reduce using rule 103 (const -> function_call .)
+    AND             reduce using rule 103 (const -> function_call .)
+    SEMICOLON       reduce using rule 103 (const -> function_call .)
+    COMMA           reduce using rule 103 (const -> function_call .)
+    R_PARENS        reduce using rule 103 (const -> function_call .)
+    R_SQUARE_BRACKET reduce using rule 103 (const -> function_call .)
+
+
+state 139
+
+    (104) const -> array_access .
+
+    TIMES           reduce using rule 104 (const -> array_access .)
+    DIVIDE          reduce using rule 104 (const -> array_access .)
+    PLUS            reduce using rule 104 (const -> array_access .)
+    MINUS           reduce using rule 104 (const -> array_access .)
+    NOT_EQUAL       reduce using rule 104 (const -> array_access .)
+    IS_EQUAL        reduce using rule 104 (const -> array_access .)
+    GREATER         reduce using rule 104 (const -> array_access .)
+    GREATER_EQ      reduce using rule 104 (const -> array_access .)
+    LESS            reduce using rule 104 (const -> array_access .)
+    LESS_EQ         reduce using rule 104 (const -> array_access .)
+    OR              reduce using rule 104 (const -> array_access .)
+    AND             reduce using rule 104 (const -> array_access .)
+    SEMICOLON       reduce using rule 104 (const -> array_access .)
+    COMMA           reduce using rule 104 (const -> array_access .)
+    R_PARENS        reduce using rule 104 (const -> array_access .)
+    R_SQUARE_BRACKET reduce using rule 104 (const -> array_access .)
+
+
+state 140
+
+    (48) if -> IF L_PARENS expression R_PARENS . block elif else
+    (70) block -> . L_KEY_BRACKET statement R_KEY_BRACKET
+
+    L_KEY_BRACKET   shift and go to state 167
+
+    block                          shift and go to state 166
+
+state 141
+
+    (53) while -> WHILE L_PARENS expression R_PARENS . block
+    (70) block -> . L_KEY_BRACKET statement R_KEY_BRACKET
+
+    L_KEY_BRACKET   shift and go to state 167
+
+    block                          shift and go to state 168
+
+state 142
+
+    (54) print -> PRINT L_PARENS print_aux R_PARENS .
+
+    SEMICOLON       reduce using rule 54 (print -> PRINT L_PARENS print_aux R_PARENS .)
+
+
+state 143
+
+    (55) print_aux -> CONST_STRING print_aux_2 .
+
+    R_PARENS        reduce using rule 55 (print_aux -> CONST_STRING print_aux_2 .)
+
+
+state 144
+
+    (58) print_aux_2 -> COMMA . ID print_aux_2
+    (59) print_aux_2 -> COMMA . CONST_STRING print_aux_2
+
+    ID              shift and go to state 169
+    CONST_STRING    shift and go to state 170
+
+
+state 145
+
+    (60) print_aux_2 -> empty .
+
+    R_PARENS        reduce using rule 60 (print_aux_2 -> empty .)
+
+
+state 146
+
+    (56) print_aux -> ID print_aux_2 .
+
+    R_PARENS        reduce using rule 56 (print_aux -> ID print_aux_2 .)
+
+
+state 147
+
+    (7) function_header -> FUNCTION ID L_PARENS function_header_aux R_PARENS COLON function_type .
+
+    L_KEY_BRACKET   reduce using rule 7 (function_header -> FUNCTION ID L_PARENS function_header_aux R_PARENS COLON function_type .)
+
+
+state 148
+
+    (20) function_type -> type .
+
+    L_KEY_BRACKET   reduce using rule 20 (function_type -> type .)
+
+
+state 149
+
+    (21) function_type -> VOID .
+
+    L_KEY_BRACKET   reduce using rule 21 (function_type -> VOID .)
+
+
+state 150
+
+    (15) function_params -> type ID function_params_aux function_params_aux_2 .
+
+    R_PARENS        reduce using rule 15 (function_params -> type ID function_params_aux function_params_aux_2 .)
+
+
+state 151
+
+    (18) function_params_aux_2 -> COMMA . function_params
+    (15) function_params -> . type ID function_params_aux function_params_aux_2
+    (34) type -> . INT
+    (35) type -> . FLOAT
+    (36) type -> . STRING
+
+    INT             shift and go to state 24
+    FLOAT           shift and go to state 25
+    STRING          shift and go to state 26
+
+    function_params                shift and go to state 171
+    type                           shift and go to state 40
+
+state 152
+
+    (19) function_params_aux_2 -> empty .
+
+    R_PARENS        reduce using rule 19 (function_params_aux_2 -> empty .)
+
+
+state 153
+
+    (25) var_aux_2 -> var_aux_2 COMMA . ID var_aux
+
+    ID              shift and go to state 172
+
+
+state 154
+
+    (39) array_dim -> L_SQUARE_BRACKET CONST_I R_SQUARE_BRACKET . L_SQUARE_BRACKET CONST_I R_SQUARE_BRACKET
+    (40) array_dim -> L_SQUARE_BRACKET CONST_I R_SQUARE_BRACKET .
+
+    L_SQUARE_BRACKET shift and go to state 173
+    COMMA           reduce using rule 40 (array_dim -> L_SQUARE_BRACKET CONST_I R_SQUARE_BRACKET .)
+    INT             reduce using rule 40 (array_dim -> L_SQUARE_BRACKET CONST_I R_SQUARE_BRACKET .)
+    FLOAT           reduce using rule 40 (array_dim -> L_SQUARE_BRACKET CONST_I R_SQUARE_BRACKET .)
+    STRING          reduce using rule 40 (array_dim -> L_SQUARE_BRACKET CONST_I R_SQUARE_BRACKET .)
+    ID              reduce using rule 40 (array_dim -> L_SQUARE_BRACKET CONST_I R_SQUARE_BRACKET .)
+    RETURN          reduce using rule 40 (array_dim -> L_SQUARE_BRACKET CONST_I R_SQUARE_BRACKET .)
+    IF              reduce using rule 40 (array_dim -> L_SQUARE_BRACKET CONST_I R_SQUARE_BRACKET .)
+    WHILE           reduce using rule 40 (array_dim -> L_SQUARE_BRACKET CONST_I R_SQUARE_BRACKET .)
+    PRINT           reduce using rule 40 (array_dim -> L_SQUARE_BRACKET CONST_I R_SQUARE_BRACKET .)
+
+
+state 155
+
+    (64) read -> READ ID .
+
+    SEMICOLON       reduce using rule 64 (read -> READ ID .)
+
+
+state 156
+
+    (68) params_pass_aux_2 -> COMMA expression . params_pass_aux_2
+    (68) params_pass_aux_2 -> . COMMA expression params_pass_aux_2
+    (69) params_pass_aux_2 -> . empty
+    (106) empty -> .
+
+    COMMA           shift and go to state 122
+    R_PARENS        reduce using rule 106 (empty -> .)
+
+    params_pass_aux_2              shift and go to state 174
+    empty                          shift and go to state 123
+
+state 157
+
+    (37) array_index -> L_SQUARE_BRACKET expression R_SQUARE_BRACKET L_SQUARE_BRACKET . expression R_SQUARE_BRACKET
+    (61) expression -> . exp expression_aux
+    (71) exp -> . xp exp_aux
+    (74) xp -> . x xp_aux
+    (77) x -> . term x_aux
+    (87) term -> . factor term_aux
+    (91) factor -> . factor_aux factor_aux_2
+    (92) factor_aux -> . NOT
+    (93) factor_aux -> . empty
+    (106) empty -> .
+
+    NOT             shift and go to state 58
+    L_PARENS        reduce using rule 106 (empty -> .)
+    PLUS            reduce using rule 106 (empty -> .)
+    MINUS           reduce using rule 106 (empty -> .)
+    ID              reduce using rule 106 (empty -> .)
+    CONST_I         reduce using rule 106 (empty -> .)
+    CONST_F         reduce using rule 106 (empty -> .)
+    CONST_STRING    reduce using rule 106 (empty -> .)
+
+    expression                     shift and go to state 175
+    exp                            shift and go to state 52
+    xp                             shift and go to state 53
+    x                              shift and go to state 54
+    term                           shift and go to state 55
+    factor                         shift and go to state 56
+    factor_aux                     shift and go to state 57
+    empty                          shift and go to state 59
+
+state 158
+
+    (62) expression_aux -> AND exp expression_aux .
+
+    SEMICOLON       reduce using rule 62 (expression_aux -> AND exp expression_aux .)
+    COMMA           reduce using rule 62 (expression_aux -> AND exp expression_aux .)
+    R_PARENS        reduce using rule 62 (expression_aux -> AND exp expression_aux .)
+    R_SQUARE_BRACKET reduce using rule 62 (expression_aux -> AND exp expression_aux .)
+
+
+state 159
+
+    (72) exp_aux -> OR xp exp_aux .
+
+    AND             reduce using rule 72 (exp_aux -> OR xp exp_aux .)
+    SEMICOLON       reduce using rule 72 (exp_aux -> OR xp exp_aux .)
+    COMMA           reduce using rule 72 (exp_aux -> OR xp exp_aux .)
+    R_PARENS        reduce using rule 72 (exp_aux -> OR xp exp_aux .)
+    R_SQUARE_BRACKET reduce using rule 72 (exp_aux -> OR xp exp_aux .)
+
+
+state 160
+
+    (78) x_aux -> PLUS term x_aux .
+
+    NOT_EQUAL       reduce using rule 78 (x_aux -> PLUS term x_aux .)
+    IS_EQUAL        reduce using rule 78 (x_aux -> PLUS term x_aux .)
+    GREATER         reduce using rule 78 (x_aux -> PLUS term x_aux .)
+    GREATER_EQ      reduce using rule 78 (x_aux -> PLUS term x_aux .)
+    LESS            reduce using rule 78 (x_aux -> PLUS term x_aux .)
+    LESS_EQ         reduce using rule 78 (x_aux -> PLUS term x_aux .)
+    OR              reduce using rule 78 (x_aux -> PLUS term x_aux .)
+    AND             reduce using rule 78 (x_aux -> PLUS term x_aux .)
+    SEMICOLON       reduce using rule 78 (x_aux -> PLUS term x_aux .)
+    COMMA           reduce using rule 78 (x_aux -> PLUS term x_aux .)
+    R_PARENS        reduce using rule 78 (x_aux -> PLUS term x_aux .)
+    R_SQUARE_BRACKET reduce using rule 78 (x_aux -> PLUS term x_aux .)
+
+
+state 161
+
+    (79) x_aux -> MINUS term x_aux .
+
+    NOT_EQUAL       reduce using rule 79 (x_aux -> MINUS term x_aux .)
+    IS_EQUAL        reduce using rule 79 (x_aux -> MINUS term x_aux .)
+    GREATER         reduce using rule 79 (x_aux -> MINUS term x_aux .)
+    GREATER_EQ      reduce using rule 79 (x_aux -> MINUS term x_aux .)
+    LESS            reduce using rule 79 (x_aux -> MINUS term x_aux .)
+    LESS_EQ         reduce using rule 79 (x_aux -> MINUS term x_aux .)
+    OR              reduce using rule 79 (x_aux -> MINUS term x_aux .)
+    AND             reduce using rule 79 (x_aux -> MINUS term x_aux .)
+    SEMICOLON       reduce using rule 79 (x_aux -> MINUS term x_aux .)
+    COMMA           reduce using rule 79 (x_aux -> MINUS term x_aux .)
+    R_PARENS        reduce using rule 79 (x_aux -> MINUS term x_aux .)
+    R_SQUARE_BRACKET reduce using rule 79 (x_aux -> MINUS term x_aux .)
+
+
+state 162
+
+    (88) term_aux -> TIMES factor term_aux .
+
+    PLUS            reduce using rule 88 (term_aux -> TIMES factor term_aux .)
+    MINUS           reduce using rule 88 (term_aux -> TIMES factor term_aux .)
+    NOT_EQUAL       reduce using rule 88 (term_aux -> TIMES factor term_aux .)
+    IS_EQUAL        reduce using rule 88 (term_aux -> TIMES factor term_aux .)
+    GREATER         reduce using rule 88 (term_aux -> TIMES factor term_aux .)
+    GREATER_EQ      reduce using rule 88 (term_aux -> TIMES factor term_aux .)
+    LESS            reduce using rule 88 (term_aux -> TIMES factor term_aux .)
+    LESS_EQ         reduce using rule 88 (term_aux -> TIMES factor term_aux .)
+    OR              reduce using rule 88 (term_aux -> TIMES factor term_aux .)
+    AND             reduce using rule 88 (term_aux -> TIMES factor term_aux .)
+    SEMICOLON       reduce using rule 88 (term_aux -> TIMES factor term_aux .)
+    COMMA           reduce using rule 88 (term_aux -> TIMES factor term_aux .)
+    R_PARENS        reduce using rule 88 (term_aux -> TIMES factor term_aux .)
+    R_SQUARE_BRACKET reduce using rule 88 (term_aux -> TIMES factor term_aux .)
+
+
+state 163
+
+    (89) term_aux -> DIVIDE factor term_aux .
+
+    PLUS            reduce using rule 89 (term_aux -> DIVIDE factor term_aux .)
+    MINUS           reduce using rule 89 (term_aux -> DIVIDE factor term_aux .)
+    NOT_EQUAL       reduce using rule 89 (term_aux -> DIVIDE factor term_aux .)
+    IS_EQUAL        reduce using rule 89 (term_aux -> DIVIDE factor term_aux .)
+    GREATER         reduce using rule 89 (term_aux -> DIVIDE factor term_aux .)
+    GREATER_EQ      reduce using rule 89 (term_aux -> DIVIDE factor term_aux .)
+    LESS            reduce using rule 89 (term_aux -> DIVIDE factor term_aux .)
+    LESS_EQ         reduce using rule 89 (term_aux -> DIVIDE factor term_aux .)
+    OR              reduce using rule 89 (term_aux -> DIVIDE factor term_aux .)
+    AND             reduce using rule 89 (term_aux -> DIVIDE factor term_aux .)
+    SEMICOLON       reduce using rule 89 (term_aux -> DIVIDE factor term_aux .)
+    COMMA           reduce using rule 89 (term_aux -> DIVIDE factor term_aux .)
+    R_PARENS        reduce using rule 89 (term_aux -> DIVIDE factor term_aux .)
+    R_SQUARE_BRACKET reduce using rule 89 (term_aux -> DIVIDE factor term_aux .)
+
+
+state 164
+
+    (94) factor_aux_2 -> L_PARENS expression R_PARENS .
+
+    TIMES           reduce using rule 94 (factor_aux_2 -> L_PARENS expression R_PARENS .)
+    DIVIDE          reduce using rule 94 (factor_aux_2 -> L_PARENS expression R_PARENS .)
+    PLUS            reduce using rule 94 (factor_aux_2 -> L_PARENS expression R_PARENS .)
+    MINUS           reduce using rule 94 (factor_aux_2 -> L_PARENS expression R_PARENS .)
+    NOT_EQUAL       reduce using rule 94 (factor_aux_2 -> L_PARENS expression R_PARENS .)
+    IS_EQUAL        reduce using rule 94 (factor_aux_2 -> L_PARENS expression R_PARENS .)
+    GREATER         reduce using rule 94 (factor_aux_2 -> L_PARENS expression R_PARENS .)
+    GREATER_EQ      reduce using rule 94 (factor_aux_2 -> L_PARENS expression R_PARENS .)
+    LESS            reduce using rule 94 (factor_aux_2 -> L_PARENS expression R_PARENS .)
+    LESS_EQ         reduce using rule 94 (factor_aux_2 -> L_PARENS expression R_PARENS .)
+    OR              reduce using rule 94 (factor_aux_2 -> L_PARENS expression R_PARENS .)
+    AND             reduce using rule 94 (factor_aux_2 -> L_PARENS expression R_PARENS .)
+    SEMICOLON       reduce using rule 94 (factor_aux_2 -> L_PARENS expression R_PARENS .)
+    COMMA           reduce using rule 94 (factor_aux_2 -> L_PARENS expression R_PARENS .)
+    R_PARENS        reduce using rule 94 (factor_aux_2 -> L_PARENS expression R_PARENS .)
+    R_SQUARE_BRACKET reduce using rule 94 (factor_aux_2 -> L_PARENS expression R_PARENS .)
+
+
+state 165
+
+    (105) array_access -> ID array_index .
+
+    TIMES           reduce using rule 105 (array_access -> ID array_index .)
+    DIVIDE          reduce using rule 105 (array_access -> ID array_index .)
+    PLUS            reduce using rule 105 (array_access -> ID array_index .)
+    MINUS           reduce using rule 105 (array_access -> ID array_index .)
+    NOT_EQUAL       reduce using rule 105 (array_access -> ID array_index .)
+    IS_EQUAL        reduce using rule 105 (array_access -> ID array_index .)
+    GREATER         reduce using rule 105 (array_access -> ID array_index .)
+    GREATER_EQ      reduce using rule 105 (array_access -> ID array_index .)
+    LESS            reduce using rule 105 (array_access -> ID array_index .)
+    LESS_EQ         reduce using rule 105 (array_access -> ID array_index .)
+    OR              reduce using rule 105 (array_access -> ID array_index .)
+    AND             reduce using rule 105 (array_access -> ID array_index .)
+    SEMICOLON       reduce using rule 105 (array_access -> ID array_index .)
+    COMMA           reduce using rule 105 (array_access -> ID array_index .)
+    R_PARENS        reduce using rule 105 (array_access -> ID array_index .)
+    R_SQUARE_BRACKET reduce using rule 105 (array_access -> ID array_index .)
+
+
+state 166
+
+    (48) if -> IF L_PARENS expression R_PARENS block . elif else
+    (49) elif -> . ELIF L_PARENS expression R_PARENS block elif
+    (50) elif -> . empty
+    (106) empty -> .
+
+    ELIF            shift and go to state 177
+    ELSE            reduce using rule 106 (empty -> .)
+    SEMICOLON       reduce using rule 106 (empty -> .)
+
+    elif                           shift and go to state 176
+    empty                          shift and go to state 178
+
+state 167
+
+    (70) block -> L_KEY_BRACKET . statement R_KEY_BRACKET
+    (27) statement -> . statement_aux SEMICOLON
+    (28) statement_aux -> . assignment
+    (29) statement_aux -> . function_call
+    (30) statement_aux -> . return
+    (31) statement_aux -> . if
+    (32) statement_aux -> . while
+    (33) statement_aux -> . print
+    (41) assignment -> . ID assignment_aux EQUALS assignment_aux_2
+    (46) function_call -> . ID params_pass
+    (47) return -> . RETURN expression
+    (48) if -> . IF L_PARENS expression R_PARENS block elif else
+    (53) while -> . WHILE L_PARENS expression R_PARENS block
+    (54) print -> . PRINT L_PARENS print_aux R_PARENS
+
+    ID              shift and go to state 22
+    RETURN          shift and go to state 33
+    IF              shift and go to state 34
+    WHILE           shift and go to state 35
+    PRINT           shift and go to state 36
+
+    statement                      shift and go to state 179
+    statement_aux                  shift and go to state 23
+    assignment                     shift and go to state 27
+    function_call                  shift and go to state 28
+    return                         shift and go to state 29
+    if                             shift and go to state 30
+    while                          shift and go to state 31
+    print                          shift and go to state 32
+
+state 168
+
+    (53) while -> WHILE L_PARENS expression R_PARENS block .
+
+    SEMICOLON       reduce using rule 53 (while -> WHILE L_PARENS expression R_PARENS block .)
+
+
+state 169
+
+    (58) print_aux_2 -> COMMA ID . print_aux_2
+    (58) print_aux_2 -> . COMMA ID print_aux_2
+    (59) print_aux_2 -> . COMMA CONST_STRING print_aux_2
+    (60) print_aux_2 -> . empty
+    (106) empty -> .
+
+    COMMA           shift and go to state 144
+    R_PARENS        reduce using rule 106 (empty -> .)
+
+    print_aux_2                    shift and go to state 180
+    empty                          shift and go to state 145
+
+state 170
+
+    (59) print_aux_2 -> COMMA CONST_STRING . print_aux_2
+    (58) print_aux_2 -> . COMMA ID print_aux_2
+    (59) print_aux_2 -> . COMMA CONST_STRING print_aux_2
+    (60) print_aux_2 -> . empty
+    (106) empty -> .
+
+    COMMA           shift and go to state 144
+    R_PARENS        reduce using rule 106 (empty -> .)
+
+    print_aux_2                    shift and go to state 181
+    empty                          shift and go to state 145
+
+state 171
+
+    (18) function_params_aux_2 -> COMMA function_params .
+
+    R_PARENS        reduce using rule 18 (function_params_aux_2 -> COMMA function_params .)
+
+
+state 172
+
+    (25) var_aux_2 -> var_aux_2 COMMA ID . var_aux
+    (23) var_aux -> . array_dim
+    (24) var_aux -> . empty
+    (39) array_dim -> . L_SQUARE_BRACKET CONST_I R_SQUARE_BRACKET L_SQUARE_BRACKET CONST_I R_SQUARE_BRACKET
+    (40) array_dim -> . L_SQUARE_BRACKET CONST_I R_SQUARE_BRACKET
+    (106) empty -> .
+
+    L_SQUARE_BRACKET shift and go to state 68
+    COMMA           reduce using rule 106 (empty -> .)
+    INT             reduce using rule 106 (empty -> .)
+    FLOAT           reduce using rule 106 (empty -> .)
+    STRING          reduce using rule 106 (empty -> .)
+    ID              reduce using rule 106 (empty -> .)
+    RETURN          reduce using rule 106 (empty -> .)
+    IF              reduce using rule 106 (empty -> .)
+    WHILE           reduce using rule 106 (empty -> .)
+    PRINT           reduce using rule 106 (empty -> .)
+
+    var_aux                        shift and go to state 182
+    array_dim                      shift and go to state 66
+    empty                          shift and go to state 67
+
+state 173
+
+    (39) array_dim -> L_SQUARE_BRACKET CONST_I R_SQUARE_BRACKET L_SQUARE_BRACKET . CONST_I R_SQUARE_BRACKET
+
+    CONST_I         shift and go to state 183
+
+
+state 174
+
+    (68) params_pass_aux_2 -> COMMA expression params_pass_aux_2 .
+
+    R_PARENS        reduce using rule 68 (params_pass_aux_2 -> COMMA expression params_pass_aux_2 .)
+
+
+state 175
+
+    (37) array_index -> L_SQUARE_BRACKET expression R_SQUARE_BRACKET L_SQUARE_BRACKET expression . R_SQUARE_BRACKET
+
+    R_SQUARE_BRACKET shift and go to state 184
+
+
+state 176
+
+    (48) if -> IF L_PARENS expression R_PARENS block elif . else
+    (51) else -> . ELSE block
+    (52) else -> . empty
+    (106) empty -> .
+
+    ELSE            shift and go to state 186
+    SEMICOLON       reduce using rule 106 (empty -> .)
+
+    else                           shift and go to state 185
+    empty                          shift and go to state 187
+
+state 177
+
+    (49) elif -> ELIF . L_PARENS expression R_PARENS block elif
+
+    L_PARENS        shift and go to state 188
+
+
+state 178
+
+    (50) elif -> empty .
+
+    ELSE            reduce using rule 50 (elif -> empty .)
+    SEMICOLON       reduce using rule 50 (elif -> empty .)
+
+
+state 179
+
+    (70) block -> L_KEY_BRACKET statement . R_KEY_BRACKET
+
+    R_KEY_BRACKET   shift and go to state 189
+
+
+state 180
+
+    (58) print_aux_2 -> COMMA ID print_aux_2 .
+
+    R_PARENS        reduce using rule 58 (print_aux_2 -> COMMA ID print_aux_2 .)
+
+
+state 181
+
+    (59) print_aux_2 -> COMMA CONST_STRING print_aux_2 .
+
+    R_PARENS        reduce using rule 59 (print_aux_2 -> COMMA CONST_STRING print_aux_2 .)
+
+
+state 182
+
+    (25) var_aux_2 -> var_aux_2 COMMA ID var_aux .
+
+    COMMA           reduce using rule 25 (var_aux_2 -> var_aux_2 COMMA ID var_aux .)
+    INT             reduce using rule 25 (var_aux_2 -> var_aux_2 COMMA ID var_aux .)
+    FLOAT           reduce using rule 25 (var_aux_2 -> var_aux_2 COMMA ID var_aux .)
+    STRING          reduce using rule 25 (var_aux_2 -> var_aux_2 COMMA ID var_aux .)
+    ID              reduce using rule 25 (var_aux_2 -> var_aux_2 COMMA ID var_aux .)
+    RETURN          reduce using rule 25 (var_aux_2 -> var_aux_2 COMMA ID var_aux .)
+    IF              reduce using rule 25 (var_aux_2 -> var_aux_2 COMMA ID var_aux .)
+    WHILE           reduce using rule 25 (var_aux_2 -> var_aux_2 COMMA ID var_aux .)
+    PRINT           reduce using rule 25 (var_aux_2 -> var_aux_2 COMMA ID var_aux .)
+
+
+state 183
+
+    (39) array_dim -> L_SQUARE_BRACKET CONST_I R_SQUARE_BRACKET L_SQUARE_BRACKET CONST_I . R_SQUARE_BRACKET
+
+    R_SQUARE_BRACKET shift and go to state 190
+
+
+state 184
+
+    (37) array_index -> L_SQUARE_BRACKET expression R_SQUARE_BRACKET L_SQUARE_BRACKET expression R_SQUARE_BRACKET .
+
+    EQUALS          reduce using rule 37 (array_index -> L_SQUARE_BRACKET expression R_SQUARE_BRACKET L_SQUARE_BRACKET expression R_SQUARE_BRACKET .)
+    COMMA           reduce using rule 37 (array_index -> L_SQUARE_BRACKET expression R_SQUARE_BRACKET L_SQUARE_BRACKET expression R_SQUARE_BRACKET .)
+    R_PARENS        reduce using rule 37 (array_index -> L_SQUARE_BRACKET expression R_SQUARE_BRACKET L_SQUARE_BRACKET expression R_SQUARE_BRACKET .)
+    TIMES           reduce using rule 37 (array_index -> L_SQUARE_BRACKET expression R_SQUARE_BRACKET L_SQUARE_BRACKET expression R_SQUARE_BRACKET .)
+    DIVIDE          reduce using rule 37 (array_index -> L_SQUARE_BRACKET expression R_SQUARE_BRACKET L_SQUARE_BRACKET expression R_SQUARE_BRACKET .)
+    PLUS            reduce using rule 37 (array_index -> L_SQUARE_BRACKET expression R_SQUARE_BRACKET L_SQUARE_BRACKET expression R_SQUARE_BRACKET .)
+    MINUS           reduce using rule 37 (array_index -> L_SQUARE_BRACKET expression R_SQUARE_BRACKET L_SQUARE_BRACKET expression R_SQUARE_BRACKET .)
+    NOT_EQUAL       reduce using rule 37 (array_index -> L_SQUARE_BRACKET expression R_SQUARE_BRACKET L_SQUARE_BRACKET expression R_SQUARE_BRACKET .)
+    IS_EQUAL        reduce using rule 37 (array_index -> L_SQUARE_BRACKET expression R_SQUARE_BRACKET L_SQUARE_BRACKET expression R_SQUARE_BRACKET .)
+    GREATER         reduce using rule 37 (array_index -> L_SQUARE_BRACKET expression R_SQUARE_BRACKET L_SQUARE_BRACKET expression R_SQUARE_BRACKET .)
+    GREATER_EQ      reduce using rule 37 (array_index -> L_SQUARE_BRACKET expression R_SQUARE_BRACKET L_SQUARE_BRACKET expression R_SQUARE_BRACKET .)
+    LESS            reduce using rule 37 (array_index -> L_SQUARE_BRACKET expression R_SQUARE_BRACKET L_SQUARE_BRACKET expression R_SQUARE_BRACKET .)
+    LESS_EQ         reduce using rule 37 (array_index -> L_SQUARE_BRACKET expression R_SQUARE_BRACKET L_SQUARE_BRACKET expression R_SQUARE_BRACKET .)
+    OR              reduce using rule 37 (array_index -> L_SQUARE_BRACKET expression R_SQUARE_BRACKET L_SQUARE_BRACKET expression R_SQUARE_BRACKET .)
+    AND             reduce using rule 37 (array_index -> L_SQUARE_BRACKET expression R_SQUARE_BRACKET L_SQUARE_BRACKET expression R_SQUARE_BRACKET .)
+    SEMICOLON       reduce using rule 37 (array_index -> L_SQUARE_BRACKET expression R_SQUARE_BRACKET L_SQUARE_BRACKET expression R_SQUARE_BRACKET .)
+    R_SQUARE_BRACKET reduce using rule 37 (array_index -> L_SQUARE_BRACKET expression R_SQUARE_BRACKET L_SQUARE_BRACKET expression R_SQUARE_BRACKET .)
+
+
+state 185
+
+    (48) if -> IF L_PARENS expression R_PARENS block elif else .
+
+    SEMICOLON       reduce using rule 48 (if -> IF L_PARENS expression R_PARENS block elif else .)
+
+
+state 186
+
+    (51) else -> ELSE . block
+    (70) block -> . L_KEY_BRACKET statement R_KEY_BRACKET
+
+    L_KEY_BRACKET   shift and go to state 167
+
+    block                          shift and go to state 191
+
+state 187
+
+    (52) else -> empty .
+
+    SEMICOLON       reduce using rule 52 (else -> empty .)
+
+
+state 188
+
+    (49) elif -> ELIF L_PARENS . expression R_PARENS block elif
+    (61) expression -> . exp expression_aux
+    (71) exp -> . xp exp_aux
+    (74) xp -> . x xp_aux
+    (77) x -> . term x_aux
+    (87) term -> . factor term_aux
+    (91) factor -> . factor_aux factor_aux_2
+    (92) factor_aux -> . NOT
+    (93) factor_aux -> . empty
+    (106) empty -> .
+
+    NOT             shift and go to state 58
+    L_PARENS        reduce using rule 106 (empty -> .)
+    PLUS            reduce using rule 106 (empty -> .)
+    MINUS           reduce using rule 106 (empty -> .)
+    ID              reduce using rule 106 (empty -> .)
+    CONST_I         reduce using rule 106 (empty -> .)
+    CONST_F         reduce using rule 106 (empty -> .)
+    CONST_STRING    reduce using rule 106 (empty -> .)
+
+    expression                     shift and go to state 192
+    exp                            shift and go to state 52
+    xp                             shift and go to state 53
+    x                              shift and go to state 54
+    term                           shift and go to state 55
+    factor                         shift and go to state 56
+    factor_aux                     shift and go to state 57
+    empty                          shift and go to state 59
+
+state 189
+
+    (70) block -> L_KEY_BRACKET statement R_KEY_BRACKET .
+
+    ELIF            reduce using rule 70 (block -> L_KEY_BRACKET statement R_KEY_BRACKET .)
+    ELSE            reduce using rule 70 (block -> L_KEY_BRACKET statement R_KEY_BRACKET .)
+    SEMICOLON       reduce using rule 70 (block -> L_KEY_BRACKET statement R_KEY_BRACKET .)
+
+
+state 190
+
+    (39) array_dim -> L_SQUARE_BRACKET CONST_I R_SQUARE_BRACKET L_SQUARE_BRACKET CONST_I R_SQUARE_BRACKET .
+
+    COMMA           reduce using rule 39 (array_dim -> L_SQUARE_BRACKET CONST_I R_SQUARE_BRACKET L_SQUARE_BRACKET CONST_I R_SQUARE_BRACKET .)
+    INT             reduce using rule 39 (array_dim -> L_SQUARE_BRACKET CONST_I R_SQUARE_BRACKET L_SQUARE_BRACKET CONST_I R_SQUARE_BRACKET .)
+    FLOAT           reduce using rule 39 (array_dim -> L_SQUARE_BRACKET CONST_I R_SQUARE_BRACKET L_SQUARE_BRACKET CONST_I R_SQUARE_BRACKET .)
+    STRING          reduce using rule 39 (array_dim -> L_SQUARE_BRACKET CONST_I R_SQUARE_BRACKET L_SQUARE_BRACKET CONST_I R_SQUARE_BRACKET .)
+    ID              reduce using rule 39 (array_dim -> L_SQUARE_BRACKET CONST_I R_SQUARE_BRACKET L_SQUARE_BRACKET CONST_I R_SQUARE_BRACKET .)
+    RETURN          reduce using rule 39 (array_dim -> L_SQUARE_BRACKET CONST_I R_SQUARE_BRACKET L_SQUARE_BRACKET CONST_I R_SQUARE_BRACKET .)
+    IF              reduce using rule 39 (array_dim -> L_SQUARE_BRACKET CONST_I R_SQUARE_BRACKET L_SQUARE_BRACKET CONST_I R_SQUARE_BRACKET .)
+    WHILE           reduce using rule 39 (array_dim -> L_SQUARE_BRACKET CONST_I R_SQUARE_BRACKET L_SQUARE_BRACKET CONST_I R_SQUARE_BRACKET .)
+    PRINT           reduce using rule 39 (array_dim -> L_SQUARE_BRACKET CONST_I R_SQUARE_BRACKET L_SQUARE_BRACKET CONST_I R_SQUARE_BRACKET .)
+
+
+state 191
+
+    (51) else -> ELSE block .
+
+    SEMICOLON       reduce using rule 51 (else -> ELSE block .)
+
+
+state 192
+
+    (49) elif -> ELIF L_PARENS expression . R_PARENS block elif
+
+    R_PARENS        shift and go to state 193
+
+
+state 193
+
+    (49) elif -> ELIF L_PARENS expression R_PARENS . block elif
+    (70) block -> . L_KEY_BRACKET statement R_KEY_BRACKET
+
+    L_KEY_BRACKET   shift and go to state 167
+
+    block                          shift and go to state 194
+
+state 194
+
+    (49) elif -> ELIF L_PARENS expression R_PARENS block . elif
+    (49) elif -> . ELIF L_PARENS expression R_PARENS block elif
+    (50) elif -> . empty
+    (106) empty -> .
+
+    ELIF            shift and go to state 177
+    ELSE            reduce using rule 106 (empty -> .)
+    SEMICOLON       reduce using rule 106 (empty -> .)
+
+    elif                           shift and go to state 195
+    empty                          shift and go to state 178
+
+state 195
+
+    (49) elif -> ELIF L_PARENS expression R_PARENS block elif .
+
+    ELSE            reduce using rule 49 (elif -> ELIF L_PARENS expression R_PARENS block elif .)
+    SEMICOLON       reduce using rule 49 (elif -> ELIF L_PARENS expression R_PARENS block elif .)
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for FUNCTION in state 0 resolved as shift

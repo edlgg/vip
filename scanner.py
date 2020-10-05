@@ -7,8 +7,6 @@ import ply.lex as lex
 
 # Language reserved keywords.
 reserved = {
-    'program': 'PROGRAM',
-    'var': 'VAR',
     'int': 'INT',
     'float': 'FLOAT',
     'string': 'STRING',
@@ -16,13 +14,11 @@ reserved = {
     'if': 'IF',
     'elif': 'ELIF',
     'else': 'ELSE',
-    'for': 'FOR',
     'while': 'WHILE',
     'and': 'AND',
     'or': 'OR',
     'not': 'NOT',
     'read': 'READ',
-    'write': 'WRITE',
     'void': 'VOID',
     'function': 'FUNCTION',
     'return': 'RETURN',
@@ -52,9 +48,9 @@ tokens = [
     'MINUS',
     'TIMES',
     'DIVIDE',
-    'CTE_STRING',
-    'CTE_I',
-    'CTE_F',
+    'CONST_STRING',
+    'CONST_I',
+    'CONST_F',
 ] + list(reserved.values())
 
 t_COLON = r':'
@@ -77,7 +73,7 @@ t_PLUS = r'\+'
 t_MINUS = r'-'
 t_TIMES = r'\*'
 t_DIVIDE = r'/'
-t_CTE_STRING = r'".*"'
+t_CONST_STRING = r'".*"'
 
 
 def t_ID(t):
@@ -87,13 +83,13 @@ def t_ID(t):
   return t
 
 
-def t_CTE_I(t):
+def t_CONST_I(t):
   r'(0|-?[1-9][0-9]*)'
   t.value = int(t.value)
   return t
 
 
-def t_CTE_F(t):
+def t_CONST_F(t):
   r'-?([1-9]\d*|0)?(\.\d+)’'
   t.value = float(t.value)
   return t
