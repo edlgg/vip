@@ -93,7 +93,7 @@ def create_graph(data):
 
 def traverse_tree(node, pending):
     print(node.tostr())
-    if node.isnan:
+    if node.isnan and node.shape == "Decision":
         node.needed_oks -= 1
         if node.needed_oks == 1:
             print("else {")
