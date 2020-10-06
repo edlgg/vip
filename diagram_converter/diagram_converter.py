@@ -37,7 +37,7 @@ class Node:
         self.isnan = isnan
         self.right = None
         self.left = None
-        self.visited = False
+        self.needed_oks = 0
 
     def tostr(self):
         string = self.desc()
@@ -85,16 +85,20 @@ def create_graph(data):
         else:
             nodes[source].right = nodes[destination]
 
+        if nodes[destination].shape == "Decision":
+            nodes[destination].needed_oks += 1
+
     return root, nodes
 
 
 def traverse_tree(node, pending):
-    if node.visited:
-        return
-    node.visited = True
     print(node.tostr())
-    if node.isnan and pending:
-        traverse_tree(pending[0], pending[1:])
+    if node.isnan:
+        node.needed_oks -= 1
+        if node.needed_oks == 1:
+            print("else {")
+        if node.needed_oks != 0:
+            return
     if node.right:
         traverse_tree(node.right, pending)
     if node.left:
