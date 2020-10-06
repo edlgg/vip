@@ -37,9 +37,27 @@ class Node:
         self.isnan = isnan
         self.right = None
         self.left = None
+        self.visited = False
 
-    def get_str_rep(self):
-        return f"{self.id_} {self.shape} {self.text} {self.isnan}"
+    def tostr(self):
+        string = self.desc()
+        if self.shape == "Decision":
+            string = "}" if self.isnan else f"({self.text}) {{"
+        if self.shape == "Display":
+            string = f"print({self.text})"
+        if self.shape == "Manual Operation":
+            string = "}" if self.isnan else f"({self.text})"
+        if self.shape == "Process":
+            string = f"{self.text}"
+        if self.shape == "Terminator":
+            string = "}" if self.isnan else f"function {self.text} {{"
+
+        return string
+
+    def desc(self):
+        left_id = self.left.id_ if self.left else -1
+        right_id = self.right.id_ if self.right else -1
+        return f"DESC {self.id_} {self.shape} {self.text} {self.isnan} {left_id} {right_id}"
 
 
 def create_graph(data):
@@ -67,11 +85,14 @@ def create_graph(data):
         else:
             nodes[source].right = nodes[destination]
 
-    return root
+    return root, nodes
 
 
 def traverse_tree(node, pending):
-    print(node.get_str_rep())
+    if node.visited:
+        return
+    node.visited = True
+    print(node.tostr())
     if node.isnan and pending:
         traverse_tree(pending[0], pending[1:])
     if node.right:
@@ -92,7 +113,7 @@ def main():
     selected_page = 2
 
     data = get_page_data(df, selected_page)
-    root = create_graph(data)
+    root, nodes = create_graph(data)
 
     pending = []
     traverse_tree(root, pending)
