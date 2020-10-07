@@ -41,12 +41,15 @@ class Node:
 
     def tostr(self):
         string = self.desc()
-        if self.shape == "Decision":
+        if self.shape == "Decision":  # if
             string = "}" if self.isnan else f"({self.text}) {{"
-        if self.shape == "Display":
+            string = string.replace("(if", "if(")
+            string = string.replace("(elif", "elif(")
+        if self.shape == "Display":  # print
             string = f"print({self.text})"
-        if self.shape == "Manual Operation":
+        if self.shape == "Manual Operation":  # while
             string = "}" if self.isnan else f"({self.text})"
+            string = string.replace("(while", "while(")
         if self.shape == "Process":
             string = f"{self.text}"
         if self.shape == "Terminator":
