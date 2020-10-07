@@ -1,6 +1,8 @@
 import pandas as pd
 import math
 
+r = []
+
 
 def get_page_ids(df):
     pages = df[df["Name"] == "Page"]
@@ -28,6 +30,8 @@ def get_page_data(df, selected_page):
     data = df[df["Page ID"] == id_]
     return data
 
+# %%
+
 
 class Node:
     def __init__(self, id_, shape, text, isnan, right=None, left=None):
@@ -39,21 +43,25 @@ class Node:
         self.left = None
         self.needed_oks = 0
 
-    def tostr(self):
-        string = self.desc()
+    def tostrs(self):
+        string = []
         if self.shape == "Decision":  # if
             string = "}" if self.isnan else f"({self.text}) {{"
             string = string.replace("(if", "if(")
             string = string.replace("(elif", "elif(")
+            string = [string.replace("( ", "(")]
+
         if self.shape == "Display":  # print
-            string = f"print({self.text})"
+            string = [f"print({self.text})"]
         if self.shape == "Manual Operation":  # while
             string = "}" if self.isnan else f"({self.text})"
             string = string.replace("(while", "while(")
-        if self.shape == "Process":
+            string = [string.replace("( ", "(")]
+        if self.shape == "Process":  # instruction
             string = f"{self.text}"
+            string = self.split(string)
         if self.shape == "Terminator":
-            string = "}" if self.isnan else f"function {self.text} {{"
+            string = ["}" if self.isnan else f"function {self.text} {{"]
 
         return string
 
@@ -61,6 +69,13 @@ class Node:
         left_id = self.left.id_ if self.left else -1
         right_id = self.right.id_ if self.right else -1
         return f"DESC {self.id_} {self.shape} {self.text} {self.isnan} {left_id} {right_id}"
+
+    def split(self, s):
+        split = s.split(";")
+        if split[-1] != '':
+            return ['ERROR missing ;']
+        s2 = [word+";" for word in split if word != ""]
+        return s2
 
 
 def create_graph(data):
@@ -95,17 +110,22 @@ def create_graph(data):
 
 
 def traverse_tree(node, pending):
-    print(node.tostr())
+    global r
+    string = node.tostrs()
+    r = r + string
     if node.isnan and node.shape == "Decision":
         node.needed_oks -= 1
         if node.needed_oks == 1:
-            print("else {")
+            # print("else {")
+            r = r + ["else {"]
         if node.needed_oks != 0:
             return
     if node.right:
         traverse_tree(node.right, pending)
     if node.left:
         traverse_tree(node.left, pending)
+
+    return r
 
 
 def main():
@@ -123,7 +143,10 @@ def main():
     root, nodes = create_graph(data)
 
     pending = []
-    traverse_tree(root, pending)
+    r = traverse_tree(root, pending)
+
+    for row in r:
+        print(row)
 
 
 main()
