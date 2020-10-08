@@ -30,8 +30,6 @@ def get_page_data(df, selected_page):
     data = df[df["Page ID"] == id_]
     return data
 
-# %%
-
 
 class Node:
     def __init__(self, id_, shape, text, isnan, right=None, left=None):
