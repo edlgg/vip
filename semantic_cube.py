@@ -29,24 +29,6 @@ class SemanticCube:
 
         self.semantic_cube = {
             "int": {
-                "int":    [1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-                "float":  [2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-                "string": [3, 0, 3, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0],
-            },
-            "float": {
-                "int":    [2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1],
-                "float":  [2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1],
-                "string": [3, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0],
-            },
-            "string": {
-                "int":    [3, 0, 3, 0, 3, 0, 0, 0, 0, 1, 1, 0, 0],
-                "float":  [3, 0, 0, 0, 3, 0, 0, 0, 0, 1, 1, 0, 0],
-                "string": [3, 0, 0, 0, 3, 1, 1, 1, 1, 1, 1, 1, 1],
-            },
-        }
-
-        self.semantic_cube = {
-            "int": {
                 "int":    {
                     "PLUS":       "int",  
                     "MINUS":      "int",     
@@ -76,7 +58,7 @@ class SemanticCube:
                     "NOT_EQUAL":  "int",
                     "AND":        "int",
                     "OR":         "int",
-                }
+                },
                 "string": {
                     "PLUS":       "string",
                     "MINUS":      "error",
@@ -94,9 +76,51 @@ class SemanticCube:
                 }
             },
             "float": {
-                "int":    [2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1],
-                "float":  [2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1],
-                "string": [3, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0],
+                "int":    {
+                    "PLUS":       "float",
+                    "MINUS":      "float",
+                    "TIMES":      "float",
+                    "DIVIDE":     "float",
+                    "EQUALS":     "float",
+                    "GREATER":    "int",
+                    "LESS":       "int",
+                    "LESS_EQ":    "int",
+                    "GREATER_EQ": "int",
+                    "IS_EQUAL":   "int",
+                    "NOT_EQUAL":  "int",
+                    "AND":        "int",
+                    "OR":         "int",
+                },
+                "float": {
+                    "PLUS":       "float",
+                    "MINUS":      "float",
+                    "TIMES":      "float",
+                    "DIVIDE":     "float",
+                    "EQUALS":     "float",
+                    "GREATER":    "int",
+                    "LESS":       "int",
+                    "LESS_EQ":    "int",
+                    "GREATER_EQ": "int",
+                    "IS_EQUAL":   "int",
+                    "NOT_EQUAL":  "int",
+                    "AND":        "int",
+                    "OR":         "int",
+                }
+                "string": {
+                    "PLUS":       "string",
+                    "MINUS":      "error",
+                    "TIMES":      "error",
+                    "DIVIDE":     "error",
+                    "EQUALS":     "error",
+                    "GREATER":    "error",
+                    "LESS":       "error",
+                    "LESS_EQ":    "error",
+                    "GREATER_EQ": "error",
+                    "IS_EQUAL":   "int",
+                    "NOT_EQUAL":  "int",
+                    "AND":        "error",
+                    "OR":         "error",
+                },
             },
             "string": {
                 "int":    [3, 0, 3, 0, 3, 0, 0, 0, 0, 1, 1, 0, 0],
