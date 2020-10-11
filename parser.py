@@ -222,3 +222,7 @@ function main {
 
 # Give the lexer some input
 # lexer.input(data)
+
+
+def suma(a,b):
+    return a+b
