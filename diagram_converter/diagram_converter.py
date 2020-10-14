@@ -126,7 +126,7 @@ def traverse_tree(node, pending):
     return r
 
 
-def main():
+def reader():
     example_path = "/Users/edg/repos/vip/diagram_converter/examples/example1.csv"
     # example_path = "/Users/davidsouza/Documents/ITESM/11vo semestre/Compiladores/vip/diagram_converter/examples/example1.csv"
     df = pd.read_csv(example_path, index_col=0)
@@ -139,13 +139,9 @@ def main():
     selected_page = 2
 
     data = get_page_data(df, selected_page)
-    root, nodes = create_graph(data)
+    root, _ = create_graph(data)
 
     pending = []
     r = traverse_tree(root, pending)
 
-    for row in r:
-        print(row)
-
-
-main()
+    return r
