@@ -24,24 +24,19 @@ class Func:
         del self.vars[name]
 
     def is_var(self, name):
-        if name in self.vars:
-            return True
-        return False
+        return name in self.vars
+
+    def assign_var(self, name):
+        self.vars[name].assigned = True  # TODO: Add value to memory
 
     def is_var_assigned(self, name):
-        for _, var in self.vars.items():
-            if var.name == name:
-                return var.assigned
+        return self.vars[name].assigned
 
     def get_var_type(self, name):
-        for _, var in self.vars.items():
-            if var.name == name:
-                return var.var_type
+        return self.vars[name].var_type
 
     def get_var_address(self, name):
-        for _, var in self.vars.items():
-            if var.name == name:
-                return var.address
+        return self.vars[name].address
 
 
 class AddressTable:
@@ -54,5 +49,11 @@ class AddressTable:
         self.funcs[name] = Func(
             name=name, return_type=return_type, num_params=num_params)
 
-    def delete_func(self, name):
+    def is_func(self, name):
+        return name in self.funcs
+
+    def get_func(self, name):
+        return self.funcs[name]
+
+    def del_func(self, name):
         del self.funcs[name]
