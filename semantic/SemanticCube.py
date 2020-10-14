@@ -1,7 +1,7 @@
 class SemanticCube:
     def __init__(self):
 
-        self.semantic_cube = {
+        self.type_rules = {
             "int": {
                 "int":    {
                     "PLUS":       "int",  
