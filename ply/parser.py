@@ -201,7 +201,6 @@ def p_error(p):
   print('There is an error:', p)
 
 
-# Build parser.
 parser = yacc.yacc(start='program')
 
 data = '''
@@ -224,5 +223,4 @@ function main {
 # lexer.input(data)
 
 
-def suma(a,b):
-    return a+b
+
