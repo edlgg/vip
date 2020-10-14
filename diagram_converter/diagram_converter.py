@@ -1,5 +1,6 @@
 import pandas as pd
 import math
+import os
 
 r = []
 
@@ -127,7 +128,8 @@ def traverse_tree(node, pending):
 
 
 def reader():
-    example_path = "/Users/edg/repos/vip/diagram_converter/examples/example1.csv"
+    HOME = os.environ["HOME"]
+    example_path = f"{HOME}/repos/vip/diagram_converter/examples/example1.csv"
     # example_path = "/Users/davidsouza/Documents/ITESM/11vo semestre/Compiladores/vip/diagram_converter/examples/example1.csv"
     df = pd.read_csv(example_path, index_col=0)
     # selected_page = select_page(df)
