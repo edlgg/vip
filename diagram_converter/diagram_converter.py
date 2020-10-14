@@ -145,11 +145,3 @@ def reader():
     r = traverse_tree(root, pending)
 
     return r
-
-
-def main():
-    text = reader()
-    print(text)
-
-
-main()
