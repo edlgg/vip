@@ -8,9 +8,9 @@ class Var:
 
 
 class Func:
-    def __init__(self, name, func_type, num_params):
+    def __init__(self, name, return_type, num_params):
         self.name = name
-        self.func_type = func_type
+        self.return_type = return_type
         self.num_params = num_params
         self.vars = {}
 
@@ -23,16 +23,36 @@ class Func:
     def delete_var(self, name):
         del self.vars[name]
 
+    def is_var(self, name):
+        if name in self.vars:
+            return True
+        return False
+
+    def is_var_assigned(self, name):
+        for _, var in self.vars.items():
+            if var.name == name:
+                return var.assigned
+
+    def get_var_type(self, name):
+        for _, var in self.vars.items():
+            if var.name == name:
+                return var.var_type
+
+    def get_var_address(self, name):
+        for _, var in self.vars.items():
+            if var.name == name:
+                return var.address
+
 
 class AddressTable:
     def __init__(self):
         self.funcs = {}
 
-    def add_func(self, name, func_type, num_params):
+    def add_func(self, name, return_type, num_params):
         if name in self.funcs:
             raise NameError(f"Func {name} already defined")
         self.funcs[name] = Func(
-            name=name, func_type=func_type, num_params=num_params)
+            name=name, return_type=return_type, num_params=num_params)
 
     def delete_func(self, name):
         del self.funcs[name]
