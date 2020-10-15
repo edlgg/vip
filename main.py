@@ -1,27 +1,30 @@
-from diagram_converter.diagram_converter import reader
+from diagram_converter.diagram_converter import get_rows, get_tokens, print_rows
 from parser import parse
 
 
-lines = reader()
-lines = " ".join(lines)
-print(lines)
+def main():
+    tokens = get_rows()
+    print(tokens)
 
-data = '''
-function sum(int a, int b): int {
-int res;
-res = a + b;
-return res;
-}
-
-function main {
+    data = '''
+    function sum(int a, int b): int {
     int res;
-    print("Hello my friends!");
-    
-    res = sum(4, 4);
-    print(res);
-}
-'''
+    res = a + b;
+    return res;
+    }
 
-parse(data)
+    function main {
+        int res;
+        print("Hello my friends!");
+        
+        res = sum(4, 4);
+        print(res);
+    }
+    '''
+
+    parse(data)
+
+main()
+
 
 
