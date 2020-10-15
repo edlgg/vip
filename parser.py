@@ -48,10 +48,10 @@ def p_function_type(p):
                      | VOID'''
 
 def p_var(p):
-    '''var : type ID array_dim var_aux
-           | type ID array_dim
-           | type ID var_aux
-           | type ID'''
+    '''var : type ID array_dim var_aux SEMICOLON
+           | type ID array_dim SEMICOLON
+           | type ID var_aux SEMICOLON
+           | type ID SEMICOLON'''
 
 def p_var_aux(p):
     '''var_aux : COMMA ID array_dim var_aux
@@ -201,26 +201,12 @@ def p_error(p):
   print('There is an error:', p)
 
 
-parser = yacc.yacc(start='program')
+def parse(input):
+    parser = yacc.yacc(start='program')
 
-data = '''
-function sum(int a, int b): int {
-    int res;
-    res = a + b;
-    return res;
-}
+    # Check the input's syntax
+    parser.parse(input, tracking=True)
 
-function main {
-    int res;
-    print("Hello my friends!");
-    
-    res = sum(4, 4);
-    print(res);
-}
-'''
-
-# Give the lexer some input
-# lexer.input(data)
 
 
 

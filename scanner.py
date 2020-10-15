@@ -20,7 +20,7 @@ reserved = {
     'not': 'NOT',
     'read': 'READ',
     'void': 'VOID',
-    'func': 'FUNCTION',
+    'function': 'FUNCTION',
     'return': 'RETURN',
     'main': 'MAIN',
 }
