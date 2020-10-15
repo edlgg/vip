@@ -127,16 +127,11 @@ def traverse_tree(node, pending):
     return r
 
 
-def reader():
+def get_rows():
     HOME = os.environ["HOME"]
     example_path = f"{HOME}/repos/vip/diagram_converter/examples/example1.csv"
     # example_path = "/Users/davidsouza/Documents/ITESM/11vo semestre/Compiladores/vip/diagram_converter/examples/example1.csv"
     df = pd.read_csv(example_path, index_col=0)
-    # selected_page = select_page(df)
-
-    # if not selected_page:
-    #     print("Invalid Page")
-    #     return
 
     selected_page = 2
 
@@ -145,5 +140,26 @@ def reader():
 
     pending = []
     r = traverse_tree(root, pending)
+    return r
 
+
+def print_rows():
+    rows = get_rows()
+    for row in rows:
+        print(row)
+
+
+def get_tokens():
+    r = get_rows()
+    r = " ".join(r)
+    r = r.replace("(", " ( ")
+    r = r.replace(")", " ) ")
+    r = r.replace("[", " [ ")
+    r = r.replace("]", " ] ")
+    r = r.replace(";", " ; ")
+    r = r.replace(",", " , ")
+    r = r.replace("\"", " \" ")
+    r = r.split(" ")
+
+    r = list(filter(lambda x: x != "", r))
     return r

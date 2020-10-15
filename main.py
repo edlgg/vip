@@ -1,10 +1,9 @@
-from diagram_converter.diagram_converter import reader
+from diagram_converter.diagram_converter import get_rows, get_tokens, print_rows
 
 
 def main():
-    lines = reader()
-    lines = " ".join(lines)
-    print(lines)
+    tokens = get_rows()
+    print(tokens)
 
 
 main()
