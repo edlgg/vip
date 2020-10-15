@@ -33,7 +33,7 @@ def p_function_body_aux(p):
     '''function_body_aux : var function_body_aux
                          | var'''
 
-def p_function_body_aux2(p):
+def p_function_body_aux_2(p):
     '''function_body_aux_2 : statement function_body_aux_2
                            | statement'''
 
@@ -60,15 +60,18 @@ def p_var_aux(p):
                | COMMA ID'''
 
 def p_statement(p):
-    'statement : statement_aux SEMICOLON'
+    '''statement : statement_aux SEMICOLON
+                 | statement_aux_2'''
 
 def p_statement_aux(p):
     '''statement_aux : assignment
                      | function_call
                      | return
-                     | if
-                     | while
                      | print'''
+
+def p_statement_aux_2(p):
+    '''statement_aux_2 : if
+                       | while'''
 
 def p_type(p):
     '''type : INT

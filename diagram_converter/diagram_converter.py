@@ -51,9 +51,9 @@ class Node:
             string = [string.replace("( ", "(")]
 
         if self.shape == "Display":  # print
-            string = [f"print({self.text})"]
+            string = [f"print({self.text});"]
         if self.shape == "Manual Operation":  # while
-            string = "}" if self.isnan else f"({self.text})"
+            string = "}" if self.isnan else f"({self.text}) {{"
             string = string.replace("(while", "while(")
             string = [string.replace("( ", "(")]
         if self.shape == "Process":  # instruction

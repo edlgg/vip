@@ -20,7 +20,7 @@ Id,Name,Shape Library,Page ID,Contained By,Group,Line Source,Line Destination,So
 19,Decision,Flowchart Shapes,13,,,,,,,elif i == 3
 20,Display,Flowchart Shapes,13,,,,,,,"""3: "", i"
 21,Display,Flowchart Shapes,13,,,,,,,"""bigger than 3: "", i"
-22,Process,Flowchart Shapes,13,,,,,,,"i = i + 1;"
+22,Process,Flowchart Shapes,13,,,,,,,"return k;"
 23,Manual Operation,Flowchart Shapes,13,,,,,,,
 24,Terminator,Flowchart Shapes,13,,,,,,,
 25,Decision,Flowchart Shapes,13,,,,,,,

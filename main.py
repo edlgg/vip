@@ -3,24 +3,12 @@ from parser import parse
 
 
 def main():
-    tokens = get_rows()
-    print(tokens)
 
-    data = '''
-    function sum(int a, int b): int {
-    int res;
-    res = a + b;
-    return res;
-    }
+    print_rows()
 
-    function main {
-        int res;
-        print("Hello my friends!");
-        
-        res = sum(4, 4);
-        print(res);
-    }
-    '''
+    print(" ")
+    data = " "
+    data = data.join(get_tokens())
 
     parse(data)
 
