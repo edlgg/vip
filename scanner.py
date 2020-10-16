@@ -34,8 +34,8 @@ tokens = [
     'R_KEY_BRACKET',
     'L_SQUARE_BRACKET',
     'R_SQUARE_BRACKET',
+    'ASSIGN',
     'EQUALS',
-    'IS_EQUAL',
     'GREATER',
     'GREATER_EQ',
     'LESS',
@@ -59,8 +59,8 @@ t_L_KEY_BRACKET = r'{'
 t_R_KEY_BRACKET = r'}'
 t_L_SQUARE_BRACKET = r'\['
 t_R_SQUARE_BRACKET = r'\]'
-t_EQUALS = r'='
-t_IS_EQUAL = r'=='
+t_EQUALS = r'=='
+t_ASSIGN = r'='
 t_GREATER = r'>'
 t_GREATER_EQ = r'>='
 t_LESS = r'<'
@@ -73,7 +73,6 @@ t_PLUS = r'\+'
 t_MINUS = r'-'
 t_TIMES = r'\*'
 t_DIVIDE = r'/'
-t_CONST_STRING = r'".*"'
 
 
 def t_ID(t):
@@ -94,6 +93,10 @@ def t_CONST_F(t):
   t.value = float(t.value)
   return t
 
+def t_CONST_STRING(t):
+   r'".*"'
+   t.value = str(t.value)
+   return t
 
 def t_newline(t):
   r'[\r\n]+'
@@ -108,7 +111,7 @@ def t_comment(t):
 
 
 # Ignore space and tab characters.
-t_ignore = ' \t'
+t_ignore = ' \t\r'
 
 
 #Error handling rule for lexer
@@ -119,3 +122,24 @@ def t_error(t):
 
 #Build the lexer
 lexer = lex.lex()
+
+
+#data = '''function main {
+#        int a;
+#        a = 1;
+#        while(i < 5) {
+#        if(i < 3) {
+#        print("smaller than 3: ", i);}
+#        return k;
+#        }
+#        }'''
+
+# Give the lexer some input
+#lexer.input(data)
+
+# Tokenize
+#while True:
+#    tok = lexer.token()
+#    if not tok: 
+#        break      # No more input
+#    print(tok)

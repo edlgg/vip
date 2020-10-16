@@ -26,15 +26,15 @@ def p_function_header(p):
                        | FUNCTION ID L_PARENS R_PARENS COLON function_type'''
 
 def p_function_body(p):
-    '''function_body : L_KEY_BRACKET function_body_aux function_body_aux_2 R_KEY_BRACKET
-                     | L_KEY_BRACKET function_body_aux_2 R_KEY_BRACKET'''
+    '''function_body : L_KEY_BRACKET function_body_aux statements R_KEY_BRACKET
+                     | L_KEY_BRACKET statements R_KEY_BRACKET'''
 
 def p_function_body_aux(p):
     '''function_body_aux : var function_body_aux
                          | var'''
 
-def p_function_body_aux_2(p):
-    '''function_body_aux_2 : statement function_body_aux_2
+def p_statements(p):
+    '''statements : statement statements
                            | statement'''
 
 def p_function_params(p):
@@ -60,18 +60,15 @@ def p_var_aux(p):
                | COMMA ID'''
 
 def p_statement(p):
-    '''statement : statement_aux SEMICOLON
-                 | statement_aux_2'''
+    '''statement : statement_aux SEMICOLON'''
 
 def p_statement_aux(p):
     '''statement_aux : assignment
                      | function_call
                      | return
-                     | print'''
-
-def p_statement_aux_2(p):
-    '''statement_aux_2 : if
-                       | while'''
+                     | print
+                     | if
+                     | while'''
 
 def p_type(p):
     '''type : INT
@@ -87,10 +84,10 @@ def p_array_dim(p):
                  | L_SQUARE_BRACKET CONST_I R_SQUARE_BRACKET'''
 
 def p_assignment(p):
-    '''assignment : ID array_index EQUALS expression
-                  | ID array_index EQUALS read
-                  | ID EQUALS expression
-                  | ID EQUALS read'''
+    '''assignment : ID array_index ASSIGN expression
+                  | ID array_index ASSIGN read
+                  | ID ASSIGN expression
+                  | ID ASSIGN read'''
 
 def p_function_call(p):
     'function_call : ID params_pass'
@@ -141,7 +138,7 @@ def p_params_pass_aux(p):
                        | COMMA expression'''
 
 def p_block(p):
-    'block : L_KEY_BRACKET statement R_KEY_BRACKET'
+    'block : L_KEY_BRACKET statements R_KEY_BRACKET'
 
 def p_exp(p):
     '''exp : xp OR exp
@@ -163,7 +160,7 @@ def p_x_aux(p):
 
 def p_log_op(p):
     '''log_op : NOT_EQUAL
-              | IS_EQUAL
+              | EQUALS
               | GREATER
               | GREATER_EQ
               | LESS
@@ -206,9 +203,11 @@ def p_error(p):
 
 def parse(input):
     parser = yacc.yacc(start='program')
+    parser.defaulted_states = {}
 
     # Check the input's syntax
-    parser.parse(input, tracking=True)
+    parser.parse(input)
+    #result = parser.parse(input, tracking=True)
 
 
 
