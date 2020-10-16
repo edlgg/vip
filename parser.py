@@ -48,10 +48,14 @@ def p_function_type(p):
                      | VOID'''
 
 def p_var(p):
-    '''var : type ID array_dim var_aux SEMICOLON
-           | type ID array_dim SEMICOLON
-           | type ID var_aux SEMICOLON
-           | type ID SEMICOLON'''
+    '''var : type_aux ID get_var_name array_dim var_aux SEMICOLON
+           | type_aux ID get_var_name array_dim SEMICOLON
+           | type_aux ID get_var_name var_aux SEMICOLON
+           | type_aux ID get_var_name SEMICOLON'''
+
+def p_type_aux(p):
+    '''type_aux : GLOBAL type
+                | type'''
 
 def p_var_aux(p):
     '''var_aux : COMMA ID array_dim var_aux
@@ -60,15 +64,18 @@ def p_var_aux(p):
                | COMMA ID'''
 
 def p_statement(p):
-    '''statement : statement_aux SEMICOLON'''
+    '''statement : statement_aux SEMICOLON
+                 | statement_aux_2'''
 
 def p_statement_aux(p):
     '''statement_aux : assignment
                      | function_call
                      | return
-                     | print
-                     | if
-                     | while'''
+                     | print'''
+
+def p_statement_aux_2(p):
+    '''statement_aux_2 : if
+                       | while'''
 
 def p_type(p):
     '''type : INT
@@ -196,6 +203,12 @@ def p_const(p):
 
 def p_array_access(p):
     'array_access : ID array_index'
+
+# Where the magic begins.
+
+def p_n_var_name(p):
+    'get_var_name : '
+    print(p[-1])
 
 def p_error(p):
   print('There is an error:', p)

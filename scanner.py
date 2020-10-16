@@ -23,6 +23,7 @@ reserved = {
     'function': 'FUNCTION',
     'return': 'RETURN',
     'main': 'MAIN',
+    'global': 'GLOBAL',
 }
 
 # List of token names.

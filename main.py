@@ -24,9 +24,9 @@ def main():
             }
             else {
             print("bigger than 3: ", i);
-            };
+            }
             print(k);
-            };
+            }
             }'''
 
     parse(data)

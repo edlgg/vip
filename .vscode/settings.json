@@ -1,4 +1,4 @@
 {
-    "python.pythonPath": "/Users/edg/.virtualenvs/vip/bin/python",
+    "python.pythonPath": "/usr/local/bin/python3",
     "python.linting.enabled": true
 }
