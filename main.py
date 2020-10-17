@@ -8,8 +8,15 @@ def main():
 
     # print_rows()
 
-    data = " "
-    data = data.join(get_tokens())
+    # data = " "
+    # data = data.join(get_tokens())
+
+    data = '''
+    function main {
+        a = 1 + 4;
+        b = 9 - 1 + 4 * 3;
+        }
+    '''
 
     parse(data)
 

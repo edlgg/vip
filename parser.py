@@ -8,6 +8,10 @@ from scanner import tokens
 from semantic.Quadruples import Quadruples
 
 
+global Q
+Q = Quadruples()
+
+
 def p_program(p):
     '''program : program_aux main
                | main'''
@@ -49,10 +53,10 @@ def p_function_type(p):
                      | VOID'''
 
 def p_var(p):
-    '''var : type_aux ID get_var_name array_dim var_aux SEMICOLON
-           | type_aux ID get_var_name array_dim SEMICOLON
-           | type_aux ID get_var_name var_aux SEMICOLON
-           | type_aux ID get_var_name SEMICOLON'''
+    '''var : type_aux ID n_var_name array_dim var_aux SEMICOLON
+           | type_aux ID n_var_name array_dim SEMICOLON
+           | type_aux ID n_var_name var_aux SEMICOLON
+           | type_aux ID n_var_name SEMICOLON'''
 
 def p_type_aux(p):
     '''type_aux : GLOBAL type
@@ -130,7 +134,7 @@ def p_print_aux(p):
                  | ID'''
 
 def p_expression(p):
-    '''expression : exp n_eval_exp AND n_eval_operator expression
+    '''expression : exp n_eval_exp AND n_add_operator expression
                   | exp n_eval_exp'''
 
 def p_read(p):
@@ -149,22 +153,22 @@ def p_block(p):
     'block : L_KEY_BRACKET statements R_KEY_BRACKET'
 
 def p_exp(p):
-    '''exp : xp OR n_eval_operator exp
-           | xp'''
+    '''exp : xp n_eval_xp OR n_add_operator exp
+           | xp n_eval_xp'''
 
 def p_xp(p):
-    '''xp : x log_op n_eval_operator x
-          | x'''
+    '''xp : x n_eval_x log_op n_add_operator x
+          | x n_eval_x'''
 
 def p_x(p):
-    '''x : term x_aux
-         | term'''
+    '''x : term n_eval_term x_aux
+         | term n_eval_term'''
 
 def p_x_aux(p):
-    '''x_aux : PLUS n_eval_operator term x_aux
-             | PLUS n_eval_operator term
-             | MINUS n_eval_operator term x_aux
-             | MINUS n_eval_operator term'''
+    '''x_aux : PLUS n_add_operator term x_aux
+             | PLUS n_add_operator term
+             | MINUS n_add_operator term x_aux
+             | MINUS n_add_operator term'''
 
 def p_log_op(p):
     '''log_op : NOT_EQUAL
@@ -175,14 +179,14 @@ def p_log_op(p):
               | LESS_EQ'''
 
 def p_term(p):
-    '''term : factor term_aux
-            | factor'''
+    '''term : factor n_eval_factor term_aux
+            | factor n_eval_factor'''
 
 def p_term_aux(p):
-    '''term_aux : TIMES n_eval_operator factor term_aux
-                | TIMES n_eval_operator factor
-                | DIVIDE n_eval_operator factor term_aux
-                | DIVIDE n_eval_operator factor'''
+    '''term_aux : TIMES n_add_operator factor term_aux
+                | TIMES n_add_operator factor
+                | DIVIDE n_add_operator factor term_aux
+                | DIVIDE n_add_operator factor'''
 
 def p_factor(p):
     '''factor : NOT factor_aux
@@ -195,10 +199,10 @@ def p_factor_aux(p):
                   | const'''
 
 def p_const(p):
-    '''const : ID n_eval_operand
-             | CONST_I n_eval_operand
-             | CONST_F n_eval_operand
-             | CONST_STRING n_eval_operand
+    '''const : ID n_add_operand
+             | CONST_I n_add_operand
+             | CONST_F n_add_operand
+             | CONST_STRING n_add_operand
              | function_call
              | array_access'''
 
@@ -208,19 +212,40 @@ def p_array_access(p):
 # Where the magic begins.
 
 def p_n_var_name(p):
-    'get_var_name : '
+    'n_var_name : '
     print(p[-1])
 
 def p_n_eval_exp(p):
     'n_eval_exp : '
+    Q.maybe_solve_operation(['and'])
 
-def p_n_eval_operand(p):
-    'n_eval_operand : '
-    Quadruples.add_operand(p[-1])
+def p_n_eval_xp(p):
+    'n_eval_xp : '
+    Q.maybe_solve_operation(['or'])
 
-def p_n_eval_operator(p):
-    'n_eval_operator : '
-    Quadruples.add_operator(p[-1])
+def p_n_eval_x(p):
+    'n_eval_x : '
+    Q.maybe_solve_operation(['==', '!=', '<', '>', '<=', '>='])
+
+def p_n_eval_factor(p):
+    'n_eval_factor : '
+    Q.maybe_solve_operation(['*', '/'])
+
+def p_n_eval_term(p):
+    'n_eval_term : '
+    Q.maybe_solve_operation(['+', '-'])
+
+def p_n_add_operand(p):
+    'n_add_operand : '
+    Q.add_operand(p[-1])
+    Q.print_all()
+    print('')
+
+def p_n_add_operator(p):
+    'n_add_operator : '
+    Q.add_operator(p[-1])
+    Q.print_all()
+    print('')
 
 def p_error(p):
   print('There is an error:', p)
@@ -232,6 +257,8 @@ def parse(input):
 
     # Check the input's syntax
     parser.parse(input)
+
+    Q.print_all()
     #result = parser.parse(input, tracking=True)
 
 

@@ -6,6 +6,10 @@ class Quadruples:
         self.operands = []
         self.jumps = []
 
+    def print_all(self):
+        print("operators: ", self.operators)
+        print("operands: ", self.operands)
+
     def add_quadruple(self, quadruple):
         self.table.append(quadruple)
 
@@ -19,13 +23,19 @@ class Quadruples:
         self.jumps.append(jump)
 
     def get_operator(self):
-        return self.operators[-1]
+        if len(self.operators):
+            return self.operators[-1]
+        return None
 
     def get_operand(self):
-        return self.operands[-1]
+        if len(self.operands):
+            return self.operands[-1]
+        return None
 
     def get_jump(self):
-        return self.jumps[-1]
+        if len(self.jumps):
+            return self.jumps[-1]
+        return None
 
     def pop_operator(self):
         val = self.operators[-1]
@@ -41,3 +51,11 @@ class Quadruples:
         val = self.jumps[-1]
         self.jumps = self.jumps[:-1]
         return val
+
+    def maybe_solve_operation(self, operations):
+        operator = self.get_operator()
+        if operator in operations:
+            r_operand = self.operands.pop()
+            l_operand = self.operands.pop()
+            operator = self.operators.pop()
+            print(r_operand, l_operand, operator)
