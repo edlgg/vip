@@ -5,6 +5,7 @@ Authors: David Souza & Eduardo de la Garza
 
 import ply.yacc as yacc
 from scanner import tokens
+from semantic.Quadruples import Quadruples
 
 
 def p_program(p):
@@ -129,8 +130,8 @@ def p_print_aux(p):
                  | ID'''
 
 def p_expression(p):
-    '''expression : exp AND expression
-                  | exp'''
+    '''expression : exp n_eval_exp AND n_eval_operator expression
+                  | exp n_eval_exp'''
 
 def p_read(p):
     'read : READ ID'
@@ -148,11 +149,11 @@ def p_block(p):
     'block : L_KEY_BRACKET statements R_KEY_BRACKET'
 
 def p_exp(p):
-    '''exp : xp OR exp
+    '''exp : xp OR n_eval_operator exp
            | xp'''
 
 def p_xp(p):
-    '''xp : x log_op x
+    '''xp : x log_op n_eval_operator x
           | x'''
 
 def p_x(p):
@@ -160,10 +161,10 @@ def p_x(p):
          | term'''
 
 def p_x_aux(p):
-    '''x_aux : PLUS term x_aux
-             | PLUS term
-             | MINUS term x_aux
-             | MINUS term'''
+    '''x_aux : PLUS n_eval_operator term x_aux
+             | PLUS n_eval_operator term
+             | MINUS n_eval_operator term x_aux
+             | MINUS n_eval_operator term'''
 
 def p_log_op(p):
     '''log_op : NOT_EQUAL
@@ -178,10 +179,10 @@ def p_term(p):
             | factor'''
 
 def p_term_aux(p):
-    '''term_aux : TIMES factor term_aux
-                | TIMES factor
-                | DIVIDE factor term_aux
-                | DIVIDE factor'''
+    '''term_aux : TIMES n_eval_operator factor term_aux
+                | TIMES n_eval_operator factor
+                | DIVIDE n_eval_operator factor term_aux
+                | DIVIDE n_eval_operator factor'''
 
 def p_factor(p):
     '''factor : NOT factor_aux
@@ -194,10 +195,10 @@ def p_factor_aux(p):
                   | const'''
 
 def p_const(p):
-    '''const : ID
-             | CONST_I
-             | CONST_F
-             | CONST_STRING
+    '''const : ID n_eval_operand
+             | CONST_I n_eval_operand
+             | CONST_F n_eval_operand
+             | CONST_STRING n_eval_operand
              | function_call
              | array_access'''
 
@@ -209,6 +210,17 @@ def p_array_access(p):
 def p_n_var_name(p):
     'get_var_name : '
     print(p[-1])
+
+def p_n_eval_exp(p):
+    'n_eval_exp : '
+
+def p_n_eval_operand(p):
+    'n_eval_operand : '
+    Quadruples.add_operand(p[-1])
+
+def p_n_eval_operator(p):
+    'n_eval_operator : '
+    Quadruples.add_operator(p[-1])
 
 def p_error(p):
   print('There is an error:', p)
