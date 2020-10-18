@@ -53,6 +53,9 @@ class Quadruples:
         return val
 
     def maybe_solve_operation(self, operations):
+        print('en este punto tenemos ', self.operands, self.operators)
+        print('')
+
         operator = self.get_operator()
         if operator in operations:
             r_operand = self.operands.pop()
