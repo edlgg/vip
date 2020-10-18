@@ -1,4 +1,5 @@
-from .semantic_cube import semantic_cube
+from semantic_cube import semantic_cube
+from constants import types, Type
 
 class Quadruples:
 
@@ -21,6 +22,9 @@ class Quadruples:
 
     def add_operand(self, operand):
         self.operands.append(operand)
+
+    def add_type(self, _type):
+        self.types.append(_type)
 
     def add_jump(self, jump):
         self.jumps.append(jump)
@@ -55,17 +59,15 @@ class Quadruples:
         self.jumps = self.jumps[:-1]
         return val
 
-    def solve_operation(l_operand, r_operand, operator):
+    def solve_operation(self, l_operand, r_operand, operator):
         res = eval(f"{l_operand} {operator} {r_operand}")
         if type(res) == bool:
             res = 1 if res else 0
         return res
 
     def maybe_solve_operation(self, operations):
-        print('en este punto tenemos ', self.operands, self.operators)
-        print('')
-
         operator = self.get_operator()
+
         if operator in operations:
             r_operand = self.operands.pop()
             r_type = self.types.pop()
@@ -75,8 +77,9 @@ class Quadruples:
             result_type = semantic_cube[l_type][r_type][operator]
             if result_type == "error":
                 raise NameError(f"Type mismatch {l_type} {operator} {r_type}")
-            result = solve_operation(l_operand, r_operand, operator)
+            result = self.solve_operation(l_operand, r_operand, operator)
             self.add_operand(result)
+            self.add_type(result_type)
             quad = [operator, l_operand, r_operand, result]
-            print(r_operand, l_operand, operator)
-
+            self.add_quadruple(quad)
+            print(quad)

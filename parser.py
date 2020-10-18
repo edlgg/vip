@@ -5,8 +5,9 @@ Authors: David Souza & Eduardo de la Garza
 
 import ply.yacc as yacc
 from scanner import tokens
-from semantic.Quadruples import Quadruples
-from semantic.AddressTable import AddressTable
+from Quadruples import Quadruples
+from AddressTable import AddressTable
+from constants import types
 
 global AT, Q, last_var_type
 Q = Quadruples()
@@ -118,10 +119,10 @@ def p_array_dim(p):
 
 
 def p_assignment(p):
-    '''assignment : ID n_add_operand array_index ASSIGN n_make_assignment expression
-                  | ID n_add_operand array_index ASSIGN n_make_assignment read
-                  | ID n_add_operand ASSIGN n_make_assignment expression
-                  | ID n_add_operand ASSIGN n_make_assignment read'''
+    '''assignment : ID array_index ASSIGN n_make_assignment expression
+                  | ID array_index ASSIGN n_make_assignment read
+                  | ID ASSIGN n_make_assignment expression
+                  | ID ASSIGN n_make_assignment read'''
 
 
 def p_function_call(p):
@@ -199,15 +200,9 @@ def p_xp(p):
 
 
 def p_x(p):
-    '''x : term n_eval_term x_aux
+    '''x : term n_eval_term PLUS n_add_operator x
+         | term n_eval_term MINUS n_add_operator x
          | term n_eval_term'''
-
-
-def p_x_aux(p):
-    '''x_aux : PLUS n_add_operator term x_aux
-             | PLUS n_add_operator term
-             | MINUS n_add_operator term x_aux
-             | MINUS n_add_operator term'''
 
 
 def p_log_op(p):
@@ -220,15 +215,9 @@ def p_log_op(p):
 
 
 def p_term(p):
-    '''term : factor n_eval_factor term_aux
+    '''term : factor n_eval_factor TIMES n_add_operator term
+            | factor n_eval_factor DIVIDE n_add_operator term
             | factor n_eval_factor'''
-
-
-def p_term_aux(p):
-    '''term_aux : TIMES n_add_operator factor term_aux
-                | TIMES n_add_operator factor
-                | DIVIDE n_add_operator factor term_aux
-                | DIVIDE n_add_operator factor'''
 
 
 def p_factor(p):
@@ -318,6 +307,7 @@ def p_n_eval_term(p):
 
 def p_n_add_operand(p):
     'n_add_operand : '
+    Q.add_type(types[type(p[-1]).__name__])
     Q.add_operand(p[-1])
     # Q.print_all()
 

@@ -1,7 +1,7 @@
 from diagram_converter.diagram_converter import get_rows, get_tokens, print_rows
 from parser import parse
-from semantic.AddressTable import AddressTable
-from semantic.Quadruples import Quadruples
+from AddressTable import AddressTable
+from Quadruples import Quadruples
 
 
 # running 'python main.py' will only print something if there is a syntax error.
@@ -26,7 +26,7 @@ def main():
     data = '''
     function main {
         int b;
-        b = 9 - 1 * 4 + 3;
+        b = 1 + 2 * 3;
         }
     '''
 
