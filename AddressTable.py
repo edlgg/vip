@@ -72,7 +72,4 @@ class AddressTable:
             print(func.name)
             for _, var in func.vars.items():
                 print(var.name, var.var_type, var.address)
-
-    # Esto es basura
-    def test_add_var(self, var_name):
-        print(var_name)
+                
