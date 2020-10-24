@@ -10,6 +10,7 @@ class Quadruples:
         self.operands = []
         self.types = []
         self.jumps = []
+        self.q_count = 1
 
     def print_all(self):
         print("operators: ", self.operators)
@@ -45,6 +46,12 @@ class Quadruples:
     def add_jump(self, jump):
         self.jumps.append(jump)
 
+    def add_while(self):
+        self.add_jump(self.q_count)
+
+    def end_while(self):
+        pass
+
     def get_operator(self):
         if len(self.operators):
             return self.operators[-1]
@@ -59,6 +66,9 @@ class Quadruples:
         if len(self.jumps):
             return self.jumps[-1]
         return None
+
+    def get_q_count(self):
+        return self.q_count
 
     def pop_operator(self):
         val = self.operators[-1]
@@ -100,4 +110,5 @@ class Quadruples:
             # Development note: Beware, operands are objects now. Everything is perfectly fine... maybe.
             quad = [operator, l_operand, r_operand, result]
             self.add_quadruple(quad)
+            self.q_count += 1
             print(quad)

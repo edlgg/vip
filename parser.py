@@ -134,15 +134,15 @@ def p_return(p):
 
 
 def p_if(p):
-    '''if : IF L_PARENS expression R_PARENS block elif else
-          | IF L_PARENS expression R_PARENS block elif
-          | IF L_PARENS expression R_PARENS block else
-          | IF L_PARENS expression R_PARENS block'''
+    '''if : IF L_PARENS expression R_PARENS n_end_condition block elif else n_end_if
+          | IF L_PARENS expression R_PARENS n_end_condition block elif n_end_if
+          | IF L_PARENS expression R_PARENS n_end_condition block else n_end_if
+          | IF L_PARENS expression R_PARENS n_end_condition block n_end_if'''
 
 
 def p_elif(p):
-    '''elif : ELIF L_PARENS expression R_PARENS block elif
-            | ELIF L_PARENS expression R_PARENS block'''
+    '''elif : ELIF L_PARENS expression R_PARENS n_end_condition block elif
+            | ELIF L_PARENS expression R_PARENS n_end_condition block'''
 
 
 def p_else(p):
@@ -150,7 +150,7 @@ def p_else(p):
 
 
 def p_while(p):
-    'while : WHILE L_PARENS expression R_PARENS block'
+    'while : WHILE n_start_while L_PARENS expression R_PARENS n_end_condition block n_end_while'
 
 
 def p_print(p):
@@ -304,6 +304,22 @@ def p_n_eval_term(p):
     'n_eval_term : '
     Q.maybe_solve_operation(['+', '-'])
 
+def p_n_start_while(p):
+    'n_start_while : '
+    Q.add_while()
+
+def p_n_end_while(p):
+    'n_end_while : '
+    Q.end_while()
+
+def p_n_end_condition(p):
+    'n_end_condition : '
+    pass
+
+
+def p_n_end_if(p):
+    'n_end_if : '
+    pass
 
 def p_n_add_operand(p):
     'n_add_operand : '
