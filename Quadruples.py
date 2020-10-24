@@ -1,6 +1,7 @@
 from semantic_cube import semantic_cube
-from constants import types, Type
+from constants import types, Type, Operator
 from Operand import Operand
+
 
 class Quadruples:
 
@@ -39,7 +40,7 @@ class Quadruples:
             operand.set_type(Type.STRING)
 
         return operand
-        
+
     def add_type(self, _type):
         self.types.append(_type)
 
@@ -86,10 +87,23 @@ class Quadruples:
         return val
 
     def solve_operation(self, l_operand, r_operand, operator):
-        res = eval(f"{l_operand.get_str_operand()} {operator} {r_operand.get_str_operand()}")
+        res = eval(
+            f"{l_operand.get_str_operand()} {operator} {r_operand.get_str_operand()}")
         if type(res) == bool:
             res = 1 if res else 0
         return res
+
+    def assign(self):
+        result = self.operands.pop()
+        result_type = self.types.pop()
+        operand = self.operands.pop()
+        operand_type = self.operand.pop()
+        # Semantic cube checking.
+        if not semantic_cube[operand_type][result_type][Operator.ASSIGN]:
+            R
+
+
+        #  operand (segundo pop) = result (primer pop)
 
     def maybe_solve_operation(self, operations):
         operator = self.get_operator()

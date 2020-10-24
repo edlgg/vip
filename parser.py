@@ -123,6 +123,7 @@ def p_assignment(p):
                   | ID n_make_assignment array_index ASSIGN  read
                   | ID n_make_assignment ASSIGN expression
                   | ID n_make_assignment ASSIGN read'''
+    Q.assign()
 
 
 def p_function_call(p):
@@ -304,13 +305,16 @@ def p_n_eval_term(p):
     'n_eval_term : '
     Q.maybe_solve_operation(['+', '-'])
 
+
 def p_n_start_while(p):
     'n_start_while : '
     Q.add_while()
 
+
 def p_n_end_while(p):
     'n_end_while : '
     Q.end_while()
+
 
 def p_n_end_condition(p):
     'n_end_condition : '
@@ -320,6 +324,7 @@ def p_n_end_condition(p):
 def p_n_end_if(p):
     'n_end_if : '
     pass
+
 
 def p_n_add_operand(p):
     'n_add_operand : '
@@ -333,10 +338,11 @@ def p_n_add_operator(p):
     Q.add_operator(p[-1])
     # Q.print_all()
 
+
 def p_n_make_assignment(p):
     'n_make_assignment : '
     pass
-    #Q.add_operand(p[-1])
+    # Q.add_operand(p[-1])
 
 
 def p_error(p):
