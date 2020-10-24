@@ -1,5 +1,6 @@
 from semantic_cube import semantic_cube
 from constants import types, Type
+from Operand import Operand
 
 class Quadruples:
 
@@ -12,7 +13,8 @@ class Quadruples:
 
     def print_all(self):
         print("operators: ", self.operators)
-        print("operands: ", self.operands)
+        for operand in self.operands:
+            print("operand: ", operand.get_str_operand())
 
     def add_quadruple(self, quadruple):
         self.quadruples.append(quadruple)
@@ -20,9 +22,23 @@ class Quadruples:
     def add_operator(self, operator):
         self.operators.append(operator)
 
-    def add_operand(self, operand):
+    def add_operand(self, str_operand):
+        operand = self.build_operand_object(str_operand)
         self.operands.append(operand)
 
+    def build_operand_object(self, str_operand):
+        t = type(str_operand)
+        operand = Operand(str_operand)
+
+        if t == int:
+            operand.set_type(Type.INT)
+        elif t == float:
+            operand.set_type(Type.FLOAT)
+        elif t == str:
+            operand.set_type(Type.STRING)
+
+        return operand
+        
     def add_type(self, _type):
         self.types.append(_type)
 
@@ -60,7 +76,7 @@ class Quadruples:
         return val
 
     def solve_operation(self, l_operand, r_operand, operator):
-        res = eval(f"{l_operand} {operator} {r_operand}")
+        res = eval(f"{l_operand.get_str_operand()} {operator} {r_operand.get_str_operand()}")
         if type(res) == bool:
             res = 1 if res else 0
         return res
@@ -80,6 +96,8 @@ class Quadruples:
             result = self.solve_operation(l_operand, r_operand, operator)
             self.add_operand(result)
             self.add_type(result_type)
+
+            # Development note: Beware, operands are objects now. Everything is perfectly fine... maybe.
             quad = [operator, l_operand, r_operand, result]
             self.add_quadruple(quad)
             print(quad)

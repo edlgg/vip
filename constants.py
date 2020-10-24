@@ -6,6 +6,7 @@ class Type(Enum):
      STRING = 3
      VOID = 4
 
+# Map from string type to Enum type.
 types = {
     "int" : Type.INT,
     "float" : Type.FLOAT,

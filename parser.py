@@ -119,10 +119,10 @@ def p_array_dim(p):
 
 
 def p_assignment(p):
-    '''assignment : ID array_index ASSIGN n_make_assignment expression
-                  | ID array_index ASSIGN n_make_assignment read
-                  | ID ASSIGN n_make_assignment expression
-                  | ID ASSIGN n_make_assignment read'''
+    '''assignment : ID n_make_assignment array_index ASSIGN  expression
+                  | ID n_make_assignment array_index ASSIGN  read
+                  | ID n_make_assignment ASSIGN expression
+                  | ID n_make_assignment ASSIGN read'''
 
 
 def p_function_call(p):
@@ -320,6 +320,7 @@ def p_n_add_operator(p):
 def p_n_make_assignment(p):
     'n_make_assignment : '
     pass
+    #Q.add_operand(p[-1])
 
 
 def p_error(p):
