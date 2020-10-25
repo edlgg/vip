@@ -287,7 +287,6 @@ def p_n_eval_xp(p):
 
 def p_n_eval_x(p):
     'n_eval_x : '
-    print('hijo de tu puta madre')
     Q.maybe_solve_operation([Operator.EQUALS, Operator.NOT_EQUAL, Operator.LESS, Operator.GREATER, Operator.LESS_EQ, Operator.GREATER_EQ])
 
 
@@ -299,17 +298,6 @@ def p_n_eval_factor(p):
 def p_n_eval_term(p):
     'n_eval_term : '
     Q.maybe_solve_operation([Operator.PLUS, Operator.MINUS])
-
-
-def p_n_start_while(p):
-    'n_start_while : '
-    Q.add_while()
-
-
-def p_n_end_while(p):
-    'n_end_while : '
-    Q.end_while()
-
 
 def p_n_end_condition(p):
     'n_end_condition : '
@@ -324,6 +312,14 @@ def p_n_end_if(p):
     'n_end_if : '
     Q.register_end_if()
 
+
+def p_n_start_while(p):
+    'n_start_while : '
+    Q.register_start_while()
+
+def p_n_end_while(p):
+    'n_end_while : '
+    Q.register_end_while()
 
 def p_n_add_operand(p):
     'n_add_operand : '

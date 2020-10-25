@@ -9,6 +9,9 @@ class Operand:
 
         self.__address: int
 
+    def __repr__(self):
+        return f"{self.__str_operand}"
+
     def set_str_operand(self, str_operand):
         self.__str_operand = str_operand
 

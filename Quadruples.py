@@ -54,12 +54,6 @@ class Quadruples:
     def add_jump(self, jump):
         self.jumps.append(jump)
 
-    def add_while(self):
-        self.add_jump(self.q_count)
-
-    def end_while(self):
-        pass
-
     def get_operator(self):
         if len(self.operators):
             return self.operators[-1]
@@ -102,9 +96,11 @@ class Quadruples:
     #     return res
 
     def register_condition(self):
-        expression_type = self.types.pop()
-        if expression_type != Type.INT:
-            return 'Type mismatch. Expression type should be Int.'
+        self.types.pop()
+        # expression_type = self.types.pop()
+        # print(expression_type)
+        # if expression_type == Type.ERROR:
+        #     return 'Type mismatch.'
         expression_result = self.operands.pop()
         quad = [Operator.GOTOF, expression_result, None, None]
         self.add_quadruple(quad)
@@ -120,6 +116,16 @@ class Quadruples:
     def register_end_if(self):
         end = self.jumps.pop()
         self.quadruples[end - 1][3]  = self.q_count
+
+    def register_start_while(self):
+        self.jumps.append(self.q_count)
+
+    def register_end_while(self):
+        end = self.jumps.pop()
+        self.quadruples[end-1][3] = self.q_count + 1
+        start_while = self.jumps.pop()
+        quad = [Operator.GOTO, None, None, start_while]
+        self.add_quadruple(quad)
 
     def assign(self):
         l_operand = self.operands.pop()
@@ -140,12 +146,6 @@ class Quadruples:
 
     def maybe_solve_operation(self, operations):
         operator = self.get_operator()
-
-        if operator == Operator.LESS:
-            print('MIRA AQUI AQUI AQUI AQUI')
-        print('testing', operator)
-        print(operations)
-        print()
 
         if operator in operations:
             r_operand = self.operands.pop()

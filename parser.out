@@ -118,11 +118,11 @@ Rule 112   n_eval_xp -> <empty>
 Rule 113   n_eval_x -> <empty>
 Rule 114   n_eval_factor -> <empty>
 Rule 115   n_eval_term -> <empty>
-Rule 116   n_start_while -> <empty>
-Rule 117   n_end_while -> <empty>
-Rule 118   n_end_condition -> <empty>
-Rule 119   n_start_else -> <empty>
-Rule 120   n_end_if -> <empty>
+Rule 116   n_end_condition -> <empty>
+Rule 117   n_start_else -> <empty>
+Rule 118   n_end_if -> <empty>
+Rule 119   n_start_while -> <empty>
+Rule 120   n_end_while -> <empty>
 Rule 121   n_add_operand -> <empty>
 Rule 122   n_add_operator -> <empty>
 Rule 123   n_make_assignment -> <empty>
@@ -794,9 +794,9 @@ state 37
 state 38
 
     (61) while -> WHILE . n_start_while L_PARENS expression R_PARENS n_end_condition block n_end_while
-    (116) n_start_while -> .
+    (119) n_start_while -> .
 
-    L_PARENS        reduce using rule 116 (n_start_while -> .)
+    L_PARENS        reduce using rule 119 (n_start_while -> .)
 
     n_start_while                  shift and go to state 74
 
@@ -2630,9 +2630,9 @@ state 138
     (55) if -> IF L_PARENS expression R_PARENS . n_end_condition block elif n_end_if
     (56) if -> IF L_PARENS expression R_PARENS . n_end_condition block else n_end_if
     (57) if -> IF L_PARENS expression R_PARENS . n_end_condition block n_end_if
-    (118) n_end_condition -> .
+    (116) n_end_condition -> .
 
-    L_KEY_BRACKET   reduce using rule 118 (n_end_condition -> .)
+    L_KEY_BRACKET   reduce using rule 116 (n_end_condition -> .)
 
     n_end_condition                shift and go to state 172
 
@@ -3441,9 +3441,9 @@ state 172
 state 173
 
     (61) while -> WHILE n_start_while L_PARENS expression R_PARENS . n_end_condition block n_end_while
-    (118) n_end_condition -> .
+    (116) n_end_condition -> .
 
-    L_KEY_BRACKET   reduce using rule 118 (n_end_condition -> .)
+    L_KEY_BRACKET   reduce using rule 116 (n_end_condition -> .)
 
     n_end_condition                shift and go to state 200
 
@@ -3794,16 +3794,16 @@ state 198
     (58) elif -> . ELIF n_start_else L_PARENS expression R_PARENS n_end_condition block elif
     (59) elif -> . ELIF n_start_else L_PARENS expression R_PARENS n_end_condition block
     (60) else -> . ELSE n_start_else block
-    (120) n_end_if -> .
+    (118) n_end_if -> .
 
     ELIF            shift and go to state 210
     ELSE            shift and go to state 211
-    ID              reduce using rule 120 (n_end_if -> .)
-    RETURN          reduce using rule 120 (n_end_if -> .)
-    PRINT           reduce using rule 120 (n_end_if -> .)
-    IF              reduce using rule 120 (n_end_if -> .)
-    WHILE           reduce using rule 120 (n_end_if -> .)
-    R_KEY_BRACKET   reduce using rule 120 (n_end_if -> .)
+    ID              reduce using rule 118 (n_end_if -> .)
+    RETURN          reduce using rule 118 (n_end_if -> .)
+    PRINT           reduce using rule 118 (n_end_if -> .)
+    IF              reduce using rule 118 (n_end_if -> .)
+    WHILE           reduce using rule 118 (n_end_if -> .)
+    R_KEY_BRACKET   reduce using rule 118 (n_end_if -> .)
 
     elif                           shift and go to state 207
     else                           shift and go to state 208
@@ -3927,15 +3927,15 @@ state 207
     (54) if -> IF L_PARENS expression R_PARENS n_end_condition block elif . else n_end_if
     (55) if -> IF L_PARENS expression R_PARENS n_end_condition block elif . n_end_if
     (60) else -> . ELSE n_start_else block
-    (120) n_end_if -> .
+    (118) n_end_if -> .
 
     ELSE            shift and go to state 211
-    ID              reduce using rule 120 (n_end_if -> .)
-    RETURN          reduce using rule 120 (n_end_if -> .)
-    PRINT           reduce using rule 120 (n_end_if -> .)
-    IF              reduce using rule 120 (n_end_if -> .)
-    WHILE           reduce using rule 120 (n_end_if -> .)
-    R_KEY_BRACKET   reduce using rule 120 (n_end_if -> .)
+    ID              reduce using rule 118 (n_end_if -> .)
+    RETURN          reduce using rule 118 (n_end_if -> .)
+    PRINT           reduce using rule 118 (n_end_if -> .)
+    IF              reduce using rule 118 (n_end_if -> .)
+    WHILE           reduce using rule 118 (n_end_if -> .)
+    R_KEY_BRACKET   reduce using rule 118 (n_end_if -> .)
 
     else                           shift and go to state 218
     n_end_if                       shift and go to state 219
@@ -3943,14 +3943,14 @@ state 207
 state 208
 
     (56) if -> IF L_PARENS expression R_PARENS n_end_condition block else . n_end_if
-    (120) n_end_if -> .
+    (118) n_end_if -> .
 
-    ID              reduce using rule 120 (n_end_if -> .)
-    RETURN          reduce using rule 120 (n_end_if -> .)
-    PRINT           reduce using rule 120 (n_end_if -> .)
-    IF              reduce using rule 120 (n_end_if -> .)
-    WHILE           reduce using rule 120 (n_end_if -> .)
-    R_KEY_BRACKET   reduce using rule 120 (n_end_if -> .)
+    ID              reduce using rule 118 (n_end_if -> .)
+    RETURN          reduce using rule 118 (n_end_if -> .)
+    PRINT           reduce using rule 118 (n_end_if -> .)
+    IF              reduce using rule 118 (n_end_if -> .)
+    WHILE           reduce using rule 118 (n_end_if -> .)
+    R_KEY_BRACKET   reduce using rule 118 (n_end_if -> .)
 
     n_end_if                       shift and go to state 220
 
@@ -3970,18 +3970,18 @@ state 210
 
     (58) elif -> ELIF . n_start_else L_PARENS expression R_PARENS n_end_condition block elif
     (59) elif -> ELIF . n_start_else L_PARENS expression R_PARENS n_end_condition block
-    (119) n_start_else -> .
+    (117) n_start_else -> .
 
-    L_PARENS        reduce using rule 119 (n_start_else -> .)
+    L_PARENS        reduce using rule 117 (n_start_else -> .)
 
     n_start_else                   shift and go to state 221
 
 state 211
 
     (60) else -> ELSE . n_start_else block
-    (119) n_start_else -> .
+    (117) n_start_else -> .
 
-    L_KEY_BRACKET   reduce using rule 119 (n_start_else -> .)
+    L_KEY_BRACKET   reduce using rule 117 (n_start_else -> .)
 
     n_start_else                   shift and go to state 222
 
@@ -3995,14 +3995,14 @@ state 212
 state 213
 
     (61) while -> WHILE n_start_while L_PARENS expression R_PARENS n_end_condition block . n_end_while
-    (117) n_end_while -> .
+    (120) n_end_while -> .
 
-    ID              reduce using rule 117 (n_end_while -> .)
-    RETURN          reduce using rule 117 (n_end_while -> .)
-    PRINT           reduce using rule 117 (n_end_while -> .)
-    IF              reduce using rule 117 (n_end_while -> .)
-    WHILE           reduce using rule 117 (n_end_while -> .)
-    R_KEY_BRACKET   reduce using rule 117 (n_end_while -> .)
+    ID              reduce using rule 120 (n_end_while -> .)
+    RETURN          reduce using rule 120 (n_end_while -> .)
+    PRINT           reduce using rule 120 (n_end_while -> .)
+    IF              reduce using rule 120 (n_end_while -> .)
+    WHILE           reduce using rule 120 (n_end_while -> .)
+    R_KEY_BRACKET   reduce using rule 120 (n_end_while -> .)
 
     n_end_while                    shift and go to state 224
 
@@ -4053,14 +4053,14 @@ state 217
 state 218
 
     (54) if -> IF L_PARENS expression R_PARENS n_end_condition block elif else . n_end_if
-    (120) n_end_if -> .
+    (118) n_end_if -> .
 
-    ID              reduce using rule 120 (n_end_if -> .)
-    RETURN          reduce using rule 120 (n_end_if -> .)
-    PRINT           reduce using rule 120 (n_end_if -> .)
-    IF              reduce using rule 120 (n_end_if -> .)
-    WHILE           reduce using rule 120 (n_end_if -> .)
-    R_KEY_BRACKET   reduce using rule 120 (n_end_if -> .)
+    ID              reduce using rule 118 (n_end_if -> .)
+    RETURN          reduce using rule 118 (n_end_if -> .)
+    PRINT           reduce using rule 118 (n_end_if -> .)
+    IF              reduce using rule 118 (n_end_if -> .)
+    WHILE           reduce using rule 118 (n_end_if -> .)
+    R_KEY_BRACKET   reduce using rule 118 (n_end_if -> .)
 
     n_end_if                       shift and go to state 226
 
@@ -4231,9 +4231,9 @@ state 230
 
     (58) elif -> ELIF n_start_else L_PARENS expression R_PARENS . n_end_condition block elif
     (59) elif -> ELIF n_start_else L_PARENS expression R_PARENS . n_end_condition block
-    (118) n_end_condition -> .
+    (116) n_end_condition -> .
 
-    L_KEY_BRACKET   reduce using rule 118 (n_end_condition -> .)
+    L_KEY_BRACKET   reduce using rule 116 (n_end_condition -> .)
 
     n_end_condition                shift and go to state 231
 
