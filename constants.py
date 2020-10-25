@@ -13,7 +13,7 @@ class Type(Enum):
 types = {
     "int": Type.INT,
     "float": Type.FLOAT,
-    "string": Type.STRING,
+    "str": Type.STRING,
     "void": Type.VOID
 }
 
@@ -28,7 +28,27 @@ class Operator(Enum):
     LESS = 6
     LESS_EQ = 7
     GREATER_EQ = 8
-    IS_EQUAL = 9
+    EQUALS = 9
     NOT_EQUAL = 10
     AND = 11
     OR = 12
+    GOTO = 14
+    GOTOF = 15
+
+operators = {
+    "+": Operator.PLUS,
+    "-": Operator.MINUS,
+    "*": Operator.TIMES,
+    "/": Operator.DIVIDE,
+    "=": Operator.ASSIGN,
+    ">": Operator.GREATER,
+    "<": Operator.LESS,
+    "<=": Operator.LESS_EQ,
+    ">=": Operator.GREATER_EQ,
+    "==": Operator.EQUALS,
+    "!=": Operator.NOT_EQUAL,
+    "and": Operator.AND, 
+    "or": Operator.OR,
+    "gotof": Operator.GOTOF,
+    "goto": Operator.GOTO
+}

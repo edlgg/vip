@@ -12,14 +12,21 @@ class Quadruples:
         self.types = []
         self.jumps = []
         self.q_count = 1
+        self.curr_t_count = 1
 
     def print_all(self):
         print("operators: ", self.operators)
+        print("quadruples: ")
+        for q in self.quadruples:
+            print(q)
+        print('operands: ')
         for operand in self.operands:
-            print("operand: ", operand.get_str_operand())
+            print(operand.get_str_operand())
+        print('pila de saltos', self.jumps)
 
     def add_quadruple(self, quadruple):
         self.quadruples.append(quadruple)
+        self.q_count += 1
 
     def add_operator(self, operator):
         self.operators.append(operator)
@@ -86,27 +93,59 @@ class Quadruples:
         self.jumps = self.jumps[:-1]
         return val
 
-    def solve_operation(self, l_operand, r_operand, operator):
-        res = eval(
-            f"{l_operand.get_str_operand()} {operator} {r_operand.get_str_operand()}")
-        if type(res) == bool:
-            res = 1 if res else 0
-        return res
+    # def solve_operation(self, l_operand, r_operand, operator):
+    #     operator = 
+    #     res = eval(
+    #         f"{l_operand.get_str_operand()} {operator} {r_operand.get_str_operand()}")
+    #     if type(res) == bool:
+    #         res = 1 if res else 0
+    #     return res
+
+    def register_condition(self):
+        expression_type = self.types.pop()
+        if expression_type != Type.INT:
+            return 'Type mismatch. Expression type should be Int.'
+        expression_result = self.operands.pop()
+        quad = [Operator.GOTOF, expression_result, None, None]
+        self.add_quadruple(quad)
+        self.jumps.append(self.q_count - 1)
+
+    def register_else(self):
+        quad =  [Operator.GOTO, None, None, None]
+        self.add_quadruple(quad)
+        false = self.jumps.pop()
+        self.jumps.append(self.q_count - 1)
+        self.quadruples[false - 1][3] = self.q_count
+
+    def register_end_if(self):
+        end = self.jumps.pop()
+        self.quadruples[end - 1][3]  = self.q_count
 
     def assign(self):
-        result = self.operands.pop()
-        result_type = self.types.pop()
-        operand = self.operands.pop()
-        operand_type = self.operand.pop()
+        l_operand = self.operands.pop()
+        l_type = self.types.pop()
+        assigning_variable = self.operands.pop()
+        assigning_type = self.types.pop()
         # Semantic cube checking.
-        if not semantic_cube[operand_type][result_type][Operator.ASSIGN]:
-            R
-
-
-        #  operand (segundo pop) = result (primer pop)
+        if not semantic_cube[assigning_type][l_type][Operator.ASSIGN]:
+            return f'Type mismatch'
+        quad = [Operator.ASSIGN, l_operand, None, assigning_variable]
+        # print('esta es la asignacion')
+        # print('parte derecha: ', l_operand.get_str_operand())
+        # print('parte izquierda: ', assigning_variable.get_str_operand())
+        # print('fin de asignacion')
+        self.add_quadruple(quad)
+        self.operands.append(assigning_variable)
+        self.types.append(assigning_type)
 
     def maybe_solve_operation(self, operations):
         operator = self.get_operator()
+
+        if operator == Operator.LESS:
+            print('MIRA AQUI AQUI AQUI AQUI')
+        print('testing', operator)
+        print(operations)
+        print()
 
         if operator in operations:
             r_operand = self.operands.pop()
@@ -117,12 +156,15 @@ class Quadruples:
             result_type = semantic_cube[l_type][r_type][operator]
             if result_type == "error":
                 raise NameError(f"Type mismatch {l_type} {operator} {r_type}")
-            result = self.solve_operation(l_operand, r_operand, operator)
-            self.add_operand(result)
+
+            temp = Operand('t' + str(self.curr_t_count))
+            temp.set_type(result_type)
+            self.curr_t_count += 1
+
+            # result = self.solve_operation(l_operand, r_operand, operator)
+            self.add_operand(temp)
             self.add_type(result_type)
 
             # Development note: Beware, operands are objects now. Everything is perfectly fine... maybe.
-            quad = [operator, l_operand, r_operand, result]
+            quad = [operator, l_operand, r_operand, temp]
             self.add_quadruple(quad)
-            self.q_count += 1
-            print(quad)

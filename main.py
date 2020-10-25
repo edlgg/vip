@@ -26,9 +26,18 @@ def main():
     data = '''
     function main {
         int b;
-        b = 1 + 2 * 3;
+        if (1 < 2 + 4) {
+            b = 1 + 2;
+        }
+        else {
+            c  = 5 + 6;
+        }
+        z = 1;
         }
     '''
+
+    print('b = 1 + 2 * 3;')
+    print('c = 1 < 4 + 3;')
 
     AT = parse(data)
     AT.print_all()

@@ -7,7 +7,7 @@ import ply.yacc as yacc
 from scanner import tokens
 from Quadruples import Quadruples
 from AddressTable import AddressTable
-from constants import types
+from constants import types, Operator, operators
 
 global AT, Q, last_var_type
 Q = Quadruples()
@@ -142,12 +142,12 @@ def p_if(p):
 
 
 def p_elif(p):
-    '''elif : ELIF L_PARENS expression R_PARENS n_end_condition block elif
-            | ELIF L_PARENS expression R_PARENS n_end_condition block'''
+    '''elif : ELIF n_start_else L_PARENS expression R_PARENS n_end_condition block elif
+            | ELIF n_start_else L_PARENS expression R_PARENS n_end_condition block'''
 
 
 def p_else(p):
-    'else : ELSE block'
+    'else : ELSE n_start_else block'
 
 
 def p_while(p):
@@ -196,7 +196,12 @@ def p_exp(p):
 
 
 def p_xp(p):
-    '''xp : x n_eval_x log_op n_add_operator x
+    '''xp : x n_eval_x NOT_EQUAL n_add_operator xp
+          | x n_eval_x EQUALS n_add_operator xp
+          | x n_eval_x GREATER n_add_operator xp
+          | x n_eval_x GREATER_EQ n_add_operator xp
+          | x n_eval_x LESS n_add_operator xp
+          | x n_eval_x LESS_EQ n_add_operator xp
           | x n_eval_x'''
 
 
@@ -206,20 +211,10 @@ def p_x(p):
          | term n_eval_term'''
 
 
-def p_log_op(p):
-    '''log_op : NOT_EQUAL
-              | EQUALS
-              | GREATER
-              | GREATER_EQ
-              | LESS
-              | LESS_EQ'''
-
-
 def p_term(p):
-    '''term : factor n_eval_factor TIMES n_add_operator term
+    '''term : factor n_eval_factor TIMES  n_add_operator term
             | factor n_eval_factor DIVIDE n_add_operator term
             | factor n_eval_factor'''
-
 
 def p_factor(p):
     '''factor : NOT factor_aux
@@ -231,7 +226,6 @@ def p_factor_aux(p):
                   | PLUS const
                   | MINUS const
                   | const'''
-
 
 def p_const(p):
     '''const : ID n_add_operand
@@ -283,27 +277,28 @@ def p_n_record_last_type(p):
 
 def p_n_eval_exp(p):
     'n_eval_exp : '
-    Q.maybe_solve_operation(['and'])
+    Q.maybe_solve_operation([Operator.AND])
 
 
 def p_n_eval_xp(p):
     'n_eval_xp : '
-    Q.maybe_solve_operation(['or'])
+    Q.maybe_solve_operation([Operator.OR])
 
 
 def p_n_eval_x(p):
     'n_eval_x : '
-    Q.maybe_solve_operation(['==', '!=', '<', '>', '<=', '>='])
+    print('hijo de tu puta madre')
+    Q.maybe_solve_operation([Operator.EQUALS, Operator.NOT_EQUAL, Operator.LESS, Operator.GREATER, Operator.LESS_EQ, Operator.GREATER_EQ])
 
 
 def p_n_eval_factor(p):
     'n_eval_factor : '
-    Q.maybe_solve_operation(['*', '/'])
+    Q.maybe_solve_operation([Operator.TIMES, Operator.DIVIDE])
 
 
 def p_n_eval_term(p):
     'n_eval_term : '
-    Q.maybe_solve_operation(['+', '-'])
+    Q.maybe_solve_operation([Operator.PLUS, Operator.MINUS])
 
 
 def p_n_start_while(p):
@@ -318,31 +313,34 @@ def p_n_end_while(p):
 
 def p_n_end_condition(p):
     'n_end_condition : '
-    pass
+    Q.register_condition()
+    
 
+def p_n_start_else(p):
+    'n_start_else : '
+    Q.register_else()
 
 def p_n_end_if(p):
     'n_end_if : '
-    pass
+    Q.register_end_if()
 
 
 def p_n_add_operand(p):
     'n_add_operand : '
     Q.add_type(types[type(p[-1]).__name__])
     Q.add_operand(p[-1])
-    # Q.print_all()
 
 
 def p_n_add_operator(p):
     'n_add_operator : '
-    Q.add_operator(p[-1])
-    # Q.print_all()
+    Q.add_operator(operators[p[-1]])
 
 
 def p_n_make_assignment(p):
     'n_make_assignment : '
-    pass
-    # Q.add_operand(p[-1])
+    # Arreglar esto despues, no me gusta como se ve.
+    Q.add_type(types[type(p[-1]).__name__])
+    Q.add_operand(p[-1])
 
 
 def p_error(p):
