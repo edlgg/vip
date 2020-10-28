@@ -131,7 +131,7 @@ def p_function_call(p):
 
 
 def p_return(p):
-    'return : RETURN expression'
+    'return : RETURN expression n_return'
 
 
 def p_if(p):
@@ -160,10 +160,10 @@ def p_print(p):
 
 
 def p_print_aux(p):
-    '''print_aux : CONST_STRING COMMA print_aux
-                 | CONST_STRING
-                 | ID COMMA print_aux
-                 | ID'''
+    '''print_aux : CONST_STRING n_print_str COMMA print_aux
+                 | CONST_STRING n_print_str
+                 | expression n_print COMMA print_aux
+                 | expression n_print'''
 
 
 def p_expression(p):
@@ -338,6 +338,17 @@ def p_n_make_assignment(p):
     Q.add_type(types[type(p[-1]).__name__])
     Q.add_operand(p[-1])
 
+def p_n_print_str(p):
+    'n_print_str : '
+    Q.do_print(p[-1])
+    
+def p_n_print(p):
+    'n_print : '
+    Q.do_print()
+
+def p_n_return(p):
+    'n_return : '
+    Q.add_return()
 
 def p_error(p):
     print('There is an error:', p)

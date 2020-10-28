@@ -11,6 +11,7 @@ class Quadruples:
         self.operands = []
         self.types = []
         self.jumps = []
+        self.returns = []
         self.q_count = 1
         self.curr_t_count = 1
 
@@ -24,8 +25,9 @@ class Quadruples:
             print(operand.get_str_operand())
         print('pila de saltos', self.jumps)
 
-    def add_quadruple(self, quadruple):
-        self.quadruples.append(quadruple)
+    def generate_quadruple(self, a, b, c, d):
+        quad = [a, b, c, d]
+        self.quadruples.append(quad)
         self.q_count += 1
 
     def add_operator(self, operator):
@@ -102,13 +104,11 @@ class Quadruples:
         # if expression_type == Type.ERROR:
         #     return 'Type mismatch.'
         expression_result = self.operands.pop()
-        quad = [Operator.GOTOF, expression_result, None, None]
-        self.add_quadruple(quad)
+        self.generate_quadruple(Operator.GOTOF, expression_result, None, None)
         self.jumps.append(self.q_count - 1)
 
     def register_else(self):
-        quad =  [Operator.GOTO, None, None, None]
-        self.add_quadruple(quad)
+        self.generate_quadruple(Operator.GOTO, None, None, None)
         false = self.jumps.pop()
         self.jumps.append(self.q_count - 1)
         self.quadruples[false - 1][3] = self.q_count
@@ -124,8 +124,7 @@ class Quadruples:
         end = self.jumps.pop()
         self.quadruples[end-1][3] = self.q_count + 1
         start_while = self.jumps.pop()
-        quad = [Operator.GOTO, None, None, start_while]
-        self.add_quadruple(quad)
+        self.generate_quadruple(Operator.GOTO, None, None, start_while)
 
     def assign(self):
         l_operand = self.operands.pop()
@@ -135,14 +134,25 @@ class Quadruples:
         # Semantic cube checking.
         if not semantic_cube[assigning_type][l_type][Operator.ASSIGN]:
             return f'Type mismatch'
-        quad = [Operator.ASSIGN, l_operand, None, assigning_variable]
-        # print('esta es la asignacion')
-        # print('parte derecha: ', l_operand.get_str_operand())
-        # print('parte izquierda: ', assigning_variable.get_str_operand())
-        # print('fin de asignacion')
-        self.add_quadruple(quad)
+        self.generate_quadruple(Operator.ASSIGN, l_operand, None, assigning_variable)
         self.operands.append(assigning_variable)
         self.types.append(assigning_type)
+
+    def do_print(self, string=None):
+        if string:
+            operand = Operand(string[1:-1]) # Remove quotation marks
+            operand.set_type(Type.STRING)
+            # TODO: Add address
+        else:
+            operand = self.operand.pop()
+            operand_type = self.types.pop()
+            self.generate_quadruple(Operator.PRINT, None, None, operand)
+
+    def add_return(self):
+        return_val = self.operands.pop()
+        return_type = self.types.pop()
+        self.returns.append(self.q_count)
+        self.generate_quadruple(Operator.RETURN, return_val, None, None)
 
     def maybe_solve_operation(self, operations):
         operator = self.get_operator()
@@ -166,5 +176,4 @@ class Quadruples:
             self.add_type(result_type)
 
             # Development note: Beware, operands are objects now. Everything is perfectly fine... maybe.
-            quad = [operator, l_operand, r_operand, temp]
-            self.add_quadruple(quad)
+            self.generate_quadruple(operator, l_operand, r_operand, temp)

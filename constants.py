@@ -34,6 +34,8 @@ class Operator(Enum):
     OR = 12
     GOTO = 14
     GOTOF = 15
+    PRINT = 16
+    RETURN = 17
 
 operators = {
     "+": Operator.PLUS,
