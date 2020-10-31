@@ -7,7 +7,8 @@ import ply.yacc as yacc
 from scanner import tokens
 from Quadruples import Quadruples
 from AddressTable import AddressTable
-from constants import types, Operator, operators
+from constants import types, Operator, operators, Type
+from Operand import Operand
 
 global AT, Q, last_var_type
 Q = Quadruples()
@@ -160,9 +161,7 @@ def p_print(p):
 
 
 def p_print_aux(p):
-    '''print_aux : CONST_STRING n_print_str COMMA print_aux
-                 | CONST_STRING n_print_str
-                 | expression n_print COMMA print_aux
+    '''print_aux : expression n_print COMMA print_aux
                  | expression n_print'''
 
 
@@ -266,7 +265,10 @@ def p_n_end_function(p):
 def p_n_add_var(p):
     'n_add_var : '
     func = AT.get_func(AT.current_func_name)
-    func.add_var(p[-1], var_type=last_var_type)
+    memoryManager = Q.get_memory_manager()
+    var_address = memoryManager.setAddress(scope='local', var_type=types[last_var_type])
+    operand = Operand(str_operand=p[-1], op_type=types[last_var_type], address=var_address)
+    func.add_var(operand)
 
 
 def p_n_record_last_type(p):
@@ -335,12 +337,16 @@ def p_n_add_operator(p):
 def p_n_make_assignment(p):
     'n_make_assignment : '
     # Arreglar esto despues, no me gusta como se ve.
-    Q.add_type(types[type(p[-1]).__name__])
-    Q.add_operand(p[-1])
+    func = AT.funcs[AT.current_func_name]
+    if func.is_var(p[-1]):
+        var_type = func.get_var_type(p[-1])
+        print('hola hola', var_type)
+    else:
+        raise NameError(f"Variable not declared.")
 
-def p_n_print_str(p):
-    'n_print_str : '
-    Q.do_print(p[-1])
+
+    Q.add_type(var_type)
+    Q.add_operand(p[-1])
     
 def p_n_print(p):
     'n_print : '

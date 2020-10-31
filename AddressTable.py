@@ -1,5 +1,3 @@
-# %%
-
 
 class Var:
     def __init__(self, name, var_type, address=None):
@@ -16,11 +14,11 @@ class Func:
         self.vars = {}
         self.return_types = ["void", "int", "float", "string"]
 
-    def add_var(self, name, var_type=None, address=None):
+    def add_var(self, operand):
+        name = operand.str_operand
         if name in self.vars:
             raise NameError(f"Var {name} already defined")
-        self.vars[name] = Var(
-            name=name, var_type=var_type)
+        self.vars[name] = operand
 
     def delete_var(self, name):
         del self.vars[name]
@@ -37,7 +35,7 @@ class Func:
         self.return_type = return_type
 
     def get_var_type(self, name):
-        return self.vars[name].var_type
+        return self.vars[name].type
 
     def get_var_address(self, name):
         return self.vars[name].address
@@ -71,5 +69,5 @@ class AddressTable:
         for _, func in self.funcs.items():
             print(func.name)
             for _, var in func.vars.items():
-                print(var.name, var.var_type, var.address)
+                print(var.str_operand, var.type, var.address)
                 

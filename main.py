@@ -26,15 +26,22 @@ def main():
     data = '''
     function main {
         int b;
-        b = 1;
-        while (b < 5) {
-            b = b + 1;
-        }
-        b = 1;
+        b = 2;
     }
     '''
 
+    print(data)
+
+    '''
+    while (2 < 5) {
+            b = b + 1;
+            print("test", b);
+        }
+        b = 1;
+    '''
+
     AT = parse(data)
+
     AT.print_all()
 
 
