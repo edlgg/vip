@@ -1,8 +1,17 @@
+from constants import Type
+
 
 class Var:
     def __init__(self, name, var_type, address=None):
         self.name = name
         self.var_type = var_type
+        self.address = address
+
+
+class Const:
+    def __init__(self, name, const_type, address=None):
+        self.name = name
+        self.const_type = const_type
         self.address = address
 
 
@@ -12,6 +21,11 @@ class Func:
         self.return_type = return_type
         self.num_params = num_params
         self.vars = {}
+        self.constants_addresses = {
+            Type.INT: {},
+            Type.FLOAT: {},
+            Type.STRING: {},
+        }
         self.return_types = ["void", "int", "float", "string"]
 
     def add_var(self, operand):
@@ -19,6 +33,18 @@ class Func:
         if name in self.vars:
             raise NameError(f"Var {name} already defined")
         self.vars[name] = operand
+
+    def add_constant_address(self, constant_value, constant_type, address):
+        self.constants_addresses[constant_type][constant_value] = address
+
+    def get_constant_address(self, constant_value, constant_type):
+        if constant_value in self.constants_addresses[constant_type]:
+            return self.constants_addresses[constant_type][constant_value]
+        else:
+            return -1  # Constant doesn't exist yet.
+
+    def get_var(self, name):
+        return self.vars[name]
 
     def delete_var(self, name):
         del self.vars[name]
@@ -70,4 +96,5 @@ class AddressTable:
             print(func.name)
             for _, var in func.vars.items():
                 print(var.str_operand, var.type, var.address)
-                
+            for key, value in func.constants_addresses[Type.INT].items():
+                print(key, value)

@@ -11,8 +11,8 @@ from constants import types, Operator, operators, Type
 from Operand import Operand
 
 global AT, Q, last_var_type
-Q = Quadruples()
 AT = AddressTable()
+Q = Quadruples(AT)
 
 
 def p_program(p):
@@ -215,6 +215,7 @@ def p_term(p):
             | factor n_eval_factor DIVIDE n_add_operator term
             | factor n_eval_factor'''
 
+
 def p_factor(p):
     '''factor : NOT factor_aux
               | factor_aux'''
@@ -225,6 +226,7 @@ def p_factor_aux(p):
                   | PLUS const
                   | MINUS const
                   | const'''
+
 
 def p_const(p):
     '''const : ID n_add_operand
@@ -266,8 +268,10 @@ def p_n_add_var(p):
     'n_add_var : '
     func = AT.get_func(AT.current_func_name)
     memoryManager = Q.get_memory_manager()
-    var_address = memoryManager.setAddress(scope='local', var_type=types[last_var_type])
-    operand = Operand(str_operand=p[-1], op_type=types[last_var_type], address=var_address)
+    var_address = memoryManager.setAddress(
+        scope='local', var_type=types[last_var_type])
+    operand = Operand(
+        str_operand=p[-1], op_type=types[last_var_type], address=var_address)
     func.add_var(operand)
 
 
@@ -289,7 +293,8 @@ def p_n_eval_xp(p):
 
 def p_n_eval_x(p):
     'n_eval_x : '
-    Q.maybe_solve_operation([Operator.EQUALS, Operator.NOT_EQUAL, Operator.LESS, Operator.GREATER, Operator.LESS_EQ, Operator.GREATER_EQ])
+    Q.maybe_solve_operation([Operator.EQUALS, Operator.NOT_EQUAL, Operator.LESS,
+                             Operator.GREATER, Operator.LESS_EQ, Operator.GREATER_EQ])
 
 
 def p_n_eval_factor(p):
@@ -301,14 +306,16 @@ def p_n_eval_term(p):
     'n_eval_term : '
     Q.maybe_solve_operation([Operator.PLUS, Operator.MINUS])
 
+
 def p_n_end_condition(p):
     'n_end_condition : '
     Q.register_condition()
-    
+
 
 def p_n_start_else(p):
     'n_start_else : '
     Q.register_else()
+
 
 def p_n_end_if(p):
     'n_end_if : '
@@ -319,13 +326,15 @@ def p_n_start_while(p):
     'n_start_while : '
     Q.register_start_while()
 
+
 def p_n_end_while(p):
     'n_end_while : '
     Q.register_end_while()
 
+
 def p_n_add_operand(p):
     'n_add_operand : '
-    Q.add_type(types[type(p[-1]).__name__])
+    # Q.add_type(types[type(p[-1]).__name__])
     Q.add_operand(p[-1])
 
 
@@ -338,23 +347,24 @@ def p_n_make_assignment(p):
     'n_make_assignment : '
     # Arreglar esto despues, no me gusta como se ve.
     func = AT.funcs[AT.current_func_name]
+    operand = None
     if func.is_var(p[-1]):
-        var_type = func.get_var_type(p[-1])
-        print('hola hola', var_type)
+        operand = func.get_var(p[-1])
     else:
         raise NameError(f"Variable not declared.")
+    # crear operador
+    Q.add_existing_operand(operand)
 
 
-    Q.add_type(var_type)
-    Q.add_operand(p[-1])
-    
 def p_n_print(p):
     'n_print : '
     Q.do_print()
 
+
 def p_n_return(p):
     'n_return : '
     Q.add_return()
+
 
 def p_error(p):
     print('There is an error:', p)

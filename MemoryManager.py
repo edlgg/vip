@@ -1,9 +1,10 @@
 from constants import Type
 
+
 class MemoryManager:
     def __init__(self):
         # Global Variables
-        self.g_int_index =  1000
+        self.g_int_index = 1000
         self.g_int_end = 1999
         self.g_float_index = 2000
         self.g_float_end = 2999
@@ -13,7 +14,7 @@ class MemoryManager:
         # Local Variables
         self.l_int_index = 4000
         self.l_int_end = 4999
-        self.l_float_index =  5000
+        self.l_float_index = 5000
         self.l_float_end = 5999
         self.l_string_index = 6000
         self.l_string_end = 6999
@@ -37,19 +38,20 @@ class MemoryManager:
     def reset_temp_and_local_vars(self):
         self.l_int_index = self.l_int_index - (self.l_int_index % 1000)
         self.l_float_index = self.l_float_index - (self.l_float_index % 1000)
-        self.l_string_index = self.l_string_index - (self.l_string_index % 1000)
+        self.l_string_index = self.l_string_index - \
+            (self.l_string_index % 1000)
 
         self.t_int_index = self.t_int_index - (self.t_int_index % 1000)
         self.t_float_index = self.t_float_index - (self.t_float_index % 1000)
-        self.t_string_index = self.t_string_index - (self.t_string_index % 1000)
-
+        self.t_string_index = self.t_string_index - \
+            (self.t_string_index % 1000)
 
     def setAddress(self, scope, var_type):
         assignedAddress = None
         if scope == 'global':
             if var_type == Type.INT:
                 if self.g_int_index > self.g_int_end:
-                    return -1 # Memory limit exceeded.
+                    return -1  # Memory limit exceeded.
                 assignedAddress = self.g_int_index
                 self.g_int_index += 1
             elif var_type == Type.FLOAT:
@@ -63,7 +65,7 @@ class MemoryManager:
                 assignedAddress = self.g_string_index
                 self.g_string_index += 1
             else:
-                return -2 # Invalid var_type given.
+                return -2  # Invalid var_type given.
 
         elif scope == 'local':
             if var_type == Type.INT:
@@ -76,17 +78,15 @@ class MemoryManager:
                     return -1
                 assignedAddress = self.l_float_index
                 self.l_float_index += 1
-            elif var_type ==  Type.STRING:
+            elif var_type == Type.STRING:
                 if self.l_string_index > self.l_string_end:
                     return -1
                 assignedAddress = self.l_string_index
                 self.l_string_index += 1
             else:
                 return -2  # Invalid var_type given.
-        
+
         return assignedAddress
-
-
 
     def setTempAddress(self, var_type):
         assignedAddress = None
@@ -111,16 +111,14 @@ class MemoryManager:
 
         return assignedAddress
 
-
-
     def setConstantAddress(self, var_type):
         assignedAddress = None
 
         if var_type == Type.INT:
             if self.c_int_index > self.c_int_end:
                 return -1  # Memory limit exceeded.
-            assignedAddress = self.t_int_index
-            self.t_int_index += 1
+            assignedAddress = self.c_int_index
+            self.c_int_index += 1
         elif var_type == Type.FLOAT:
             if self.c_float_index > self.c_float_end:
                 return -1

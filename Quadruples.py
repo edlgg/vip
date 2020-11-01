@@ -6,7 +6,7 @@ from MemoryManager import MemoryManager
 
 class Quadruples:
 
-    def __init__(self):
+    def __init__(self, AT):
         self.quadruples = []
         self.operators = []
         self.operands = []
@@ -16,6 +16,7 @@ class Quadruples:
         self.q_count = 1
         self.curr_t_count = 1
 
+        self.AT = AT
         self.memory_manager = MemoryManager()
 
     def get_memory_manager(self):
@@ -39,24 +40,60 @@ class Quadruples:
     def add_operator(self, operator):
         self.operators.append(operator)
 
-    def add_operand(self, str_operand):
-        operand = self.build_operand_object(str_operand)
+    def add_operand(self, str_operand, is_assigned=False):
+
+        operand = self.build_operand_object(
+            str_operand, is_assigned=is_assigned)
+        self.operands.append(operand)
+        self.add_type(operand.get_type())
+
+    def add_existing_operand(self, operand):
+        self.add_type(operand.get_type())
         self.operands.append(operand)
 
-    def build_operand_object(self, str_operand):
+    def build_operand_object(self, str_operand, is_assigned=False):
         t = type(str_operand)
-        print('type de t: ', t)
-        operand = Operand(str_operand)
+        operand = Operand(str_operand, is_assigned=is_assigned)
+        func = self.AT.funcs[self.AT.current_func_name]
 
         if t == int:
             operand.set_type(Type.INT)
-            operand.set_address(self.memory_manager.setAddress('local', Type.INT)) #TODO: Manage local and global.
+            address = func.get_constant_address(str_operand, Type.INT)
+            if address == -1:  # It doesn't exist.
+                address = self.memory_manager.setConstantAddress(Type.INT)
+                func.add_constant_address(str_operand, Type.INT, address)
+            operand.set_address(address)
         elif t == float:
             operand.set_type(Type.FLOAT)
-            operand.set_address(self.memory_manager.setAddress('local', Type.FLOAT))
+            address = func.get_constant_address(str_operand, Type.FLOAT)
+            if address == -1:  # It doesn't exist.
+                address = self.memory_manager.setConstantAddress(Type.FLOAT)
+                func.add_constant_address(str_operand, Type.FLOAT, address)
+            operand.set_address(address)
         elif t == str:
             operand.set_type(Type.STRING)
-            operand.set_address(self.memory_manager.setAddress('local', Type.STRING))
+
+            # if constant
+            if str_operand[0] == "\"" and str_operand[-1] == "\"":
+                address = func.get_constant_address(str_operand, Type.STRING)
+                if address == -1:  # It doesn't exist.
+                    address = self.memory_manager.setConstantAddress(
+                        Type.STRING)
+                    func.add_constant_address(
+                        str_operand, Type.STRING, address)
+                operand.set_address(address)
+
+            else:  # Variable
+                address = None
+                for key, value in func.vars.items():
+                    print(key, value.address)
+                    if value.str_operand == str_operand:
+                        address = value.address
+                if address == None:
+                    address = self.memory_manager.setAddress(
+                        'local', Type.STRING)
+                operand.set_address(
+                    address)
 
         return operand
 
@@ -100,7 +137,7 @@ class Quadruples:
         return val
 
     # def solve_operation(self, l_operand, r_operand, operator):
-    #     operator = 
+    #     operator =
     #     res = eval(
     #         f"{l_operand.get_str_operand()} {operator} {r_operand.get_str_operand()}")
     #     if type(res) == bool:
@@ -125,7 +162,7 @@ class Quadruples:
 
     def register_end_if(self):
         end = self.jumps.pop()
-        self.quadruples[end - 1][3]  = self.q_count
+        self.quadruples[end - 1][3] = self.q_count
 
     def register_start_while(self):
         self.jumps.append(self.q_count)
@@ -137,24 +174,16 @@ class Quadruples:
         self.generate_quadruple(Operator.GOTO, None, None, start_while)
 
     def assign(self):
-
-        print('antes de los pops')
-        print('Operands', self.operands)
-        print('Types', self.types)
-
         l_operand = self.operands.pop()
         l_type = self.types.pop()
         assigning_variable = self.operands.pop()
         assigning_type = self.types.pop()
 
-        print('variable: ', assigning_variable)
-        print('assigning_type: ', assigning_type)
-
-
         # Semantic cube checking.
         if not semantic_cube[assigning_type][l_type][Operator.ASSIGN]:
             return f'Type mismatch'
-        self.generate_quadruple(Operator.ASSIGN, l_operand, None, assigning_variable.address)
+        self.generate_quadruple(
+            Operator.ASSIGN, l_operand.address, None, assigning_variable.address)
         self.operands.append(assigning_variable)
         self.types.append(assigning_type)
 
@@ -179,22 +208,24 @@ class Quadruples:
             l_type = self.types.pop()
             operator = self.operators.pop()
             result_type = semantic_cube[l_type][r_type][operator]
+
             if result_type == Type.ERROR:
                 raise NameError(f"Type mismatch {l_type} {operator} {r_type}")
 
-            print(operator)
-            print(l_type, r_type)
-            print(result_type)
-
-            temp = Operand('t' + str(self.curr_t_count)) # TODO:Borrar esto del constructor despues
+            # TODO:Borrar esto del constructor despues
+            temp = Operand('t' + str(self.curr_t_count))
             temp.set_type(result_type)
-            temp.set_address(self.memory_manager.setTempAddress(result_type))
-            temp.set_str_operand(temp.get_address())
+            address = self.memory_manager.setTempAddress(result_type)
+            temp.set_address(address)
+            # temp.set_str_operand(temp.get_address())
             self.curr_t_count += 1
 
             # result = self.solve_operation(l_operand, r_operand, operator)
-            self.add_operand(temp)
-            self.add_type(result_type)
+            # self.add_operand(temp)
+            self.operands.append(temp)
+            self.types.append(result_type)
+            # self.add_type(result_type)
 
             # Development note: Beware, operands are objects now. Everything is perfectly fine... maybe.
-            self.generate_quadruple(operator, l_operand, r_operand, temp)
+            self.generate_quadruple(
+                operator, l_operand.address, r_operand.address, address)

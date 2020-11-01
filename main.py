@@ -6,9 +6,9 @@ from Quadruples import Quadruples
 
 # running 'python main.py' will only print something if there is a syntax error.
 
-global Q
+# global Q
 
-Q = Quadruples()
+# Q = Quadruples()
 
 
 def main():
@@ -25,8 +25,9 @@ def main():
 
     data = '''
     function main {
-        int b;
+        int b, c;
         b = 2;
+        c = 7 + 4;
     }
     '''
 
