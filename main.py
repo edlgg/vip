@@ -23,11 +23,30 @@ def main():
     #     return 1
     # }
 
+    # data = '''
+    # function main {
+    #     int b, c;
+    #     b = 2;
+    #     c = 7 + 4;
+    # }
+    # '''
     data = '''
+    function test(): void {
+        int a;
+        return 0;
+        a = 1 + 4;
+        return a;
+    }
+
     function main {
-        int b, c;
-        b = 2;
-        c = 7 + 4;
+        int a;
+        if (2 < 3) {
+            print("Oui");
+        } 
+        else {
+            print("Non");
+        }
+        print("Fin");
     }
     '''
 

@@ -30,7 +30,7 @@ def p_function(p):
 
 
 def p_main(p):
-    'main : FUNCTION MAIN n_start_main function_body n_end_function'
+    'main : FUNCTION MAIN n_start_main function_body n_end_main'
 
 
 def p_function_header(p):
@@ -246,6 +246,7 @@ def p_array_access(p):
 def p_n_start_main(p):
     'n_start_main : '
     AT.add_func('main')
+    Q.start_main()
 
 
 def p_n_add_function_name(p):
@@ -261,7 +262,11 @@ def p_n_add_function_type(p):
 
 def p_n_end_function(p):
     'n_end_function : '
-    pass
+    Q.end_function()
+
+def p_n_end_main(p):
+    'n_end_main : '
+    Q.end_function(is_main=True)
 
 
 def p_n_add_var(p):

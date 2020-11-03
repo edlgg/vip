@@ -13,11 +13,12 @@ class Quadruples:
         self.types = []
         self.jumps = []
         self.returns = []
-        self.q_count = 1
+        self.q_count = 0
         self.curr_t_count = 1
 
         self.AT = AT
         self.memory_manager = MemoryManager()
+        self.generate_quadruple(Operator.GOTO, None, None, None)
 
     def get_memory_manager(self):
         return self.memory_manager
@@ -26,7 +27,7 @@ class Quadruples:
         # print("operators: ", self.operators)
         print("quadruples: ")
         for i, q in enumerate(self.quadruples):
-            print(i+1, q)
+            print(i, q)
         # print('operands: ')
         # for operand in self.operands:
         #     print(operand.get_str_operand())
@@ -158,18 +159,18 @@ class Quadruples:
         self.generate_quadruple(Operator.GOTO, None, None, None)
         false = self.jumps.pop()
         self.jumps.append(self.q_count - 1)
-        self.quadruples[false - 1][3] = self.q_count
+        self.quadruples[false][3] = self.q_count
 
     def register_end_if(self):
         end = self.jumps.pop()
-        self.quadruples[end - 1][3] = self.q_count
+        self.quadruples[end][3] = self.q_count
 
     def register_start_while(self):
         self.jumps.append(self.q_count)
 
     def register_end_while(self):
         end = self.jumps.pop()
-        self.quadruples[end-1][3] = self.q_count + 1
+        self.quadruples[end][3] = self.q_count + 1
         start_while = self.jumps.pop()
         self.generate_quadruple(Operator.GOTO, None, None, start_while)
 
@@ -197,6 +198,18 @@ class Quadruples:
         return_type = self.types.pop()
         self.returns.append(self.q_count)
         self.generate_quadruple(Operator.RETURN, return_val, None, None)
+
+    def end_function(self, is_main=False):
+        while len(self.returns):
+            self.quadruples[self.returns.pop()][3] = self.q_count
+
+        if is_main:
+            self.generate_quadruple(Operator.END, None, None, None)
+        else:
+            self.generate_quadruple(Operator.ENDFUNC, None, None, None)
+
+    def start_main(self):
+        self.quadruples[0][3] = self.q_count
 
     def maybe_solve_operation(self, operations):
         operator = self.get_operator()
