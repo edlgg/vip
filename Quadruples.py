@@ -23,10 +23,8 @@ class Quadruples:
         self.AT = AddressTable()
         self.memory_manager = MemoryManager()
 
+        # Generating the first quadruple which is a GOTO main.
         self.generate_quadruple(Operator.GOTO, None, None, None)
-
-    def get_memory_manager(self):
-        return self.memory_manager
 
     def get_AT(self):
         return self.AT
