@@ -222,7 +222,7 @@ def p_factor(p):
 
 
 def p_factor_aux(p):
-    '''factor_aux : L_PARENS expression R_PARENS
+    '''factor_aux : L_PARENS n_add_operator expression n_pop_fake_bottom R_PARENS
                   | PLUS const
                   | MINUS const
                   | const'''
@@ -263,6 +263,7 @@ def p_n_add_function_type(p):
 def p_n_end_function(p):
     'n_end_function : '
     Q.end_function()
+
 
 def p_n_end_main(p):
     'n_end_main : '
@@ -346,6 +347,11 @@ def p_n_add_operand(p):
 def p_n_add_operator(p):
     'n_add_operator : '
     Q.add_operator(operators[p[-1]])
+
+
+def p_n_pop_fake_bottom(p):
+    'n_pop_fake_bottom : '
+    Q.pop_fake_bottom()
 
 
 def p_n_make_assignment(p):

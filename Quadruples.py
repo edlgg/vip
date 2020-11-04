@@ -42,11 +42,13 @@ class Quadruples:
         self.operators.append(operator)
 
     def add_operand(self, str_operand, is_assigned=False):
-
         operand = self.build_operand_object(
             str_operand, is_assigned=is_assigned)
         self.operands.append(operand)
         self.add_type(operand.get_type())
+
+    def pop_fake_bottom(self):
+        self.operators.pop()
 
     def add_existing_operand(self, operand):
         self.add_type(operand.get_type())

@@ -36,8 +36,13 @@ class Operator(Enum):
     GOTOF = 15
     PRINT = 16
     RETURN = 17
-    ENDFUNC = 18
-    END = 19
+    GOSUB = 18
+    PARAM = 19
+    ERA = 20
+    ENDFUNC = 21
+    END = 22
+    FAKE_BOTTOM = 23
+
 
 operators = {
     "+": Operator.PLUS,
@@ -51,8 +56,9 @@ operators = {
     ">=": Operator.GREATER_EQ,
     "==": Operator.EQUALS,
     "!=": Operator.NOT_EQUAL,
-    "and": Operator.AND, 
+    "and": Operator.AND,
     "or": Operator.OR,
     "gotof": Operator.GOTOF,
-    "goto": Operator.GOTO
+    "goto": Operator.GOTO,
+    "(": Operator.FAKE_BOTTOM,
 }
