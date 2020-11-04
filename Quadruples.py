@@ -15,6 +15,7 @@ class Quadruples:
         self.returns = []
         self.q_count = 0
         self.curr_t_count = 1
+        self.current_method_call = None
 
         self.AT = AT
         self.memory_manager = MemoryManager()
@@ -212,6 +213,12 @@ class Quadruples:
 
     def start_main(self):
         self.quadruples[0][3] = self.q_count
+        self.AT.add_func('main')
+
+    def register_func(self, func_name):
+        print('conchaaaaaa')
+        print(self.q_count)
+        self.AT.add_func(func_name, first_quadruple=self.q_count)
 
     def maybe_solve_operation(self, operations):
         operator = self.get_operator()
@@ -232,6 +239,9 @@ class Quadruples:
             temp.set_type(result_type)
             address = self.memory_manager.setTempAddress(result_type)
             temp.set_address(address)
+            current_func_name = self.AT.current_func_name
+            current_func = self.AT.get_func(current_func_name)
+            current_func.num_temp_vars += 1
             # temp.set_str_operand(temp.get_address())
             self.curr_t_count += 1
 
@@ -244,3 +254,13 @@ class Quadruples:
             # Development note: Beware, operands are objects now. Everything is perfectly fine... maybe.
             self.generate_quadruple(
                 operator, l_operand.address, r_operand.address, address)
+
+    def calling_func(self, func_id):
+        if self.AT.is_func(func_id):
+            self.current_method_call = func_id
+        else:
+            raise NameError(f"Calling undefined function: {func_id}")
+
+    def increment_local_var_count(self):
+        curr_func = self.AT.current_func_name
+        self.AT.funcs[curr_func].num_local_vars += 1

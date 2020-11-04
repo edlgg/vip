@@ -23,31 +23,25 @@ def main():
     #     return 1
     # }
 
-    data = '''
-    function main {
-        int b, c;
-        b = 1 * (1 + 4);
-    }
-    '''
     # data = '''
-    # function test(): void {
-    #     int a;
-    #     return 0;
-    #     a = 1 + 4;
-    #     return a;
-    # }
-
     # function main {
-    #     int a;
-    #     if (2 < 3) {
-    #         print("Oui");
-    #     }
-    #     else {
-    #         print("Non");
-    #     }
-    #     print("Fin");
+    #     int b, c;
+    #     b = 1 * (1 + 4);
     # }
     # '''
+    data = '''
+    function test(int b): void {
+        int a;
+        a = 1 + 3 + 2;
+        return a;
+    }
+
+    function main {
+        int a;
+        a = 3 * ( 1 + 2 );
+        test(a);
+    }
+    '''
 
     print(data)
 

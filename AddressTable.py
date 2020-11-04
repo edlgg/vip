@@ -16,10 +16,13 @@ class Const:
 
 
 class Func:
-    def __init__(self, name, return_type="void", num_params=0):
+    def __init__(self, name, first_quadruple, return_type="void"):
         self.name = name
         self.return_type = return_type
-        self.num_params = num_params
+        self.num_params = 0
+        self.num_local_vars = 0
+        self.num_temp_vars = 0
+        self.quad_start = None
         self.vars = {}
         self.constants_addresses = {
             Type.INT: {},
@@ -27,6 +30,7 @@ class Func:
             Type.STRING: {},
         }
         self.return_types = ["void", "int", "float", "string"]
+        self.first_quadruple = first_quadruple
 
     def add_var(self, operand):
         name = operand.str_operand
@@ -75,12 +79,12 @@ class AddressTable:
         # This helps us keep track of the function we're defining
         # variables for.
 
-    def add_func(self, name, return_type="void", num_params=0):
+    def add_func(self, name, first_quadruple=None, return_type="void"):
         if name in self.funcs:
             raise NameError(f"Func {name} already defined")
         self.current_func_name = name
         self.funcs[name] = Func(
-            name=name, return_type=return_type, num_params=num_params)
+            name=name, return_type=return_type, first_quadruple=first_quadruple)
 
     def is_func(self, name):
         return name in self.funcs
@@ -98,3 +102,7 @@ class AddressTable:
                 print(var.str_operand, var.type, var.address)
             for key, value in func.constants_addresses[Type.INT].items():
                 print(key, value)
+            print('Num params', func.num_params)
+            print('Num local vars', func.num_local_vars)
+            print('Num temp vars', func.num_temp_vars)
+            print('Quad start', func.first_quadruple)

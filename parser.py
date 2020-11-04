@@ -39,13 +39,13 @@ def p_function_header(p):
 
 
 def p_function_body(p):
-    '''function_body : L_KEY_BRACKET function_body_aux statements R_KEY_BRACKET
+    '''function_body : L_KEY_BRACKET vars statements R_KEY_BRACKET
                      | L_KEY_BRACKET statements R_KEY_BRACKET'''
 
 
-def p_function_body_aux(p):
-    '''function_body_aux : var function_body_aux
-                         | var'''
+def p_vars(p):
+    '''vars : var n_increment_local_var_count vars
+            | var n_increment_local_var_count'''
 
 
 def p_statements(p):
@@ -54,10 +54,10 @@ def p_statements(p):
 
 
 def p_function_params(p):
-    '''function_params : type ID n_add_var array_index COMMA function_params
-                       | type ID n_add_var array_index
-                       | type ID n_add_var COMMA function_params
-                       | type ID n_add_var'''
+    '''function_params : type ID n_add_param array_index COMMA function_params
+                       | type ID n_add_param array_index
+                       | type ID n_add_param COMMA function_params
+                       | type ID n_add_param'''
 
 
 def p_function_type(p):
@@ -128,7 +128,7 @@ def p_assignment(p):
 
 
 def p_function_call(p):
-    'function_call : ID params_pass'
+    'function_call : ID n_calling_func params_pass'
 
 
 def p_return(p):
@@ -245,13 +245,12 @@ def p_array_access(p):
 
 def p_n_start_main(p):
     'n_start_main : '
-    AT.add_func('main')
     Q.start_main()
 
 
 def p_n_add_function_name(p):
     'n_add_function_name : '
-    AT.add_func(p[-1])
+    Q.register_func(p[-1])
 
 
 def p_n_add_function_type(p):
@@ -279,6 +278,18 @@ def p_n_add_var(p):
     operand = Operand(
         str_operand=p[-1], op_type=types[last_var_type], address=var_address)
     func.add_var(operand)
+
+
+def p_n_add_param(p):
+    'n_add_param : '
+    func = AT.get_func(AT.current_func_name)
+    memoryManager = Q.get_memory_manager()
+    var_address = memoryManager.setAddress(
+        scope='local', var_type=types[last_var_type])
+    operand = Operand(
+        str_operand=p[-1], op_type=types[last_var_type], address=var_address)
+    func.add_var(operand)
+    func.num_params += 1
 
 
 def p_n_record_last_type(p):
@@ -372,9 +383,19 @@ def p_n_print(p):
     Q.do_print()
 
 
+def p_n_increment_local_var_count(p):
+    'n_increment_local_var_count : '
+    Q.increment_local_var_count()
+
+
 def p_n_return(p):
     'n_return : '
     Q.add_return()
+
+
+def p_n_calling_func(p):
+    'n_calling_func : '
+    Q.calling_func(p[-1])
 
 
 def p_error(p):

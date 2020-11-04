@@ -18,18 +18,17 @@ class TestFunc:
         assert var.address == address
 
     @pytest.mark.parametrize(
-        "name, return_type, num_params",
+        "name, return_type",
         [
-            ("a", "int", 1),
-            ("b", "int", 2),
-            ("c", "int", 3),
+            ("a", "int"),
+            ("b", "int"),
+            ("c", "int"),
         ],
     )
-    def test_func_init(self, name, return_type, num_params):
-        func = Func(name=name, return_type=return_type, num_params=num_params)
+    def test_func_init(self, name, return_type):
+        func = Func(name=name, return_type=return_type)
         assert func.name == name
         assert func.return_type == return_type
-        assert func.num_params == num_params
 
     @pytest.mark.parametrize(
         "name, var_type, address",
@@ -40,7 +39,7 @@ class TestFunc:
         ],
     )
     def test_add_var(self, name, var_type, address):
-        func = Func(name="test", return_type="void", num_params=0)
+        func = Func(name="test", return_type="void")
         func.add_var(name=name, var_type=var_type, address=address)
         assert name in func.vars
 
@@ -53,7 +52,7 @@ class TestFunc:
         ],
     )
     def test_delete_var(self, name, var_type, address):
-        func = Func(name="test", return_type="void", num_params=0)
+        func = Func(name="test", return_type="void")
         func.add_var(name=name, var_type=var_type, address=address)
         assert name in func.vars
         func.delete_var(name)
@@ -67,7 +66,7 @@ class TestFunc:
         ],
     )
     def test_is_var(self, name, search, result):
-        func = Func(name="test", return_type="void", num_params=0)
+        func = Func(name="test", return_type="void")
         func.add_var(name=name, var_type="int", address=1)
         assert func.is_var(search) == result
 
@@ -79,7 +78,7 @@ class TestFunc:
         ],
     )
     def test_assign_var(self, name, assign):
-        func = Func(name="test", return_type="void", num_params=0)
+        func = Func(name="test", return_type="void")
         func.add_var(name=name, var_type="int", address=1)
 
         if assign:
@@ -100,7 +99,7 @@ class TestFunc:
         ],
     )
     def test_is_var_assigned(self, name, assign):
-        func = Func(name="test", return_type="void", num_params=0)
+        func = Func(name="test", return_type="void")
         func.add_var(name=name, var_type="int", address=1)
 
         if assign:
@@ -116,7 +115,7 @@ class TestFunc:
         ],
     )
     def test_get_var_type(self, var_type):
-        func = Func(name="test", return_type="void", num_params=0)
+        func = Func(name="test", return_type="void")
         func.add_var(name="a", var_type=var_type, address=1)
         assert func.vars["a"].var_type == var_type
 
@@ -128,26 +127,24 @@ class TestFunc:
         ],
     )
     def test_get_var_address(self, address):
-        func = Func(name="test", return_type="void", num_params=0)
+        func = Func(name="test", return_type="void")
         func.add_var(name="a", var_type="int", address=address)
         assert func.vars["a"].address == address
 
 
 class TestAddressTable:
     @pytest.mark.parametrize(
-        "name, return_type, num_params",
+        "name, return_type",
         [
-            ("func1", "int", 1),
-            ("func2", "float", 2)
+            ("func1", "int"),
+            ("func2", "float")
         ],
     )
-    def test_add_func(self, name, return_type, num_params):
+    def test_add_func(self, name, return_type):
         table = AddressTable()
-        table.add_func(name=name, return_type=return_type,
-                       num_params=num_params)
+        table.add_func(name=name, return_type=return_type)
         assert name in table.funcs
         assert table.funcs[name].return_type == return_type
-        assert table.funcs[name].num_params == num_params
 
     @pytest.mark.parametrize(
         "name, assign",
@@ -159,7 +156,7 @@ class TestAddressTable:
     def test_is_func(self, name, assign):
         table = AddressTable()
         if assign:
-            table.add_func(name=name, return_type="void", num_params=1)
+            table.add_func(name=name, return_type="void")
         assert table.is_func(name) == assign
 
     @pytest.mark.parametrize(
@@ -171,7 +168,7 @@ class TestAddressTable:
     )
     def test_get_func(self, name):
         table = AddressTable()
-        table.add_func(name=name, return_type="void", num_params=1)
+        table.add_func(name=name, return_type="void")
         assert table.get_func(name).name == name
 
     @pytest.mark.parametrize(
@@ -183,7 +180,7 @@ class TestAddressTable:
     )
     def test_del_func(self, name):
         table = AddressTable()
-        table.add_func(name=name, return_type="void", num_params=1)
+        table.add_func(name=name, return_type="void")
         assert table.is_func(name)
         table.del_func(name)
         assert not table.is_func(name)
