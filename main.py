@@ -30,7 +30,7 @@ def main():
     # }
     # '''
     data = '''
-    function test(int b): void {
+    function test(int b): int {
         int a;
         a = 1 + 3 + 2;
         return a;

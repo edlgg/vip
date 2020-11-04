@@ -106,3 +106,4 @@ class AddressTable:
             print('Num local vars', func.num_local_vars)
             print('Num temp vars', func.num_temp_vars)
             print('Quad start', func.first_quadruple)
+            print('return type', func.return_type)

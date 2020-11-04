@@ -10,10 +10,8 @@ from AddressTable import AddressTable
 from constants import types, Operator, operators, Type
 from Operand import Operand
 
-global AT, Q, last_var_type
-AT = AddressTable()
-Q = Quadruples(AT)
-
+global Q
+Q = Quadruples()
 
 def p_program(p):
     '''program : program_aux main
@@ -120,10 +118,10 @@ def p_array_dim(p):
 
 
 def p_assignment(p):
-    '''assignment : ID n_make_assignment array_index ASSIGN  expression
-                  | ID n_make_assignment array_index ASSIGN  read
-                  | ID n_make_assignment ASSIGN expression
-                  | ID n_make_assignment ASSIGN read'''
+    '''assignment : ID n_start_assignment array_index ASSIGN  expression
+                  | ID n_start_assignment array_index ASSIGN  read
+                  | ID n_start_assignment ASSIGN expression
+                  | ID n_start_assignment ASSIGN read'''
     Q.assign()
 
 
@@ -255,8 +253,7 @@ def p_n_add_function_name(p):
 
 def p_n_add_function_type(p):
     'n_add_function_type : '
-    func = AT.get_func(AT.current_func_name)
-    func.assign_return_type(p[-1])
+    Q.register_func_type(p[-1])
 
 
 def p_n_end_function(p):
@@ -271,31 +268,17 @@ def p_n_end_main(p):
 
 def p_n_add_var(p):
     'n_add_var : '
-    func = AT.get_func(AT.current_func_name)
-    memoryManager = Q.get_memory_manager()
-    var_address = memoryManager.setAddress(
-        scope='local', var_type=types[last_var_type])
-    operand = Operand(
-        str_operand=p[-1], op_type=types[last_var_type], address=var_address)
-    func.add_var(operand)
+    Q.add_var(p[-1])
 
 
 def p_n_add_param(p):
     'n_add_param : '
-    func = AT.get_func(AT.current_func_name)
-    memoryManager = Q.get_memory_manager()
-    var_address = memoryManager.setAddress(
-        scope='local', var_type=types[last_var_type])
-    operand = Operand(
-        str_operand=p[-1], op_type=types[last_var_type], address=var_address)
-    func.add_var(operand)
-    func.num_params += 1
+    Q.add_var(p[-1], is_param=True)
 
 
 def p_n_record_last_type(p):
     'n_record_last_type : '
-    global last_var_type
-    last_var_type = p[-1]
+    Q.last_var_type = p[-1]
 
 
 def p_n_eval_exp(p):
@@ -351,7 +334,6 @@ def p_n_end_while(p):
 
 def p_n_add_operand(p):
     'n_add_operand : '
-    # Q.add_type(types[type(p[-1]).__name__])
     Q.add_operand(p[-1])
 
 
@@ -365,18 +347,10 @@ def p_n_pop_fake_bottom(p):
     Q.pop_fake_bottom()
 
 
-def p_n_make_assignment(p):
-    'n_make_assignment : '
+def p_n_start_assignment(p):
+    'n_start_assignment : '
     # Arreglar esto despues, no me gusta como se ve.
-    func = AT.funcs[AT.current_func_name]
-    operand = None
-    if func.is_var(p[-1]):
-        operand = func.get_var(p[-1])
-    else:
-        raise NameError(f"Variable not declared.")
-    # crear operador
-    Q.add_existing_operand(operand)
-
+    Q.init_assignment(p[-1])
 
 def p_n_print(p):
     'n_print : '
@@ -411,5 +385,6 @@ def parse(input):
 
     Q.print_all()
 
-    return AT
+
+    return Q.get_AT()
     #result = parser.parse(input, tracking=True)

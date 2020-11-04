@@ -2,27 +2,34 @@ from semantic_cube import semantic_cube
 from constants import types, Type, Operator
 from Operand import Operand
 from MemoryManager import MemoryManager
+from AddressTable import AddressTable
 
 
 class Quadruples:
 
-    def __init__(self, AT):
+    def __init__(self):
         self.quadruples = []
         self.operators = []
         self.operands = []
         self.types = []
         self.jumps = []
         self.returns = []
+
         self.q_count = 0
         self.curr_t_count = 1
         self.current_method_call = None
+        self.last_var_type = None
 
-        self.AT = AT
+        self.AT = AddressTable()
         self.memory_manager = MemoryManager()
+
         self.generate_quadruple(Operator.GOTO, None, None, None)
 
     def get_memory_manager(self):
         return self.memory_manager
+
+    def get_AT(self):
+        return self.AT
 
     def print_all(self):
         # print("operators: ", self.operators)
@@ -177,6 +184,15 @@ class Quadruples:
         start_while = self.jumps.pop()
         self.generate_quadruple(Operator.GOTO, None, None, start_while)
 
+    def init_assignment(self, var_name):
+        func = self.AT.funcs[self.AT.current_func_name]
+        operand = None
+        if func.is_var(var_name):
+            operand = func.get_var(var_name)
+        else:
+            raise NameError(f"Variable not declared.")
+        self.add_existing_operand(operand)
+
     def assign(self):
         l_operand = self.operands.pop()
         l_type = self.types.pop()
@@ -216,9 +232,11 @@ class Quadruples:
         self.AT.add_func('main')
 
     def register_func(self, func_name):
-        print('conchaaaaaa')
-        print(self.q_count)
         self.AT.add_func(func_name, first_quadruple=self.q_count)
+
+    def register_func_type(self, func_type):
+        func = self.AT.get_func(self.AT.current_func_name)
+        func.assign_return_type(func_type)
 
     def maybe_solve_operation(self, operations):
         operator = self.get_operator()
@@ -264,3 +282,13 @@ class Quadruples:
     def increment_local_var_count(self):
         curr_func = self.AT.current_func_name
         self.AT.funcs[curr_func].num_local_vars += 1
+
+    def add_var(self, var_name, is_param=False):
+        func = self.AT.get_func(self.AT.current_func_name)
+        var_address = self.memory_manager.setAddress(
+            scope='local', var_type=types[self.last_var_type])
+        operand = Operand(
+            str_operand=var_name, op_type=types[self.last_var_type], address=var_address)
+        func.add_var(operand)
+        if is_param:
+            func.num_params += 1

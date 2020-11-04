@@ -50,10 +50,10 @@ Rule 44    array_index -> L_SQUARE_BRACKET expression R_SQUARE_BRACKET L_SQUARE_
 Rule 45    array_index -> L_SQUARE_BRACKET expression R_SQUARE_BRACKET
 Rule 46    array_dim -> L_SQUARE_BRACKET CONST_I R_SQUARE_BRACKET L_SQUARE_BRACKET CONST_I R_SQUARE_BRACKET
 Rule 47    array_dim -> L_SQUARE_BRACKET CONST_I R_SQUARE_BRACKET
-Rule 48    assignment -> ID n_make_assignment array_index ASSIGN expression
-Rule 49    assignment -> ID n_make_assignment array_index ASSIGN read
-Rule 50    assignment -> ID n_make_assignment ASSIGN expression
-Rule 51    assignment -> ID n_make_assignment ASSIGN read
+Rule 48    assignment -> ID n_start_assignment array_index ASSIGN expression
+Rule 49    assignment -> ID n_start_assignment array_index ASSIGN read
+Rule 50    assignment -> ID n_start_assignment ASSIGN expression
+Rule 51    assignment -> ID n_start_assignment ASSIGN read
 Rule 52    function_call -> ID n_calling_func params_pass
 Rule 53    return -> RETURN expression n_return
 Rule 54    if -> IF L_PARENS expression R_PARENS n_end_condition block elif else n_end_if
@@ -126,7 +126,7 @@ Rule 120   n_end_while -> <empty>
 Rule 121   n_add_operand -> <empty>
 Rule 122   n_add_operator -> <empty>
 Rule 123   n_pop_fake_bottom -> <empty>
-Rule 124   n_make_assignment -> <empty>
+Rule 124   n_start_assignment -> <empty>
 Rule 125   n_print -> <empty>
 Rule 126   n_increment_local_var_count -> <empty>
 Rule 127   n_return -> <empty>
@@ -217,11 +217,11 @@ n_eval_term          : 84 85 86
 n_eval_x             : 77 78 79 80 81 82 83
 n_eval_xp            : 75 76
 n_increment_local_var_count : 11 12
-n_make_assignment    : 48 49 50 51
 n_pop_fake_bottom    : 92
 n_print              : 64 65
 n_record_last_type   : 41 42 43
 n_return             : 53
+n_start_assignment   : 48 49 50 51
 n_start_else         : 58 59 60
 n_start_main         : 6
 n_start_while        : 61
@@ -391,10 +391,10 @@ state 12
     (41) type -> . INT n_record_last_type
     (42) type -> . FLOAT n_record_last_type
     (43) type -> . STRING n_record_last_type
-    (48) assignment -> . ID n_make_assignment array_index ASSIGN expression
-    (49) assignment -> . ID n_make_assignment array_index ASSIGN read
-    (50) assignment -> . ID n_make_assignment ASSIGN expression
-    (51) assignment -> . ID n_make_assignment ASSIGN read
+    (48) assignment -> . ID n_start_assignment array_index ASSIGN expression
+    (49) assignment -> . ID n_start_assignment array_index ASSIGN read
+    (50) assignment -> . ID n_start_assignment ASSIGN expression
+    (51) assignment -> . ID n_start_assignment ASSIGN read
     (52) function_call -> . ID n_calling_func params_pass
     (53) return -> . RETURN expression n_return
     (62) print -> . PRINT L_PARENS print_aux R_PARENS
@@ -468,10 +468,10 @@ state 16
     (38) statement_aux -> . print
     (39) statement_aux_2 -> . if
     (40) statement_aux_2 -> . while
-    (48) assignment -> . ID n_make_assignment array_index ASSIGN expression
-    (49) assignment -> . ID n_make_assignment array_index ASSIGN read
-    (50) assignment -> . ID n_make_assignment ASSIGN expression
-    (51) assignment -> . ID n_make_assignment ASSIGN read
+    (48) assignment -> . ID n_start_assignment array_index ASSIGN expression
+    (49) assignment -> . ID n_start_assignment array_index ASSIGN read
+    (50) assignment -> . ID n_start_assignment ASSIGN expression
+    (51) assignment -> . ID n_start_assignment ASSIGN read
     (52) function_call -> . ID n_calling_func params_pass
     (53) return -> . RETURN expression n_return
     (62) print -> . PRINT L_PARENS print_aux R_PARENS
@@ -538,10 +538,10 @@ state 19
     (38) statement_aux -> . print
     (39) statement_aux_2 -> . if
     (40) statement_aux_2 -> . while
-    (48) assignment -> . ID n_make_assignment array_index ASSIGN expression
-    (49) assignment -> . ID n_make_assignment array_index ASSIGN read
-    (50) assignment -> . ID n_make_assignment ASSIGN expression
-    (51) assignment -> . ID n_make_assignment ASSIGN read
+    (48) assignment -> . ID n_start_assignment array_index ASSIGN expression
+    (49) assignment -> . ID n_start_assignment array_index ASSIGN read
+    (50) assignment -> . ID n_start_assignment ASSIGN expression
+    (51) assignment -> . ID n_start_assignment ASSIGN read
     (52) function_call -> . ID n_calling_func params_pass
     (53) return -> . RETURN expression n_return
     (62) print -> . PRINT L_PARENS print_aux R_PARENS
@@ -582,19 +582,19 @@ state 20
 
 state 21
 
-    (48) assignment -> ID . n_make_assignment array_index ASSIGN expression
-    (49) assignment -> ID . n_make_assignment array_index ASSIGN read
-    (50) assignment -> ID . n_make_assignment ASSIGN expression
-    (51) assignment -> ID . n_make_assignment ASSIGN read
+    (48) assignment -> ID . n_start_assignment array_index ASSIGN expression
+    (49) assignment -> ID . n_start_assignment array_index ASSIGN read
+    (50) assignment -> ID . n_start_assignment ASSIGN expression
+    (51) assignment -> ID . n_start_assignment ASSIGN read
     (52) function_call -> ID . n_calling_func params_pass
-    (124) n_make_assignment -> .
+    (124) n_start_assignment -> .
     (128) n_calling_func -> .
 
-    ASSIGN          reduce using rule 124 (n_make_assignment -> .)
-    L_SQUARE_BRACKET reduce using rule 124 (n_make_assignment -> .)
+    ASSIGN          reduce using rule 124 (n_start_assignment -> .)
+    L_SQUARE_BRACKET reduce using rule 124 (n_start_assignment -> .)
     L_PARENS        reduce using rule 128 (n_calling_func -> .)
 
-    n_make_assignment              shift and go to state 46
+    n_start_assignment             shift and go to state 46
     n_calling_func                 shift and go to state 47
 
 state 22
@@ -895,10 +895,10 @@ state 45
 
 state 46
 
-    (48) assignment -> ID n_make_assignment . array_index ASSIGN expression
-    (49) assignment -> ID n_make_assignment . array_index ASSIGN read
-    (50) assignment -> ID n_make_assignment . ASSIGN expression
-    (51) assignment -> ID n_make_assignment . ASSIGN read
+    (48) assignment -> ID n_start_assignment . array_index ASSIGN expression
+    (49) assignment -> ID n_start_assignment . array_index ASSIGN read
+    (50) assignment -> ID n_start_assignment . ASSIGN expression
+    (51) assignment -> ID n_start_assignment . ASSIGN read
     (44) array_index -> . L_SQUARE_BRACKET expression R_SQUARE_BRACKET L_SQUARE_BRACKET expression R_SQUARE_BRACKET
     (45) array_index -> . L_SQUARE_BRACKET expression R_SQUARE_BRACKET
 
@@ -1549,16 +1549,16 @@ state 80
 
 state 81
 
-    (48) assignment -> ID n_make_assignment array_index . ASSIGN expression
-    (49) assignment -> ID n_make_assignment array_index . ASSIGN read
+    (48) assignment -> ID n_start_assignment array_index . ASSIGN expression
+    (49) assignment -> ID n_start_assignment array_index . ASSIGN read
 
     ASSIGN          shift and go to state 114
 
 
 state 82
 
-    (50) assignment -> ID n_make_assignment ASSIGN . expression
-    (51) assignment -> ID n_make_assignment ASSIGN . read
+    (50) assignment -> ID n_start_assignment ASSIGN . expression
+    (51) assignment -> ID n_start_assignment ASSIGN . read
     (66) expression -> . exp n_eval_exp AND n_add_operator expression
     (67) expression -> . exp n_eval_exp
     (68) read -> . READ ID
@@ -2265,8 +2265,8 @@ state 113
 
 state 114
 
-    (48) assignment -> ID n_make_assignment array_index ASSIGN . expression
-    (49) assignment -> ID n_make_assignment array_index ASSIGN . read
+    (48) assignment -> ID n_start_assignment array_index ASSIGN . expression
+    (49) assignment -> ID n_start_assignment array_index ASSIGN . read
     (66) expression -> . exp n_eval_exp AND n_add_operator expression
     (67) expression -> . exp n_eval_exp
     (68) read -> . READ ID
@@ -2324,16 +2324,16 @@ state 114
 
 state 115
 
-    (50) assignment -> ID n_make_assignment ASSIGN expression .
+    (50) assignment -> ID n_start_assignment ASSIGN expression .
 
-    SEMICOLON       reduce using rule 50 (assignment -> ID n_make_assignment ASSIGN expression .)
+    SEMICOLON       reduce using rule 50 (assignment -> ID n_start_assignment ASSIGN expression .)
 
 
 state 116
 
-    (51) assignment -> ID n_make_assignment ASSIGN read .
+    (51) assignment -> ID n_start_assignment ASSIGN read .
 
-    SEMICOLON       reduce using rule 51 (assignment -> ID n_make_assignment ASSIGN read .)
+    SEMICOLON       reduce using rule 51 (assignment -> ID n_start_assignment ASSIGN read .)
 
 
 state 117
@@ -2755,16 +2755,16 @@ state 149
 
 state 150
 
-    (48) assignment -> ID n_make_assignment array_index ASSIGN expression .
+    (48) assignment -> ID n_start_assignment array_index ASSIGN expression .
 
-    SEMICOLON       reduce using rule 48 (assignment -> ID n_make_assignment array_index ASSIGN expression .)
+    SEMICOLON       reduce using rule 48 (assignment -> ID n_start_assignment array_index ASSIGN expression .)
 
 
 state 151
 
-    (49) assignment -> ID n_make_assignment array_index ASSIGN read .
+    (49) assignment -> ID n_start_assignment array_index ASSIGN read .
 
-    SEMICOLON       reduce using rule 49 (assignment -> ID n_make_assignment array_index ASSIGN read .)
+    SEMICOLON       reduce using rule 49 (assignment -> ID n_start_assignment array_index ASSIGN read .)
 
 
 state 152
@@ -3958,10 +3958,10 @@ state 201
     (38) statement_aux -> . print
     (39) statement_aux_2 -> . if
     (40) statement_aux_2 -> . while
-    (48) assignment -> . ID n_make_assignment array_index ASSIGN expression
-    (49) assignment -> . ID n_make_assignment array_index ASSIGN read
-    (50) assignment -> . ID n_make_assignment ASSIGN expression
-    (51) assignment -> . ID n_make_assignment ASSIGN read
+    (48) assignment -> . ID n_start_assignment array_index ASSIGN expression
+    (49) assignment -> . ID n_start_assignment array_index ASSIGN read
+    (50) assignment -> . ID n_start_assignment ASSIGN expression
+    (51) assignment -> . ID n_start_assignment ASSIGN read
     (52) function_call -> . ID n_calling_func params_pass
     (53) return -> . RETURN expression n_return
     (62) print -> . PRINT L_PARENS print_aux R_PARENS
