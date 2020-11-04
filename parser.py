@@ -6,9 +6,7 @@ Authors: David Souza & Eduardo de la Garza
 import ply.yacc as yacc
 from scanner import tokens
 from Quadruples import Quadruples
-from AddressTable import AddressTable
-from constants import types, Operator, operators, Type
-from Operand import Operand
+from constants import Operator, operators
 
 global Q
 Q = Quadruples()
