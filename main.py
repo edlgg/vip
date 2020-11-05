@@ -45,4 +45,6 @@ def main():
 
     obj_code = parse(data)
 
+    return obj_code
+
 main()

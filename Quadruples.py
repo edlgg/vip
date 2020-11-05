@@ -96,7 +96,7 @@ class Quadruples:
 
             else:  # Variable
                 address = None
-                for key, value in func.vars.items():
+                for _, value in func.vars.items():
                     if value.str_operand == str_operand:
                         address = value.address
                 if address == None:
@@ -116,34 +116,6 @@ class Quadruples:
         if len(self.operators):
             return self.operators[-1]
         return None
-
-    def get_operand(self):
-        if len(self.operands):
-            return self.operands[-1]
-        return None
-
-    def get_jump(self):
-        if len(self.jumps):
-            return self.jumps[-1]
-        return None
-
-    def get_q_count(self):
-        return self.q_count
-
-    def pop_operator(self):
-        val = self.operators[-1]
-        self.operators = self.operators[:-1]
-        return val
-
-    def pop_operand(self):
-        val = self.operands[-1]
-        self.operand = self.operand[:-1]
-        return val
-
-    def pop_jump(self):
-        val = self.jumps[-1]
-        self.jumps = self.jumps[:-1]
-        return val
 
     def register_condition(self):
         self.types.pop()
