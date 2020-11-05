@@ -124,7 +124,7 @@ def p_assignment(p):
 
 
 def p_function_call(p):
-    'function_call : ID n_calling_func params_pass'
+    'function_call : ID n_calling_func params_pass n_validate_function_call'
 
 
 def p_return(p):
@@ -372,6 +372,10 @@ def p_n_calling_func(p):
 def p_n_validate_param(p):
     'n_validate_param : '
     Q.validate_param(p[-1])
+
+def p_n_validate_function_call(p):
+    'n_validate_function_call : '
+    Q.validate_function_call()
 
 
 def p_error(p):

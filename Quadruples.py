@@ -23,7 +23,7 @@ class Quadruples:
         # To keep track of the next temp to be created.
         self.curr_t_count = 1
         # To keep track of the current function call.
-        self.current_method_call = None
+        self.current_function_call = None
         # To keep track of type in var definition.
         self.last_var_type = None
 
@@ -97,7 +97,6 @@ class Quadruples:
             else:  # Variable
                 address = None
                 for key, value in func.vars.items():
-                    print(key, value.address)
                     if value.str_operand == str_operand:
                         address = value.address
                 if address == None:
@@ -275,7 +274,7 @@ class Quadruples:
 
     def calling_func(self, func_id):
         if self.AT.is_func(func_id):
-            self.current_method_call = func_id
+            self.current_function_call = func_id
         else:
             raise NameError(f"Calling undefined function: {func_id}")
 
@@ -287,11 +286,18 @@ class Quadruples:
         argument = self.operands.pop()
         argument_type = self.types.pop()
 
-        if self.param_count < self.AT.funcs[self.current_method_call].num_params:
+        if self.param_count < self.AT.funcs[self.current_function_call].num_params:
             self.param_count += 1
             self.generate_quadruple(Operator.PARAM, argument.get_address(), None, "param" + str(self.param_count))
         else:
             raise NameError(f"Passing more arguments than expected.")
+
+
+    def validate_function_call(self):
+        if self.param_count != self.AT.funcs[self.current_function_call].num_params:
+            raise NameError(f"Wrong number of parameters passed. Expected {self.AT.funcs[self.current_function_call].num_params}. {self.param_count} were given.")
+        else:
+            self.generate_quadruple(Operator.GOSUB, self.current_function_call, None, self.AT.funcs[self.current_function_call].first_quadruple)
 
     def increment_local_var_count(self):
         curr_func = self.AT.current_func_name
