@@ -24,11 +24,6 @@ class Func:
         self.num_temp_vars = 0
         self.quad_start = None
         self.vars = {}
-        self.constants_addresses = {
-            Type.INT: {},
-            Type.FLOAT: {},
-            Type.STRING: {},
-        }
         self.return_types = ["void", "int", "float", "string"]
         self.first_quadruple = first_quadruple
 
@@ -37,15 +32,6 @@ class Func:
         if name in self.vars:
             raise NameError(f"Var {name} already defined")
         self.vars[name] = operand
-
-    def add_constant_address(self, constant_value, constant_type, address):
-        self.constants_addresses[constant_type][constant_value] = address
-
-    def get_constant_address(self, constant_value, constant_type):
-        if constant_value in self.constants_addresses[constant_type]:
-            return self.constants_addresses[constant_type][constant_value]
-        else:
-            return -1  # Constant doesn't exist yet.
 
     def get_var(self, name):
         return self.vars[name]
@@ -75,7 +61,11 @@ class AddressTable:
     def __init__(self):
         self.funcs = {}
         self.current_func_name = None
-
+        self.constants_addresses = {
+            Type.INT: {},
+            Type.FLOAT: {},
+            Type.STRING: {},
+        }
         # This helps us keep track of the function we're defining
         # variables for.
 
@@ -94,16 +84,26 @@ class AddressTable:
 
     def del_func(self, name):
         del self.funcs[name]
+    
+    def add_constant_address(self, constant_value, constant_type, address):
+        self.constants_addresses[constant_type][constant_value] = address
+
+    def get_constant_address(self, constant_value, constant_type):
+        if constant_value in self.constants_addresses[constant_type]:
+            return self.constants_addresses[constant_type][constant_value]
+        else:
+            return -1  # Constant doesn't exist yet.
 
     def print_all(self):
         for _, func in self.funcs.items():
-            print(func.name)
+            print("******", func.name, "******")
+            print("VARIABLES LOCALES:")
             for _, var in func.vars.items():
                 print(var.str_operand, var.type, var.address)
-            for key, value in func.constants_addresses[Type.INT].items():
-                print(key, value)
-            print('Num params', func.num_params)
-            print('Num local vars', func.num_local_vars)
-            print('Num temp vars', func.num_temp_vars)
-            print('Quad start', func.first_quadruple)
-            print('return type', func.return_type)
+        print("CONSTANTES:")
+        for key, value in self.constants_addresses[Type.INT].items():
+            print(key, value)
+        for key, value in self.constants_addresses[Type.FLOAT].items():
+            print(key, value)
+        for key, value in self.constants_addresses[Type.STRING].items():
+            print(key, value)

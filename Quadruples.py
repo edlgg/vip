@@ -8,6 +8,7 @@ from AddressTable import AddressTable
 class Quadruples:
 
     def __init__(self):
+        # Our stacks.
         self.quadruples = []
         self.operators = []
         self.operands = []
@@ -15,9 +16,15 @@ class Quadruples:
         self.jumps = []
         self.returns = []
 
+        # To keep track of the next quadruple.
         self.q_count = 0
+        # To keep track of params in function_call
+        self.param_count = 0
+        # To keep track of the next temp to be created.
         self.curr_t_count = 1
+        # To keep track of the current function call.
         self.current_method_call = None
+        # To keep track of type in var definition.
         self.last_var_type = None
 
         self.AT = AddressTable()
@@ -30,14 +37,9 @@ class Quadruples:
         return self.AT
 
     def print_all(self):
-        # print("operators: ", self.operators)
         print("quadruples: ")
         for i, q in enumerate(self.quadruples):
             print(i, q)
-        # print('operands: ')
-        # for operand in self.operands:
-        #     print(operand.get_str_operand())
-        # print('pila de saltos', self.jumps)
 
     def generate_quadruple(self, a, b, c, d):
         quad = [a, b, c, d]
@@ -67,28 +69,28 @@ class Quadruples:
 
         if t == int:
             operand.set_type(Type.INT)
-            address = func.get_constant_address(str_operand, Type.INT)
+            address = self.AT.get_constant_address(str_operand, Type.INT)
             if address == -1:  # It doesn't exist.
                 address = self.memory_manager.setConstantAddress(Type.INT)
-                func.add_constant_address(str_operand, Type.INT, address)
+                self.AT.add_constant_address(str_operand, Type.INT, address)
             operand.set_address(address)
         elif t == float:
             operand.set_type(Type.FLOAT)
-            address = func.get_constant_address(str_operand, Type.FLOAT)
+            address = self.AT.get_constant_address(str_operand, Type.FLOAT)
             if address == -1:  # It doesn't exist.
                 address = self.memory_manager.setConstantAddress(Type.FLOAT)
-                func.add_constant_address(str_operand, Type.FLOAT, address)
+                self.AT.add_constant_address(str_operand, Type.FLOAT, address)
             operand.set_address(address)
         elif t == str:
             operand.set_type(Type.STRING)
 
             # if constant
             if str_operand[0] == "\"" and str_operand[-1] == "\"":
-                address = func.get_constant_address(str_operand, Type.STRING)
+                address = self.AT.get_constant_address(str_operand, Type.STRING)
                 if address == -1:  # It doesn't exist.
                     address = self.memory_manager.setConstantAddress(
                         Type.STRING)
-                    func.add_constant_address(
+                    self.AT.add_constant_address(
                         str_operand, Type.STRING, address)
                 operand.set_address(address)
 
@@ -101,8 +103,7 @@ class Quadruples:
                 if address == None:
                     address = self.memory_manager.setAddress(
                         'local', Type.STRING)
-                operand.set_address(
-                    address)
+                operand.set_address(address)
 
         return operand
 
@@ -224,6 +225,7 @@ class Quadruples:
             self.generate_quadruple(Operator.END, None, None, None)
         else:
             self.generate_quadruple(Operator.ENDFUNC, None, None, None)
+        self.memory_manager.reset_temp_and_local_vars()
 
     def start_main(self):
         self.quadruples[0][3] = self.q_count
@@ -276,6 +278,20 @@ class Quadruples:
             self.current_method_call = func_id
         else:
             raise NameError(f"Calling undefined function: {func_id}")
+
+        func = self.AT.funcs[func_id]
+        self.generate_quadruple(Operator.ERA, func_id, func.num_params, func.num_temp_vars)
+        self.param_count = 0
+
+    def validate_param(self, param):
+        argument = self.operands.pop()
+        argument_type = self.types.pop()
+
+        if self.param_count < self.AT.funcs[self.current_method_call].num_params:
+            self.param_count += 1
+            self.generate_quadruple(Operator.PARAM, argument.get_address(), None, "param" + str(self.param_count))
+        else:
+            raise NameError(f"Passing more arguments than expected.")
 
     def increment_local_var_count(self):
         curr_func = self.AT.current_func_name

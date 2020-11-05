@@ -171,14 +171,14 @@ def p_read(p):
 
 
 def p_params_pass(p):
-    '''params_pass : L_PARENS expression params_pass_aux R_PARENS
-                   | L_PARENS expression R_PARENS
+    '''params_pass : L_PARENS expression n_validate_param params_pass_aux R_PARENS
+                   | L_PARENS expression n_validate_param R_PARENS
                    | L_PARENS R_PARENS'''
 
 
 def p_params_pass_aux(p):
-    '''params_pass_aux : COMMA expression params_pass_aux
-                       | COMMA expression'''
+    '''params_pass_aux : COMMA expression n_validate_param params_pass_aux
+                       | COMMA expression n_validate_param'''
 
 
 def p_block(p):
@@ -368,6 +368,10 @@ def p_n_return(p):
 def p_n_calling_func(p):
     'n_calling_func : '
     Q.calling_func(p[-1])
+
+def p_n_validate_param(p):
+    'n_validate_param : '
+    Q.validate_param(p[-1])
 
 
 def p_error(p):
