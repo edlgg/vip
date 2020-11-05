@@ -33,13 +33,13 @@ class Quadruples:
         # Generating the first quadruple which is a GOTO main.
         self.generate_quadruple(Operator.GOTO, None, None, None)
 
-    def get_AT(self):
-        return self.AT
 
     def print_all(self):
         print("quadruples: ")
         for i, q in enumerate(self.quadruples):
             print(i, q)
+
+        self.AT.print_all()
 
     def generate_quadruple(self, a, b, c, d):
         quad = [a, b, c, d]
@@ -251,7 +251,6 @@ class Quadruples:
 
             self.operands.append(temp)
             self.types.append(result_type)
-            # self.add_type(result_type)
 
             # Development note: Beware, operands are objects now. Everything is perfectly fine... maybe.
             self.generate_quadruple(
@@ -305,3 +304,16 @@ class Quadruples:
             self.generate_quadruple(Operator.READ, None, None, operand.get_address())
         else:
             raise NameError(f"Undefined variable.")
+
+    def generate_output(self):
+        constants = {}
+        for value in self.AT.constants_addresses.values():
+            constants.update(self.invert_constants(value))
+                
+        return {
+            'quadruples': self.quadruples,
+            'constants': constants,
+        }
+
+    def invert_constants(self, dict):
+        return {value: key for key, value in dict.items()}

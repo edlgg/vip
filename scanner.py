@@ -82,16 +82,14 @@ def t_ID(t):
   t.type = reserved.get(t.value, 'ID')
   return t
 
-
-def t_CONST_I(t):
-  r'(0|-?[1-9][0-9]*)'
-  t.value = int(t.value)
+def t_CONST_F(t):
+  r'(\d*)?[.]\d+'
+  t.value = float(t.value)
   return t
 
-
-def t_CONST_F(t):
-  r'-?([1-9]\d*|0)?(\.\d+)’'
-  t.value = float(t.value)
+def t_CONST_I(t):
+  r'(0|-?[1-9]\d*)'
+  t.value = int(t.value)
   return t
 
 def t_CONST_STRING(t):

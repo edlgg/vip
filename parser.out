@@ -100,8 +100,8 @@ Rule 94    factor_aux -> PLUS const
 Rule 95    factor_aux -> MINUS const
 Rule 96    factor_aux -> const
 Rule 97    const -> ID n_add_operand
-Rule 98    const -> CONST_I n_add_operand
-Rule 99    const -> CONST_F n_add_operand
+Rule 98    const -> CONST_F n_add_operand
+Rule 99    const -> CONST_I n_add_operand
 Rule 100   const -> CONST_STRING n_add_operand
 Rule 101   const -> function_call
 Rule 102   const -> array_access
@@ -142,8 +142,8 @@ AND                  : 67
 ASSIGN               : 49 50 51 52
 COLON                : 7 8
 COMMA                : 15 17 29 30 31 32 65 73 74
-CONST_F              : 99
-CONST_I              : 47 47 48 98
+CONST_F              : 98
+CONST_I              : 47 47 48 99
 CONST_STRING         : 100
 DIVIDE               : 89
 ELIF                 : 59 60
@@ -772,8 +772,8 @@ state 36
     (95) factor_aux -> . MINUS const
     (96) factor_aux -> . const
     (97) const -> . ID n_add_operand
-    (98) const -> . CONST_I n_add_operand
-    (99) const -> . CONST_F n_add_operand
+    (98) const -> . CONST_F n_add_operand
+    (99) const -> . CONST_I n_add_operand
     (100) const -> . CONST_STRING n_add_operand
     (101) const -> . function_call
     (102) const -> . array_access
@@ -785,8 +785,8 @@ state 36
     PLUS            shift and go to state 60
     MINUS           shift and go to state 61
     ID              shift and go to state 67
-    CONST_I         shift and go to state 68
-    CONST_F         shift and go to state 69
+    CONST_F         shift and go to state 68
+    CONST_I         shift and go to state 69
     CONST_STRING    shift and go to state 70
 
     expression                     shift and go to state 55
@@ -1089,8 +1089,8 @@ state 60
 
     (94) factor_aux -> PLUS . const
     (97) const -> . ID n_add_operand
-    (98) const -> . CONST_I n_add_operand
-    (99) const -> . CONST_F n_add_operand
+    (98) const -> . CONST_F n_add_operand
+    (99) const -> . CONST_I n_add_operand
     (100) const -> . CONST_STRING n_add_operand
     (101) const -> . function_call
     (102) const -> . array_access
@@ -1098,8 +1098,8 @@ state 60
     (103) array_access -> . ID array_index
 
     ID              shift and go to state 67
-    CONST_I         shift and go to state 68
-    CONST_F         shift and go to state 69
+    CONST_F         shift and go to state 68
+    CONST_I         shift and go to state 69
     CONST_STRING    shift and go to state 70
 
     const                          shift and go to state 94
@@ -1110,8 +1110,8 @@ state 61
 
     (95) factor_aux -> MINUS . const
     (97) const -> . ID n_add_operand
-    (98) const -> . CONST_I n_add_operand
-    (99) const -> . CONST_F n_add_operand
+    (98) const -> . CONST_F n_add_operand
+    (99) const -> . CONST_I n_add_operand
     (100) const -> . CONST_STRING n_add_operand
     (101) const -> . function_call
     (102) const -> . array_access
@@ -1119,8 +1119,8 @@ state 61
     (103) array_access -> . ID array_index
 
     ID              shift and go to state 67
-    CONST_I         shift and go to state 68
-    CONST_F         shift and go to state 69
+    CONST_F         shift and go to state 68
+    CONST_I         shift and go to state 69
     CONST_STRING    shift and go to state 70
 
     const                          shift and go to state 95
@@ -1161,8 +1161,8 @@ state 63
     (95) factor_aux -> . MINUS const
     (96) factor_aux -> . const
     (97) const -> . ID n_add_operand
-    (98) const -> . CONST_I n_add_operand
-    (99) const -> . CONST_F n_add_operand
+    (98) const -> . CONST_F n_add_operand
+    (99) const -> . CONST_I n_add_operand
     (100) const -> . CONST_STRING n_add_operand
     (101) const -> . function_call
     (102) const -> . array_access
@@ -1173,8 +1173,8 @@ state 63
     PLUS            shift and go to state 60
     MINUS           shift and go to state 61
     ID              shift and go to state 67
-    CONST_I         shift and go to state 68
-    CONST_F         shift and go to state 69
+    CONST_F         shift and go to state 68
+    CONST_I         shift and go to state 69
     CONST_STRING    shift and go to state 70
 
     factor_aux                     shift and go to state 97
@@ -1214,8 +1214,8 @@ state 65
     PLUS            reduce using rule 123 (n_add_operator -> .)
     MINUS           reduce using rule 123 (n_add_operator -> .)
     ID              reduce using rule 123 (n_add_operator -> .)
-    CONST_I         reduce using rule 123 (n_add_operator -> .)
     CONST_F         reduce using rule 123 (n_add_operator -> .)
+    CONST_I         reduce using rule 123 (n_add_operator -> .)
     CONST_STRING    reduce using rule 123 (n_add_operator -> .)
 
     n_add_operator                 shift and go to state 98
@@ -1277,7 +1277,7 @@ state 67
 
 state 68
 
-    (98) const -> CONST_I . n_add_operand
+    (98) const -> CONST_F . n_add_operand
     (122) n_add_operand -> .
 
     TIMES           reduce using rule 122 (n_add_operand -> .)
@@ -1301,7 +1301,7 @@ state 68
 
 state 69
 
-    (99) const -> CONST_F . n_add_operand
+    (99) const -> CONST_I . n_add_operand
     (122) n_add_operand -> .
 
     TIMES           reduce using rule 122 (n_add_operand -> .)
@@ -1421,8 +1421,8 @@ state 73
     (95) factor_aux -> . MINUS const
     (96) factor_aux -> . const
     (97) const -> . ID n_add_operand
-    (98) const -> . CONST_I n_add_operand
-    (99) const -> . CONST_F n_add_operand
+    (98) const -> . CONST_F n_add_operand
+    (99) const -> . CONST_I n_add_operand
     (100) const -> . CONST_STRING n_add_operand
     (101) const -> . function_call
     (102) const -> . array_access
@@ -1435,8 +1435,8 @@ state 73
     PLUS            shift and go to state 60
     MINUS           shift and go to state 61
     ID              shift and go to state 67
-    CONST_I         shift and go to state 68
-    CONST_F         shift and go to state 69
+    CONST_F         shift and go to state 68
+    CONST_I         shift and go to state 69
     CONST_STRING    shift and go to state 70
 
     print_aux                      shift and go to state 104
@@ -1488,8 +1488,8 @@ state 75
     (95) factor_aux -> . MINUS const
     (96) factor_aux -> . const
     (97) const -> . ID n_add_operand
-    (98) const -> . CONST_I n_add_operand
-    (99) const -> . CONST_F n_add_operand
+    (98) const -> . CONST_F n_add_operand
+    (99) const -> . CONST_I n_add_operand
     (100) const -> . CONST_STRING n_add_operand
     (101) const -> . function_call
     (102) const -> . array_access
@@ -1501,8 +1501,8 @@ state 75
     PLUS            shift and go to state 60
     MINUS           shift and go to state 61
     ID              shift and go to state 67
-    CONST_I         shift and go to state 68
-    CONST_F         shift and go to state 69
+    CONST_F         shift and go to state 68
+    CONST_I         shift and go to state 69
     CONST_STRING    shift and go to state 70
 
     expression                     shift and go to state 108
@@ -1631,8 +1631,8 @@ state 85
     (95) factor_aux -> . MINUS const
     (96) factor_aux -> . const
     (97) const -> . ID n_add_operand
-    (98) const -> . CONST_I n_add_operand
-    (99) const -> . CONST_F n_add_operand
+    (98) const -> . CONST_F n_add_operand
+    (99) const -> . CONST_I n_add_operand
     (100) const -> . CONST_STRING n_add_operand
     (101) const -> . function_call
     (102) const -> . array_access
@@ -1645,8 +1645,8 @@ state 85
     PLUS            shift and go to state 60
     MINUS           shift and go to state 61
     ID              shift and go to state 67
-    CONST_I         shift and go to state 68
-    CONST_F         shift and go to state 69
+    CONST_F         shift and go to state 68
+    CONST_I         shift and go to state 69
     CONST_STRING    shift and go to state 70
 
     expression                     shift and go to state 119
@@ -1689,8 +1689,8 @@ state 86
     (95) factor_aux -> . MINUS const
     (96) factor_aux -> . const
     (97) const -> . ID n_add_operand
-    (98) const -> . CONST_I n_add_operand
-    (99) const -> . CONST_F n_add_operand
+    (98) const -> . CONST_F n_add_operand
+    (99) const -> . CONST_I n_add_operand
     (100) const -> . CONST_STRING n_add_operand
     (101) const -> . function_call
     (102) const -> . array_access
@@ -1702,8 +1702,8 @@ state 86
     PLUS            shift and go to state 60
     MINUS           shift and go to state 61
     ID              shift and go to state 67
-    CONST_I         shift and go to state 68
-    CONST_F         shift and go to state 69
+    CONST_F         shift and go to state 68
+    CONST_I         shift and go to state 69
     CONST_STRING    shift and go to state 70
 
     expression                     shift and go to state 121
@@ -1770,8 +1770,8 @@ state 88
     (95) factor_aux -> . MINUS const
     (96) factor_aux -> . const
     (97) const -> . ID n_add_operand
-    (98) const -> . CONST_I n_add_operand
-    (99) const -> . CONST_F n_add_operand
+    (98) const -> . CONST_F n_add_operand
+    (99) const -> . CONST_I n_add_operand
     (100) const -> . CONST_STRING n_add_operand
     (101) const -> . function_call
     (102) const -> . array_access
@@ -1784,8 +1784,8 @@ state 88
     PLUS            shift and go to state 60
     MINUS           shift and go to state 61
     ID              shift and go to state 67
-    CONST_I         shift and go to state 68
-    CONST_F         shift and go to state 69
+    CONST_F         shift and go to state 68
+    CONST_I         shift and go to state 69
     CONST_STRING    shift and go to state 70
 
     expression                     shift and go to state 123
@@ -1994,8 +1994,8 @@ state 98
     (95) factor_aux -> . MINUS const
     (96) factor_aux -> . const
     (97) const -> . ID n_add_operand
-    (98) const -> . CONST_I n_add_operand
-    (99) const -> . CONST_F n_add_operand
+    (98) const -> . CONST_F n_add_operand
+    (99) const -> . CONST_I n_add_operand
     (100) const -> . CONST_STRING n_add_operand
     (101) const -> . function_call
     (102) const -> . array_access
@@ -2007,8 +2007,8 @@ state 98
     PLUS            shift and go to state 60
     MINUS           shift and go to state 61
     ID              shift and go to state 67
-    CONST_I         shift and go to state 68
-    CONST_F         shift and go to state 69
+    CONST_F         shift and go to state 68
+    CONST_I         shift and go to state 69
     CONST_STRING    shift and go to state 70
 
     expression                     shift and go to state 137
@@ -2068,46 +2068,46 @@ state 100
 
 state 101
 
-    (98) const -> CONST_I n_add_operand .
+    (98) const -> CONST_F n_add_operand .
 
-    TIMES           reduce using rule 98 (const -> CONST_I n_add_operand .)
-    DIVIDE          reduce using rule 98 (const -> CONST_I n_add_operand .)
-    PLUS            reduce using rule 98 (const -> CONST_I n_add_operand .)
-    MINUS           reduce using rule 98 (const -> CONST_I n_add_operand .)
-    NOT_EQUAL       reduce using rule 98 (const -> CONST_I n_add_operand .)
-    EQUALS          reduce using rule 98 (const -> CONST_I n_add_operand .)
-    GREATER         reduce using rule 98 (const -> CONST_I n_add_operand .)
-    GREATER_EQ      reduce using rule 98 (const -> CONST_I n_add_operand .)
-    LESS            reduce using rule 98 (const -> CONST_I n_add_operand .)
-    LESS_EQ         reduce using rule 98 (const -> CONST_I n_add_operand .)
-    OR              reduce using rule 98 (const -> CONST_I n_add_operand .)
-    AND             reduce using rule 98 (const -> CONST_I n_add_operand .)
-    SEMICOLON       reduce using rule 98 (const -> CONST_I n_add_operand .)
-    COMMA           reduce using rule 98 (const -> CONST_I n_add_operand .)
-    R_PARENS        reduce using rule 98 (const -> CONST_I n_add_operand .)
-    R_SQUARE_BRACKET reduce using rule 98 (const -> CONST_I n_add_operand .)
+    TIMES           reduce using rule 98 (const -> CONST_F n_add_operand .)
+    DIVIDE          reduce using rule 98 (const -> CONST_F n_add_operand .)
+    PLUS            reduce using rule 98 (const -> CONST_F n_add_operand .)
+    MINUS           reduce using rule 98 (const -> CONST_F n_add_operand .)
+    NOT_EQUAL       reduce using rule 98 (const -> CONST_F n_add_operand .)
+    EQUALS          reduce using rule 98 (const -> CONST_F n_add_operand .)
+    GREATER         reduce using rule 98 (const -> CONST_F n_add_operand .)
+    GREATER_EQ      reduce using rule 98 (const -> CONST_F n_add_operand .)
+    LESS            reduce using rule 98 (const -> CONST_F n_add_operand .)
+    LESS_EQ         reduce using rule 98 (const -> CONST_F n_add_operand .)
+    OR              reduce using rule 98 (const -> CONST_F n_add_operand .)
+    AND             reduce using rule 98 (const -> CONST_F n_add_operand .)
+    SEMICOLON       reduce using rule 98 (const -> CONST_F n_add_operand .)
+    COMMA           reduce using rule 98 (const -> CONST_F n_add_operand .)
+    R_PARENS        reduce using rule 98 (const -> CONST_F n_add_operand .)
+    R_SQUARE_BRACKET reduce using rule 98 (const -> CONST_F n_add_operand .)
 
 
 state 102
 
-    (99) const -> CONST_F n_add_operand .
+    (99) const -> CONST_I n_add_operand .
 
-    TIMES           reduce using rule 99 (const -> CONST_F n_add_operand .)
-    DIVIDE          reduce using rule 99 (const -> CONST_F n_add_operand .)
-    PLUS            reduce using rule 99 (const -> CONST_F n_add_operand .)
-    MINUS           reduce using rule 99 (const -> CONST_F n_add_operand .)
-    NOT_EQUAL       reduce using rule 99 (const -> CONST_F n_add_operand .)
-    EQUALS          reduce using rule 99 (const -> CONST_F n_add_operand .)
-    GREATER         reduce using rule 99 (const -> CONST_F n_add_operand .)
-    GREATER_EQ      reduce using rule 99 (const -> CONST_F n_add_operand .)
-    LESS            reduce using rule 99 (const -> CONST_F n_add_operand .)
-    LESS_EQ         reduce using rule 99 (const -> CONST_F n_add_operand .)
-    OR              reduce using rule 99 (const -> CONST_F n_add_operand .)
-    AND             reduce using rule 99 (const -> CONST_F n_add_operand .)
-    SEMICOLON       reduce using rule 99 (const -> CONST_F n_add_operand .)
-    COMMA           reduce using rule 99 (const -> CONST_F n_add_operand .)
-    R_PARENS        reduce using rule 99 (const -> CONST_F n_add_operand .)
-    R_SQUARE_BRACKET reduce using rule 99 (const -> CONST_F n_add_operand .)
+    TIMES           reduce using rule 99 (const -> CONST_I n_add_operand .)
+    DIVIDE          reduce using rule 99 (const -> CONST_I n_add_operand .)
+    PLUS            reduce using rule 99 (const -> CONST_I n_add_operand .)
+    MINUS           reduce using rule 99 (const -> CONST_I n_add_operand .)
+    NOT_EQUAL       reduce using rule 99 (const -> CONST_I n_add_operand .)
+    EQUALS          reduce using rule 99 (const -> CONST_I n_add_operand .)
+    GREATER         reduce using rule 99 (const -> CONST_I n_add_operand .)
+    GREATER_EQ      reduce using rule 99 (const -> CONST_I n_add_operand .)
+    LESS            reduce using rule 99 (const -> CONST_I n_add_operand .)
+    LESS_EQ         reduce using rule 99 (const -> CONST_I n_add_operand .)
+    OR              reduce using rule 99 (const -> CONST_I n_add_operand .)
+    AND             reduce using rule 99 (const -> CONST_I n_add_operand .)
+    SEMICOLON       reduce using rule 99 (const -> CONST_I n_add_operand .)
+    COMMA           reduce using rule 99 (const -> CONST_I n_add_operand .)
+    R_PARENS        reduce using rule 99 (const -> CONST_I n_add_operand .)
+    R_SQUARE_BRACKET reduce using rule 99 (const -> CONST_I n_add_operand .)
 
 
 state 103
@@ -2203,8 +2203,8 @@ state 109
     (95) factor_aux -> . MINUS const
     (96) factor_aux -> . const
     (97) const -> . ID n_add_operand
-    (98) const -> . CONST_I n_add_operand
-    (99) const -> . CONST_F n_add_operand
+    (98) const -> . CONST_F n_add_operand
+    (99) const -> . CONST_I n_add_operand
     (100) const -> . CONST_STRING n_add_operand
     (101) const -> . function_call
     (102) const -> . array_access
@@ -2216,8 +2216,8 @@ state 109
     PLUS            shift and go to state 60
     MINUS           shift and go to state 61
     ID              shift and go to state 67
-    CONST_I         shift and go to state 68
-    CONST_F         shift and go to state 69
+    CONST_F         shift and go to state 68
+    CONST_I         shift and go to state 69
     CONST_STRING    shift and go to state 70
 
     expression                     shift and go to state 142
@@ -2351,8 +2351,8 @@ state 118
     (95) factor_aux -> . MINUS const
     (96) factor_aux -> . const
     (97) const -> . ID n_add_operand
-    (98) const -> . CONST_I n_add_operand
-    (99) const -> . CONST_F n_add_operand
+    (98) const -> . CONST_F n_add_operand
+    (99) const -> . CONST_I n_add_operand
     (100) const -> . CONST_STRING n_add_operand
     (101) const -> . function_call
     (102) const -> . array_access
@@ -2365,8 +2365,8 @@ state 118
     PLUS            shift and go to state 60
     MINUS           shift and go to state 61
     ID              shift and go to state 67
-    CONST_I         shift and go to state 68
-    CONST_F         shift and go to state 69
+    CONST_F         shift and go to state 68
+    CONST_I         shift and go to state 69
     CONST_STRING    shift and go to state 70
 
     expression                     shift and go to state 155
@@ -2468,8 +2468,8 @@ state 125
     PLUS            reduce using rule 123 (n_add_operator -> .)
     MINUS           reduce using rule 123 (n_add_operator -> .)
     ID              reduce using rule 123 (n_add_operator -> .)
-    CONST_I         reduce using rule 123 (n_add_operator -> .)
     CONST_F         reduce using rule 123 (n_add_operator -> .)
+    CONST_I         reduce using rule 123 (n_add_operator -> .)
     CONST_STRING    reduce using rule 123 (n_add_operator -> .)
 
     n_add_operator                 shift and go to state 159
@@ -2484,8 +2484,8 @@ state 126
     PLUS            reduce using rule 123 (n_add_operator -> .)
     MINUS           reduce using rule 123 (n_add_operator -> .)
     ID              reduce using rule 123 (n_add_operator -> .)
-    CONST_I         reduce using rule 123 (n_add_operator -> .)
     CONST_F         reduce using rule 123 (n_add_operator -> .)
+    CONST_I         reduce using rule 123 (n_add_operator -> .)
     CONST_STRING    reduce using rule 123 (n_add_operator -> .)
 
     n_add_operator                 shift and go to state 160
@@ -2500,8 +2500,8 @@ state 127
     PLUS            reduce using rule 123 (n_add_operator -> .)
     MINUS           reduce using rule 123 (n_add_operator -> .)
     ID              reduce using rule 123 (n_add_operator -> .)
-    CONST_I         reduce using rule 123 (n_add_operator -> .)
     CONST_F         reduce using rule 123 (n_add_operator -> .)
+    CONST_I         reduce using rule 123 (n_add_operator -> .)
     CONST_STRING    reduce using rule 123 (n_add_operator -> .)
 
     n_add_operator                 shift and go to state 161
@@ -2516,8 +2516,8 @@ state 128
     PLUS            reduce using rule 123 (n_add_operator -> .)
     MINUS           reduce using rule 123 (n_add_operator -> .)
     ID              reduce using rule 123 (n_add_operator -> .)
-    CONST_I         reduce using rule 123 (n_add_operator -> .)
     CONST_F         reduce using rule 123 (n_add_operator -> .)
+    CONST_I         reduce using rule 123 (n_add_operator -> .)
     CONST_STRING    reduce using rule 123 (n_add_operator -> .)
 
     n_add_operator                 shift and go to state 162
@@ -2532,8 +2532,8 @@ state 129
     PLUS            reduce using rule 123 (n_add_operator -> .)
     MINUS           reduce using rule 123 (n_add_operator -> .)
     ID              reduce using rule 123 (n_add_operator -> .)
-    CONST_I         reduce using rule 123 (n_add_operator -> .)
     CONST_F         reduce using rule 123 (n_add_operator -> .)
+    CONST_I         reduce using rule 123 (n_add_operator -> .)
     CONST_STRING    reduce using rule 123 (n_add_operator -> .)
 
     n_add_operator                 shift and go to state 163
@@ -2548,8 +2548,8 @@ state 130
     PLUS            reduce using rule 123 (n_add_operator -> .)
     MINUS           reduce using rule 123 (n_add_operator -> .)
     ID              reduce using rule 123 (n_add_operator -> .)
-    CONST_I         reduce using rule 123 (n_add_operator -> .)
     CONST_F         reduce using rule 123 (n_add_operator -> .)
+    CONST_I         reduce using rule 123 (n_add_operator -> .)
     CONST_STRING    reduce using rule 123 (n_add_operator -> .)
 
     n_add_operator                 shift and go to state 164
@@ -2564,8 +2564,8 @@ state 131
     PLUS            reduce using rule 123 (n_add_operator -> .)
     MINUS           reduce using rule 123 (n_add_operator -> .)
     ID              reduce using rule 123 (n_add_operator -> .)
-    CONST_I         reduce using rule 123 (n_add_operator -> .)
     CONST_F         reduce using rule 123 (n_add_operator -> .)
+    CONST_I         reduce using rule 123 (n_add_operator -> .)
     CONST_STRING    reduce using rule 123 (n_add_operator -> .)
 
     n_add_operator                 shift and go to state 165
@@ -2580,8 +2580,8 @@ state 132
     PLUS            reduce using rule 123 (n_add_operator -> .)
     MINUS           reduce using rule 123 (n_add_operator -> .)
     ID              reduce using rule 123 (n_add_operator -> .)
-    CONST_I         reduce using rule 123 (n_add_operator -> .)
     CONST_F         reduce using rule 123 (n_add_operator -> .)
+    CONST_I         reduce using rule 123 (n_add_operator -> .)
     CONST_STRING    reduce using rule 123 (n_add_operator -> .)
 
     n_add_operator                 shift and go to state 166
@@ -2596,8 +2596,8 @@ state 133
     PLUS            reduce using rule 123 (n_add_operator -> .)
     MINUS           reduce using rule 123 (n_add_operator -> .)
     ID              reduce using rule 123 (n_add_operator -> .)
-    CONST_I         reduce using rule 123 (n_add_operator -> .)
     CONST_F         reduce using rule 123 (n_add_operator -> .)
+    CONST_I         reduce using rule 123 (n_add_operator -> .)
     CONST_STRING    reduce using rule 123 (n_add_operator -> .)
 
     n_add_operator                 shift and go to state 167
@@ -2612,8 +2612,8 @@ state 134
     PLUS            reduce using rule 123 (n_add_operator -> .)
     MINUS           reduce using rule 123 (n_add_operator -> .)
     ID              reduce using rule 123 (n_add_operator -> .)
-    CONST_I         reduce using rule 123 (n_add_operator -> .)
     CONST_F         reduce using rule 123 (n_add_operator -> .)
+    CONST_I         reduce using rule 123 (n_add_operator -> .)
     CONST_STRING    reduce using rule 123 (n_add_operator -> .)
 
     n_add_operator                 shift and go to state 168
@@ -2628,8 +2628,8 @@ state 135
     PLUS            reduce using rule 123 (n_add_operator -> .)
     MINUS           reduce using rule 123 (n_add_operator -> .)
     ID              reduce using rule 123 (n_add_operator -> .)
-    CONST_I         reduce using rule 123 (n_add_operator -> .)
     CONST_F         reduce using rule 123 (n_add_operator -> .)
+    CONST_I         reduce using rule 123 (n_add_operator -> .)
     CONST_STRING    reduce using rule 123 (n_add_operator -> .)
 
     n_add_operator                 shift and go to state 169
@@ -2644,8 +2644,8 @@ state 136
     PLUS            reduce using rule 123 (n_add_operator -> .)
     MINUS           reduce using rule 123 (n_add_operator -> .)
     ID              reduce using rule 123 (n_add_operator -> .)
-    CONST_I         reduce using rule 123 (n_add_operator -> .)
     CONST_F         reduce using rule 123 (n_add_operator -> .)
+    CONST_I         reduce using rule 123 (n_add_operator -> .)
     CONST_STRING    reduce using rule 123 (n_add_operator -> .)
 
     n_add_operator                 shift and go to state 170
@@ -2913,8 +2913,8 @@ state 159
     (95) factor_aux -> . MINUS const
     (96) factor_aux -> . const
     (97) const -> . ID n_add_operand
-    (98) const -> . CONST_I n_add_operand
-    (99) const -> . CONST_F n_add_operand
+    (98) const -> . CONST_F n_add_operand
+    (99) const -> . CONST_I n_add_operand
     (100) const -> . CONST_STRING n_add_operand
     (101) const -> . function_call
     (102) const -> . array_access
@@ -2926,8 +2926,8 @@ state 159
     PLUS            shift and go to state 60
     MINUS           shift and go to state 61
     ID              shift and go to state 67
-    CONST_I         shift and go to state 68
-    CONST_F         shift and go to state 69
+    CONST_F         shift and go to state 68
+    CONST_I         shift and go to state 69
     CONST_STRING    shift and go to state 70
 
     exp                            shift and go to state 56
@@ -2966,8 +2966,8 @@ state 160
     (95) factor_aux -> . MINUS const
     (96) factor_aux -> . const
     (97) const -> . ID n_add_operand
-    (98) const -> . CONST_I n_add_operand
-    (99) const -> . CONST_F n_add_operand
+    (98) const -> . CONST_F n_add_operand
+    (99) const -> . CONST_I n_add_operand
     (100) const -> . CONST_STRING n_add_operand
     (101) const -> . function_call
     (102) const -> . array_access
@@ -2979,8 +2979,8 @@ state 160
     PLUS            shift and go to state 60
     MINUS           shift and go to state 61
     ID              shift and go to state 67
-    CONST_I         shift and go to state 68
-    CONST_F         shift and go to state 69
+    CONST_F         shift and go to state 68
+    CONST_I         shift and go to state 69
     CONST_STRING    shift and go to state 70
 
     xp                             shift and go to state 57
@@ -3016,8 +3016,8 @@ state 161
     (95) factor_aux -> . MINUS const
     (96) factor_aux -> . const
     (97) const -> . ID n_add_operand
-    (98) const -> . CONST_I n_add_operand
-    (99) const -> . CONST_F n_add_operand
+    (98) const -> . CONST_F n_add_operand
+    (99) const -> . CONST_I n_add_operand
     (100) const -> . CONST_STRING n_add_operand
     (101) const -> . function_call
     (102) const -> . array_access
@@ -3029,8 +3029,8 @@ state 161
     PLUS            shift and go to state 60
     MINUS           shift and go to state 61
     ID              shift and go to state 67
-    CONST_I         shift and go to state 68
-    CONST_F         shift and go to state 69
+    CONST_F         shift and go to state 68
+    CONST_I         shift and go to state 69
     CONST_STRING    shift and go to state 70
 
     x                              shift and go to state 58
@@ -3065,8 +3065,8 @@ state 162
     (95) factor_aux -> . MINUS const
     (96) factor_aux -> . const
     (97) const -> . ID n_add_operand
-    (98) const -> . CONST_I n_add_operand
-    (99) const -> . CONST_F n_add_operand
+    (98) const -> . CONST_F n_add_operand
+    (99) const -> . CONST_I n_add_operand
     (100) const -> . CONST_STRING n_add_operand
     (101) const -> . function_call
     (102) const -> . array_access
@@ -3078,8 +3078,8 @@ state 162
     PLUS            shift and go to state 60
     MINUS           shift and go to state 61
     ID              shift and go to state 67
-    CONST_I         shift and go to state 68
-    CONST_F         shift and go to state 69
+    CONST_F         shift and go to state 68
+    CONST_I         shift and go to state 69
     CONST_STRING    shift and go to state 70
 
     x                              shift and go to state 58
@@ -3114,8 +3114,8 @@ state 163
     (95) factor_aux -> . MINUS const
     (96) factor_aux -> . const
     (97) const -> . ID n_add_operand
-    (98) const -> . CONST_I n_add_operand
-    (99) const -> . CONST_F n_add_operand
+    (98) const -> . CONST_F n_add_operand
+    (99) const -> . CONST_I n_add_operand
     (100) const -> . CONST_STRING n_add_operand
     (101) const -> . function_call
     (102) const -> . array_access
@@ -3127,8 +3127,8 @@ state 163
     PLUS            shift and go to state 60
     MINUS           shift and go to state 61
     ID              shift and go to state 67
-    CONST_I         shift and go to state 68
-    CONST_F         shift and go to state 69
+    CONST_F         shift and go to state 68
+    CONST_I         shift and go to state 69
     CONST_STRING    shift and go to state 70
 
     x                              shift and go to state 58
@@ -3163,8 +3163,8 @@ state 164
     (95) factor_aux -> . MINUS const
     (96) factor_aux -> . const
     (97) const -> . ID n_add_operand
-    (98) const -> . CONST_I n_add_operand
-    (99) const -> . CONST_F n_add_operand
+    (98) const -> . CONST_F n_add_operand
+    (99) const -> . CONST_I n_add_operand
     (100) const -> . CONST_STRING n_add_operand
     (101) const -> . function_call
     (102) const -> . array_access
@@ -3176,8 +3176,8 @@ state 164
     PLUS            shift and go to state 60
     MINUS           shift and go to state 61
     ID              shift and go to state 67
-    CONST_I         shift and go to state 68
-    CONST_F         shift and go to state 69
+    CONST_F         shift and go to state 68
+    CONST_I         shift and go to state 69
     CONST_STRING    shift and go to state 70
 
     x                              shift and go to state 58
@@ -3212,8 +3212,8 @@ state 165
     (95) factor_aux -> . MINUS const
     (96) factor_aux -> . const
     (97) const -> . ID n_add_operand
-    (98) const -> . CONST_I n_add_operand
-    (99) const -> . CONST_F n_add_operand
+    (98) const -> . CONST_F n_add_operand
+    (99) const -> . CONST_I n_add_operand
     (100) const -> . CONST_STRING n_add_operand
     (101) const -> . function_call
     (102) const -> . array_access
@@ -3225,8 +3225,8 @@ state 165
     PLUS            shift and go to state 60
     MINUS           shift and go to state 61
     ID              shift and go to state 67
-    CONST_I         shift and go to state 68
-    CONST_F         shift and go to state 69
+    CONST_F         shift and go to state 68
+    CONST_I         shift and go to state 69
     CONST_STRING    shift and go to state 70
 
     x                              shift and go to state 58
@@ -3261,8 +3261,8 @@ state 166
     (95) factor_aux -> . MINUS const
     (96) factor_aux -> . const
     (97) const -> . ID n_add_operand
-    (98) const -> . CONST_I n_add_operand
-    (99) const -> . CONST_F n_add_operand
+    (98) const -> . CONST_F n_add_operand
+    (99) const -> . CONST_I n_add_operand
     (100) const -> . CONST_STRING n_add_operand
     (101) const -> . function_call
     (102) const -> . array_access
@@ -3274,8 +3274,8 @@ state 166
     PLUS            shift and go to state 60
     MINUS           shift and go to state 61
     ID              shift and go to state 67
-    CONST_I         shift and go to state 68
-    CONST_F         shift and go to state 69
+    CONST_F         shift and go to state 68
+    CONST_I         shift and go to state 69
     CONST_STRING    shift and go to state 70
 
     x                              shift and go to state 58
@@ -3303,8 +3303,8 @@ state 167
     (95) factor_aux -> . MINUS const
     (96) factor_aux -> . const
     (97) const -> . ID n_add_operand
-    (98) const -> . CONST_I n_add_operand
-    (99) const -> . CONST_F n_add_operand
+    (98) const -> . CONST_F n_add_operand
+    (99) const -> . CONST_I n_add_operand
     (100) const -> . CONST_STRING n_add_operand
     (101) const -> . function_call
     (102) const -> . array_access
@@ -3316,8 +3316,8 @@ state 167
     PLUS            shift and go to state 60
     MINUS           shift and go to state 61
     ID              shift and go to state 67
-    CONST_I         shift and go to state 68
-    CONST_F         shift and go to state 69
+    CONST_F         shift and go to state 68
+    CONST_I         shift and go to state 69
     CONST_STRING    shift and go to state 70
 
     term                           shift and go to state 59
@@ -3344,8 +3344,8 @@ state 168
     (95) factor_aux -> . MINUS const
     (96) factor_aux -> . const
     (97) const -> . ID n_add_operand
-    (98) const -> . CONST_I n_add_operand
-    (99) const -> . CONST_F n_add_operand
+    (98) const -> . CONST_F n_add_operand
+    (99) const -> . CONST_I n_add_operand
     (100) const -> . CONST_STRING n_add_operand
     (101) const -> . function_call
     (102) const -> . array_access
@@ -3357,8 +3357,8 @@ state 168
     PLUS            shift and go to state 60
     MINUS           shift and go to state 61
     ID              shift and go to state 67
-    CONST_I         shift and go to state 68
-    CONST_F         shift and go to state 69
+    CONST_F         shift and go to state 68
+    CONST_I         shift and go to state 69
     CONST_STRING    shift and go to state 70
 
     term                           shift and go to state 59
@@ -3382,8 +3382,8 @@ state 169
     (95) factor_aux -> . MINUS const
     (96) factor_aux -> . const
     (97) const -> . ID n_add_operand
-    (98) const -> . CONST_I n_add_operand
-    (99) const -> . CONST_F n_add_operand
+    (98) const -> . CONST_F n_add_operand
+    (99) const -> . CONST_I n_add_operand
     (100) const -> . CONST_STRING n_add_operand
     (101) const -> . function_call
     (102) const -> . array_access
@@ -3395,8 +3395,8 @@ state 169
     PLUS            shift and go to state 60
     MINUS           shift and go to state 61
     ID              shift and go to state 67
-    CONST_I         shift and go to state 68
-    CONST_F         shift and go to state 69
+    CONST_F         shift and go to state 68
+    CONST_I         shift and go to state 69
     CONST_STRING    shift and go to state 70
 
     factor                         shift and go to state 62
@@ -3419,8 +3419,8 @@ state 170
     (95) factor_aux -> . MINUS const
     (96) factor_aux -> . const
     (97) const -> . ID n_add_operand
-    (98) const -> . CONST_I n_add_operand
-    (99) const -> . CONST_F n_add_operand
+    (98) const -> . CONST_F n_add_operand
+    (99) const -> . CONST_I n_add_operand
     (100) const -> . CONST_STRING n_add_operand
     (101) const -> . function_call
     (102) const -> . array_access
@@ -3432,8 +3432,8 @@ state 170
     PLUS            shift and go to state 60
     MINUS           shift and go to state 61
     ID              shift and go to state 67
-    CONST_I         shift and go to state 68
-    CONST_F         shift and go to state 69
+    CONST_F         shift and go to state 68
+    CONST_I         shift and go to state 69
     CONST_STRING    shift and go to state 70
 
     factor                         shift and go to state 62
@@ -3479,8 +3479,8 @@ state 172
     (95) factor_aux -> . MINUS const
     (96) factor_aux -> . const
     (97) const -> . ID n_add_operand
-    (98) const -> . CONST_I n_add_operand
-    (99) const -> . CONST_F n_add_operand
+    (98) const -> . CONST_F n_add_operand
+    (99) const -> . CONST_I n_add_operand
     (100) const -> . CONST_STRING n_add_operand
     (101) const -> . function_call
     (102) const -> . array_access
@@ -3492,8 +3492,8 @@ state 172
     PLUS            shift and go to state 60
     MINUS           shift and go to state 61
     ID              shift and go to state 67
-    CONST_I         shift and go to state 68
-    CONST_F         shift and go to state 69
+    CONST_F         shift and go to state 68
+    CONST_I         shift and go to state 69
     CONST_STRING    shift and go to state 70
 
     expression                     shift and go to state 106
@@ -3671,8 +3671,8 @@ state 186
     (95) factor_aux -> . MINUS const
     (96) factor_aux -> . const
     (97) const -> . ID n_add_operand
-    (98) const -> . CONST_I n_add_operand
-    (99) const -> . CONST_F n_add_operand
+    (98) const -> . CONST_F n_add_operand
+    (99) const -> . CONST_I n_add_operand
     (100) const -> . CONST_STRING n_add_operand
     (101) const -> . function_call
     (102) const -> . array_access
@@ -3684,8 +3684,8 @@ state 186
     PLUS            shift and go to state 60
     MINUS           shift and go to state 61
     ID              shift and go to state 67
-    CONST_I         shift and go to state 68
-    CONST_F         shift and go to state 69
+    CONST_F         shift and go to state 68
+    CONST_I         shift and go to state 69
     CONST_STRING    shift and go to state 70
 
     expression                     shift and go to state 212
@@ -3756,8 +3756,8 @@ state 189
     (95) factor_aux -> . MINUS const
     (96) factor_aux -> . const
     (97) const -> . ID n_add_operand
-    (98) const -> . CONST_I n_add_operand
-    (99) const -> . CONST_F n_add_operand
+    (98) const -> . CONST_F n_add_operand
+    (99) const -> . CONST_I n_add_operand
     (100) const -> . CONST_STRING n_add_operand
     (101) const -> . function_call
     (102) const -> . array_access
@@ -3769,8 +3769,8 @@ state 189
     PLUS            shift and go to state 60
     MINUS           shift and go to state 61
     ID              shift and go to state 67
-    CONST_I         shift and go to state 68
-    CONST_F         shift and go to state 69
+    CONST_F         shift and go to state 68
+    CONST_I         shift and go to state 69
     CONST_STRING    shift and go to state 70
 
     expression                     shift and go to state 214
@@ -4443,8 +4443,8 @@ state 237
     (95) factor_aux -> . MINUS const
     (96) factor_aux -> . const
     (97) const -> . ID n_add_operand
-    (98) const -> . CONST_I n_add_operand
-    (99) const -> . CONST_F n_add_operand
+    (98) const -> . CONST_F n_add_operand
+    (99) const -> . CONST_I n_add_operand
     (100) const -> . CONST_STRING n_add_operand
     (101) const -> . function_call
     (102) const -> . array_access
@@ -4456,8 +4456,8 @@ state 237
     PLUS            shift and go to state 60
     MINUS           shift and go to state 61
     ID              shift and go to state 67
-    CONST_I         shift and go to state 68
-    CONST_F         shift and go to state 69
+    CONST_F         shift and go to state 68
+    CONST_I         shift and go to state 69
     CONST_STRING    shift and go to state 70
 
     expression                     shift and go to state 239

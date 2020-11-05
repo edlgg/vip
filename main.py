@@ -3,14 +3,6 @@ from parser import parse
 from AddressTable import AddressTable
 from Quadruples import Quadruples
 
-
-# running 'python main.py' will only print something if there is a syntax error.
-
-# global Q
-
-# Q = Quadruples()
-
-
 def main():
     # print_rows()
 
@@ -32,18 +24,16 @@ def main():
     data = '''
     function test(int b): int {
         int a;
-        a = 1 + 3 + 2;
+        a = 1 + 3 + 2.4;
         return a;
     }
 
     function main {
         int a;
-        read(a);
+        a = "hola";
         test(a);
     }
     '''
-
-    print(data)
 
     '''
     while (2 < 5) {
@@ -53,9 +43,6 @@ def main():
         b = 1;
     '''
 
-    AT = parse(data)
-
-    AT.print_all()
-
+    obj_code = parse(data)
 
 main()

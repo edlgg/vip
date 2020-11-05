@@ -227,8 +227,8 @@ def p_factor_aux(p):
 
 def p_const(p):
     '''const : ID n_add_operand
-             | CONST_I n_add_operand
              | CONST_F n_add_operand
+             | CONST_I n_add_operand
              | CONST_STRING n_add_operand
              | function_call
              | array_access'''
@@ -397,5 +397,6 @@ def parse(input):
 
     Q.print_all()
 
+    obj_code = Q.generate_output()
 
-    return Q.get_AT()
+    return obj_code
