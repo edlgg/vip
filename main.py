@@ -29,7 +29,7 @@ def main():
     }
 
     function main {
-        int a;
+        string a;
         a = "hola";
         test(a);
     }

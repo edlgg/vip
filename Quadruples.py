@@ -186,8 +186,8 @@ class Quadruples:
         assigning_type = self.types.pop()
 
         # Semantic cube checking.
-        if not semantic_cube[assigning_type][l_type][Operator.ASSIGN]:
-            return f'Type mismatch'
+        if not semantic_cube[assigning_type][l_type][Operator.ASSIGN].value:
+            raise NameError(f'Type mismatch')
         self.generate_quadruple(
             Operator.ASSIGN, l_operand.address, None, assigning_variable.address)
         self.operands.append(assigning_variable)

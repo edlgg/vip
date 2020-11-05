@@ -13,7 +13,7 @@ class Type(Enum):
 types = {
     "int": Type.INT,
     "float": Type.FLOAT,
-    "str": Type.STRING,
+    "string": Type.STRING,
     "void": Type.VOID
 }
 
