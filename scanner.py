@@ -83,12 +83,12 @@ def t_ID(t):
   return t
 
 def t_CONST_F(t):
-  r'(\d*)?[.]\d+'
+  r'-?(\d*)?[.]\d+'
   t.value = float(t.value)
   return t
 
 def t_CONST_I(t):
-  r'(0|-?[1-9]\d*)'
+  r'-?(0|-?[1-9]\d*)'
   t.value = int(t.value)
   return t
 

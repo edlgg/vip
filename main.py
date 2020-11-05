@@ -24,7 +24,7 @@ def main():
     data = '''
     function test(int b): int {
         int a;
-        a = 1 + 3 + 2.4;
+        a = -3.0;
         return a;
     }
 
