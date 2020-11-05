@@ -145,20 +145,8 @@ class Quadruples:
         self.jumps = self.jumps[:-1]
         return val
 
-    # def solve_operation(self, l_operand, r_operand, operator):
-    #     operator =
-    #     res = eval(
-    #         f"{l_operand.get_str_operand()} {operator} {r_operand.get_str_operand()}")
-    #     if type(res) == bool:
-    #         res = 1 if res else 0
-    #     return res
-
     def register_condition(self):
         self.types.pop()
-        # expression_type = self.types.pop()
-        # print(expression_type)
-        # if expression_type == Type.ERROR:
-        #     return 'Type mismatch.'
         expression_result = self.operands.pop()
         self.generate_quadruple(Operator.GOTOF, expression_result, None, None)
         self.jumps.append(self.q_count - 1)
@@ -259,11 +247,8 @@ class Quadruples:
             current_func_name = self.AT.current_func_name
             current_func = self.AT.get_func(current_func_name)
             current_func.num_temp_vars += 1
-            # temp.set_str_operand(temp.get_address())
             self.curr_t_count += 1
 
-            # result = self.solve_operation(l_operand, r_operand, operator)
-            # self.add_operand(temp)
             self.operands.append(temp)
             self.types.append(result_type)
             # self.add_type(result_type)
@@ -312,3 +297,11 @@ class Quadruples:
         func.add_var(operand)
         if is_param:
             func.num_params += 1
+
+    def register_read(self, var_name):
+        func = self.AT.get_func(self.AT.current_func_name)
+        if func.is_var(var_name):
+            operand = func.get_var(var_name)
+            self.generate_quadruple(Operator.READ, None, None, operand.get_address())
+        else:
+            raise NameError(f"Undefined variable.")

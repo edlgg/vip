@@ -35,13 +35,14 @@ class Operator(Enum):
     GOTO = 14
     GOTOF = 15
     PRINT = 16
-    RETURN = 17
-    GOSUB = 18
-    PARAM = 19
-    ERA = 20
-    ENDFUNC = 21
-    END = 22
-    FAKE_BOTTOM = 23
+    READ = 17
+    RETURN = 18
+    GOSUB = 19
+    PARAM = 20
+    ERA = 21
+    ENDFUNC = 22
+    END = 23
+    FAKE_BOTTOM = 24
 
 
 operators = {

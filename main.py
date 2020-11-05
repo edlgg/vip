@@ -38,7 +38,7 @@ def main():
 
     function main {
         int a;
-        a = 3 * ( 1 + 2 );
+        read(a);
         test(a);
     }
     '''

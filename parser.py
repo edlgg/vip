@@ -91,7 +91,8 @@ def p_statement_aux(p):
     '''statement_aux : assignment
                      | function_call
                      | return
-                     | print'''
+                     | print
+                     | read'''
 
 
 def p_statement_aux_2(p):
@@ -167,7 +168,7 @@ def p_expression(p):
 
 
 def p_read(p):
-    'read : READ ID'
+    'read : READ L_PARENS ID n_register_read R_PARENS'
 
 
 def p_params_pass(p):
@@ -236,8 +237,9 @@ def p_const(p):
 def p_array_access(p):
     'array_access : ID array_index'
 
-# Where the magic begins.
-
+############################################################################################################################
+''' LADIES AND GENTLEMENT, MAKE SOME POPCORN, ORDER SOME TACOS AND BUCKLE YOUR SEATBELTS, THIS IS WHERE THE MAGIC BEGINS '''
+############################################################################################################################
 
 def p_n_start_main(p):
     'n_start_main : '
@@ -347,7 +349,6 @@ def p_n_pop_fake_bottom(p):
 
 def p_n_start_assignment(p):
     'n_start_assignment : '
-    # Arreglar esto despues, no me gusta como se ve.
     Q.init_assignment(p[-1])
 
 def p_n_print(p):
@@ -378,6 +379,11 @@ def p_n_validate_function_call(p):
     Q.validate_function_call()
 
 
+def p_n_register_read(p):
+    'n_register_read : '
+    Q.register_read(p[-1])
+
+
 def p_error(p):
     print('There is an error:', p)
 
@@ -393,4 +399,3 @@ def parse(input):
 
 
     return Q.get_AT()
-    #result = parser.parse(input, tracking=True)
