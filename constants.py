@@ -68,10 +68,12 @@ operators = {
 class Scope(Enum):
     GLOBAL = 0
     LOCAL = 1
+    TEMP = 2
 
 
 # Map from string scope to Enum scope.
 scopes = {
     "global": Scope.GLOBAL,
     "local": Scope.LOCAL,
+    "temp": Scope.TEMP,
 }

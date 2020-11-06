@@ -14,6 +14,9 @@ class VirtualMachine():
 
     def get_value_from_address(self, address):
         if self.is_global_address(address):
+            return self.g_memory.get_value_from_address_helper(address)
+        elif self.is_local_or_temp_address(address):
+            return self.memories[-1].get_value_from_address_helper(address)
 
     def set_value_to_address(self, value, address):
         if self.is_global_address(address):
@@ -22,16 +25,10 @@ class VirtualMachine():
             self.memories[-1].set_value_to_address_helper(value, address)
 
     def is_global_address(self, address):
-        if address >= self.g_memory.g_int_start and address < (self.g_memory.g_string_start + 1000):
-            return True
-        else:
-            return False
+        return address >= self.g_memory.g_int_start and address < (self.g_memory.g_string_start + 1000)
 
     def is_local_or_temp_address(self, address):
-        if address >= self.memories[-1].l_int_start and address < (self.memories[-1].t_string_start + 1000):
-            return True
-        else:
-            return False
+        return address >= self.memories[-1].l_int_start and address < (self.memories[-1].t_string_start + 1000)
 
     def run(self):
         while self.quad_pointer < len(self.quadruples):
