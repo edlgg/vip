@@ -33,7 +33,6 @@ class Quadruples:
         # Generating the first quadruple which is a GOTO main.
         self.generate_quadruple(Operator.GOTO, None, None, None)
 
-
     def print_all(self):
         print("quadruples: ")
         for i, q in enumerate(self.quadruples):
@@ -86,7 +85,8 @@ class Quadruples:
 
             # if constant
             if str_operand[0] == "\"" and str_operand[-1] == "\"":
-                address = self.AT.get_constant_address(str_operand, Type.STRING)
+                address = self.AT.get_constant_address(
+                    str_operand, Type.STRING)
                 if address == -1:  # It doesn't exist.
                     address = self.memory_manager.setConstantAddress(
                         Type.STRING)
@@ -120,7 +120,8 @@ class Quadruples:
     def register_condition(self):
         self.types.pop()
         expression_result = self.operands.pop()
-        self.generate_quadruple(Operator.GOTOF, expression_result, None, None)
+        self.generate_quadruple(
+            Operator.GOTOF, expression_result.get_address(), None, None)
         self.jumps.append(self.q_count - 1)
 
     def register_else(self):
@@ -161,20 +162,22 @@ class Quadruples:
         if not semantic_cube[assigning_type][l_type][Operator.ASSIGN].value:
             raise NameError(f'Type mismatch')
         self.generate_quadruple(
-            Operator.ASSIGN, l_operand.address, None, assigning_variable.address)
+            Operator.ASSIGN, l_operand.get_address(), None, assigning_variable.get_address())
         self.operands.append(assigning_variable)
         self.types.append(assigning_type)
 
     def do_print(self, string=None):
         operand = self.operands.pop()
         operand_type = self.types.pop()
-        self.generate_quadruple(Operator.PRINT, None, None, operand)
+        self.generate_quadruple(Operator.PRINT, None,
+                                None, operand.get_address())
 
     def add_return(self):
         return_val = self.operands.pop()
         return_type = self.types.pop()
         self.returns.append(self.q_count)
-        self.generate_quadruple(Operator.RETURN, return_val, None, None)
+        self.generate_quadruple(
+            Operator.RETURN, return_val.get_address(), None, None)
 
     def end_function(self, is_main=False):
         while len(self.returns):
@@ -226,7 +229,7 @@ class Quadruples:
 
             # Development note: Beware, operands are objects now. Everything is perfectly fine... maybe.
             self.generate_quadruple(
-                operator, l_operand.address, r_operand.address, address)
+                operator, l_operand.get_address(), r_operand.get_address(), address)
 
     def calling_func(self, func_id):
         if self.AT.is_func(func_id):
@@ -235,7 +238,8 @@ class Quadruples:
             raise NameError(f"Calling undefined function: {func_id}")
 
         func = self.AT.funcs[func_id]
-        self.generate_quadruple(Operator.ERA, func_id, func.num_params, func.num_temp_vars)
+        self.generate_quadruple(Operator.ERA, func_id,
+                                func.num_params, func.num_temp_vars)
         self.param_count = 0
 
     def validate_param(self, param):
@@ -244,16 +248,18 @@ class Quadruples:
 
         if self.param_count < self.AT.funcs[self.current_function_call].num_params:
             self.param_count += 1
-            self.generate_quadruple(Operator.PARAM, argument.get_address(), None, "param" + str(self.param_count))
+            self.generate_quadruple(
+                Operator.PARAM, argument.get_address(), None, "param" + str(self.param_count))
         else:
             raise NameError(f"Passing more arguments than expected.")
 
-
     def validate_function_call(self):
         if self.param_count != self.AT.funcs[self.current_function_call].num_params:
-            raise NameError(f"Wrong number of parameters passed. Expected {self.AT.funcs[self.current_function_call].num_params}. {self.param_count} were given.")
+            raise NameError(
+                f"Wrong number of parameters passed. Expected {self.AT.funcs[self.current_function_call].num_params}. {self.param_count} were given.")
         else:
-            self.generate_quadruple(Operator.GOSUB, self.current_function_call, None, self.AT.funcs[self.current_function_call].first_quadruple)
+            self.generate_quadruple(Operator.GOSUB, self.current_function_call,
+                                    None, self.AT.funcs[self.current_function_call].first_quadruple)
 
     def increment_local_var_count(self):
         curr_func = self.AT.current_func_name
@@ -273,19 +279,17 @@ class Quadruples:
         func = self.AT.get_func(self.AT.current_func_name)
         if func.is_var(var_name):
             operand = func.get_var(var_name)
-            self.generate_quadruple(Operator.READ, None, None, operand.get_address())
+            self.generate_quadruple(
+                Operator.READ, None, None, operand.get_address())
         else:
             raise NameError(f"Undefined variable.")
 
-    def generate_output(self):
+    def generate_obj_code(self):
         constants = {}
         for value in self.AT.constants_addresses.values():
             constants.update(self.invert_constants(value))
-                
-        return {
-            'quadruples': self.quadruples,
-            'constants': constants,
-        }
+
+        return self.quadruples, constants
 
     def invert_constants(self, dict):
         return {value: key for key, value in dict.items()}

@@ -11,6 +11,7 @@ from constants import Operator, operators
 global Q
 Q = Quadruples()
 
+
 def p_program(p):
     '''program : program_aux main
                | main'''
@@ -237,9 +238,11 @@ def p_const(p):
 def p_array_access(p):
     'array_access : ID array_index'
 
+
 ############################################################################################################################
 ''' LADIES AND GENTLEMENT, MAKE SOME POPCORN, ORDER SOME TACOS AND BUCKLE YOUR SEATBELTS, THIS IS WHERE THE MAGIC BEGINS '''
 ############################################################################################################################
+
 
 def p_n_start_main(p):
     'n_start_main : '
@@ -351,6 +354,7 @@ def p_n_start_assignment(p):
     'n_start_assignment : '
     Q.init_assignment(p[-1])
 
+
 def p_n_print(p):
     'n_print : '
     Q.do_print()
@@ -370,9 +374,11 @@ def p_n_calling_func(p):
     'n_calling_func : '
     Q.calling_func(p[-1])
 
+
 def p_n_validate_param(p):
     'n_validate_param : '
     Q.validate_param(p[-1])
+
 
 def p_n_validate_function_call(p):
     'n_validate_function_call : '
@@ -397,6 +403,6 @@ def parse(input):
 
     Q.print_all()
 
-    obj_code = Q.generate_output()
+    obj_code = Q.generate_obj_code()
 
     return obj_code

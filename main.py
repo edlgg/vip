@@ -2,6 +2,8 @@ from diagram_converter.diagram_converter import get_rows, get_tokens, print_rows
 from parser import parse
 from AddressTable import AddressTable
 from Quadruples import Quadruples
+from VirtualMachine import VirtualMachine
+
 
 def main():
     # print_rows()
@@ -22,16 +24,17 @@ def main():
     # }
     # '''
     data = '''
-    function test(int b): int {
-        int a;
-        a = -3.0;
-        return a;
+    function test(int a, int b): int {
+        int c;
+        c = -3.0;
+        return c;
     }
 
     function main {
-        string a;
-        a = "hola";
-        test(a);
+        int a, b;
+        a = 12;
+        b = 3;
+        test(a, b);
     }
     '''
 
@@ -43,8 +46,11 @@ def main():
         b = 1;
     '''
 
-    obj_code = parse(data)
+    # Generate Object code.
+    quadruples, constants = parse(data)
 
-    return obj_code
+    vm = VirtualMachine(quadruples, constants)
+    vm.run()
+
 
 main()

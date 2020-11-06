@@ -63,3 +63,15 @@ operators = {
     "goto": Operator.GOTO,
     "(": Operator.FAKE_BOTTOM,
 }
+
+
+class Scope(Enum):
+    GLOBAL = 0
+    LOCAL = 1
+
+
+# Map from string scope to Enum scope.
+scopes = {
+    "global": Scope.GLOBAL,
+    "local": Scope.LOCAL,
+}
