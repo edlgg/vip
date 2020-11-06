@@ -24,17 +24,14 @@ def main():
     # }
     # '''
     data = '''
-    function test(int a, int b): int {
-        int c;
-        c = -3.0;
-        return c;
-    }
-
     function main {
         int a, b;
-        a = 12;
-        b = 3;
-        test(a, b);
+        a = 1;
+        while (a < 10) {
+            print(a);
+            a = a + 1;
+        }
+        print("Fin!");
     }
     '''
 

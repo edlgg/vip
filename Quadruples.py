@@ -82,7 +82,6 @@ class Quadruples:
             operand.set_address(address)
         elif t == str:
             operand.set_type(Type.STRING)
-
             # if constant
             if str_operand[0] == "\"" and str_operand[-1] == "\"":
                 address = self.AT.get_constant_address(
@@ -103,8 +102,20 @@ class Quadruples:
                     address = self.memory_manager.setAddress(
                         'local', Type.STRING)
                 operand.set_address(address)
+                operand_type = self.get_type_from_address(address)
+                operand.set_type(operand_type)
 
         return operand
+
+    def get_type_from_address(self, address):
+        address -= 1000
+        address = address % 3000
+        if address < 1000:
+            return Type.INT
+        elif address < 2000:
+            return Type.FLOAT
+        else:
+            return Type.STRING
 
     def add_type(self, _type):
         self.types.append(_type)

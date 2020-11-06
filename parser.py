@@ -401,7 +401,7 @@ def parse(input):
     # Check the input's syntax
     parser.parse(input)
 
-    Q.print_all()
+    # Q.print_all()
 
     obj_code = Q.generate_obj_code()
 

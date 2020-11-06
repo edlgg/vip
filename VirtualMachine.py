@@ -17,6 +17,9 @@ class VirtualMachine():
             return self.g_memory.get_value_from_address_helper(address)
         elif self.is_local_or_temp_address(address):
             return self.memories[-1].get_value_from_address_helper(address)
+        else:
+            # TODO:Check this later.
+            return self.constants[address]
 
     def set_value_to_address(self, value, address):
         if self.is_global_address(address):
@@ -36,12 +39,72 @@ class VirtualMachine():
             self.quad_pointer += 1
 
     def process_quad(self, quad):
-        if quad[0] == Operator.GOTO:
+        if quad[0] == Operator.ASSIGN:
+            result = self.get_value_from_address(quad[1])
+            self.set_value_to_address(result, quad[3])
+            return
+        elif quad[0] == Operator.GOTO:
             # Operator.GOTO, None, None, destination.
             self.quad_pointer = quad[3] - 1
             return
         elif quad[0] == Operator.GOTOF:
             # Operator.GOTOF, condition, None, destination.
-            condition = get_value_from_address(quad[1])
+            condition = self.get_value_from_address(quad[1])
             if not condition:
                 self.quad_pointer = quad[3] - 1
+            return
+        elif quad[0] == Operator.ERA:
+            new_memory_instance = RuntimeMemory(Scope.LOCAL, -1)
+            self.memories.append(new_memory_instance)
+            return
+        elif quad[0] == Operator.RETURN:
+            # WIP
+            if self.memories[-1].scope == Scope.GLOBAL:
+                self.quad_pointer = len(self.quadruples) - 1
+
+            result = self.get_value_from_address(quad[-3])
+            return
+        elif quad[0] == Operator.PRINT:
+            value_to_print = self.get_value_from_address(quad[3])
+            print(value_to_print)
+            return
+        elif quad[0] == Operator.END:
+            self.quad_pointer = len(self.quadruples) - 1
+            return
+
+
+        # Expression operands.
+        left_operand = self.get_value_from_address(quad[1])
+        right_operand = self.get_value_from_address(quad[2])
+        result = None
+
+        if quad[0] == Operator.PLUS:
+            result = left_operand + right_operand
+        elif quad[0] == Operator.MINUS:
+            result = left_operand - right_operand
+        elif quad[0] == Operator.TIMES:
+            result = left_operand * right_operand
+        elif quad[0] == Operator.DIVIDE:
+            if right_operand == 0:
+                raise NameError(f"Division by zero!")
+            result = left_operand / right_operand
+        elif quad[0] == Operator.GREATER:
+            result = left_operand > right_operand
+        elif quad[0] == Operator.LESS:
+            result = left_operand < right_operand
+        elif quad[0] == Operator.GREATER_EQ:
+            result = left_operand >= right_operand
+        elif quad[0] == Operator.LESS_EQ:
+            result = left_operand <= right_operand
+        elif quad[0] == Operator.EQUALS:
+            result = left_operand == right_operand
+        elif quad[0] == Operator.NOT_EQUAL:
+            result = left_operand != right_operand
+        elif quad[0] == Operator.AND:
+            result = 1 if (left_operand and right_operand) else 0
+        elif quad[0] == Operator.OR:
+            result = 1 if (left_operand or right_operand) else 0
+        else:
+            return
+
+        self.set_value_to_address(result, quad[3])
