@@ -6,4 +6,6 @@ The second iteration includes the semantic cube and var and function tables gene
 
 The third iteration includes functionality to do numerical computations, assignments, conditions and whiles.
 
-[Current] The fourth iteration includes cicles. Also we added funcitionality for ifs, elifs and elses. Added functionality to handle quadruples in a more ordered way.
+The fourth iteration includes cicles. Also we added funcitionality for ifs, elifs and elses. Added functionality to handle quadruples in a more ordered way.
+
+[Current] The fifth iteration is finally a semi functional version. We generate the object code with the quadruples and constants table. The virtual machine sets and gets addresses and it correctly runs simple inputs that don't have functions nor arrays.
