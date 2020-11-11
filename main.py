@@ -27,7 +27,12 @@ def main():
     function main {
         int a, b;
         a = 1;
-        while (a < 10) {
+        while (a <= 10) {
+            if (a < 5) {
+                print("Menor a 5");
+            } else {
+                print("Mayor o igual a 5");
+            }
             print(a);
             a = a + 1;
         }

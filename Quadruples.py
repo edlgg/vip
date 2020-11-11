@@ -160,7 +160,7 @@ class Quadruples:
         if func.is_var(var_name):
             operand = func.get_var(var_name)
         else:
-            raise NameError(f"Variable not declared.")
+            raise NameError('Variable not declared')
         self.add_existing_operand(operand)
 
     def assign(self):
@@ -171,7 +171,7 @@ class Quadruples:
 
         # Semantic cube checking.
         if not semantic_cube[assigning_type][l_type][Operator.ASSIGN].value:
-            raise NameError(f'Type mismatch')
+            raise NameError('Type mismatch')
         self.generate_quadruple(
             Operator.ASSIGN, l_operand.get_address(), None, assigning_variable.get_address())
         self.operands.append(assigning_variable)

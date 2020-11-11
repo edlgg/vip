@@ -65,10 +65,7 @@ def p_function_type(p):
 
 
 def p_var(p):
-    '''var : type_aux ID n_add_var array_dim var_aux SEMICOLON
-           | type_aux ID n_add_var array_dim SEMICOLON
-           | type_aux ID n_add_var var_aux SEMICOLON
-           | type_aux ID n_add_var SEMICOLON'''
+    '''var : type_aux var_aux SEMICOLON'''
 
 
 def p_type_aux(p):
@@ -77,10 +74,10 @@ def p_type_aux(p):
 
 
 def p_var_aux(p):
-    '''var_aux : COMMA ID n_add_var array_dim var_aux
-               | COMMA ID n_add_var array_dim
-               | COMMA ID n_add_var var_aux
-               | COMMA ID n_add_var'''
+    '''var_aux : ID n_add_var_arr array_dim COMMA var_aux
+               | ID n_add_var_arr array_dim
+               | ID n_add_var COMMA var_aux
+               | ID n_add_var'''
 
 
 def p_statement(p):
@@ -272,6 +269,10 @@ def p_n_end_main(p):
 def p_n_add_var(p):
     'n_add_var : '
     Q.add_var(p[-1])
+
+def p_n_add_var_arr(p):
+    'n_add_var_arr : '
+    pass
 
 
 def p_n_add_param(p):
