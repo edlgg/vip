@@ -1,11 +1,50 @@
 from constants import Type
 
+class Dim:
+    def __init__(self):
+        self.lim_inf = 0
+        self.lim_sup = 0
+        self.m = None
+        self.has_range = False
+
+    def set_lim_inf(self, lim_inf):
+        self.has_range = True
+        self.lim_inf = lim_inf
+
+    def set_lim_sup(self, lim_sup):
+        self.lim_sup = lim_sup
+        if not self.has_range:
+            self.lim_sup -= 1
+
+    def set_m(self, m):
+        self.m = m
+
+    def get_lim_inf(self): return self.lim_inf
+    def get_lim_sup(self): return self.lim_sup
+    def get_m(self): return self.m
+
 
 class Var:
-    def __init__(self, name, var_type, address=None):
+    def __init__(self, name, type, address=None, is_array=False):
         self.name = name
-        self.var_type = var_type
+        self.type = type
         self.address = address
+        self.is_array = is_array
+        self.dims = []
+
+    def add_dim(self, dim):
+        self.dims.append(dim)
+
+    def solve_dims(self, m):
+        offset = 0
+        for dim in self.dims:
+            d = dim.get_lim_sup() - dim.get_lim_inf() + 1
+            m /= d
+            offset += (dim.get_lim_inf() * m)
+            dim.set_m(m)
+        # Setting -k in the m field of the last Dim node
+        self.dims[len(self.dims) - 1].set_m(-offset)
+
 
 
 class Const:
@@ -24,6 +63,7 @@ class Func:
         self.num_temp_vars = 0
         self.quad_start = None
         self.vars = {}
+        self.current_var_name = None
         self.return_types = ["void", "int", "float", "string"]
         self.first_quadruple = first_quadruple
 
@@ -31,7 +71,7 @@ class Func:
         name = operand.str_operand
         if name in self.vars:
             raise NameError(f"Var {name} already defined")
-        self.vars[name] = operand
+        self.vars[name] = Var(name, operand.type, operand.address, operand.is_array)
 
     def get_var(self, name):
         return self.vars[name]
@@ -99,7 +139,12 @@ class AddressTable:
             print("******", func.name, "******")
             print("VARIABLES LOCALES:")
             for _, var in func.vars.items():
-                print(var.str_operand, var.type, var.address)
+                print(var.name, var.type, var.address)
+                if var.is_array:
+                    print('It is array!')
+                    print('Number of dims: ', len(var.dims))
+                    for dim in var.dims:
+                        print(dim.m)
         print("CONSTANTES:")
         for key, value in self.constants_addresses[Type.INT].items():
             print(key, value)

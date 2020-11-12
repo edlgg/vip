@@ -3,12 +3,14 @@ from constants import Type
 
 class Operand:
 
-    def __init__(self, str_operand=None, op_type=None, address=None, is_assigned=False):
+    def __init__(self, str_operand=None, op_type=None, address=None, is_assigned=False, is_array=False):
         self.str_operand = str_operand
 
         self.type = op_type
 
         self.address = address
+
+        self.is_array = is_array
 
         self.is_assigned = is_assigned
 
@@ -32,6 +34,15 @@ class Operand:
 
     def get_address(self):
         return self.address
+
+    def set_dims(self, dims):
+        self.dims = dims
+
+    def append_dim(self, dim):
+        self.dims.append(dim)
+
+    def get_dims(self):
+        return self.dims
 
     def set_is_assigned(self, is_assigned):
         self.is_assigned = is_assigned

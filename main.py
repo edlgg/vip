@@ -25,17 +25,7 @@ def main():
     # '''
     data = '''
     function main {
-        int a, b;
-        a = 1;
-        while (a <= 10) {
-            if (a < 5) {
-                print("Menor a 5");
-            } else {
-                print("Mayor o igual a 5");
-            }
-            print(a);
-            a = a + 1;
-        }
+        int a, b[1 .. 2][3 .. 6][0 .. 1];
         print("Fin!");
     }
     '''

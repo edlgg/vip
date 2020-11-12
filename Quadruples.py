@@ -2,7 +2,7 @@ from semantic_cube import semantic_cube
 from constants import types, Type, Operator
 from Operand import Operand
 from MemoryManager import MemoryManager
-from AddressTable import AddressTable
+from AddressTable import AddressTable, Dim
 
 
 class Quadruples:
@@ -29,6 +29,11 @@ class Quadruples:
 
         self.AT = AddressTable()
         self.memory_manager = MemoryManager()
+
+        '''Array utilities'''
+        # To keep track of the current array dim declaration.
+        self.current_dim = None
+        self.r = 1
 
         # Generating the first quadruple which is a GOTO main.
         self.generate_quadruple(Operator.GOTO, None, None, None)
@@ -276,15 +281,43 @@ class Quadruples:
         curr_func = self.AT.current_func_name
         self.AT.funcs[curr_func].num_local_vars += 1
 
-    def add_var(self, var_name, is_param=False):
+    def add_var(self, var_name, is_param=False, is_array=False):
         func = self.AT.get_func(self.AT.current_func_name)
         var_address = self.memory_manager.setAddress(
             scope='local', var_type=types[self.last_var_type])
         operand = Operand(
-            str_operand=var_name, op_type=types[self.last_var_type], address=var_address)
+            str_operand=var_name, op_type=types[self.last_var_type], address=var_address, is_array=is_array)
         func.add_var(operand)
+        func.current_var_name = var_name
         if is_param:
             func.num_params += 1
+        if is_array:
+            self.r = 1
+            
+
+    def create_dim_node(self):
+        dim = Dim()
+        self.current_dim = dim
+        
+    def end_array_dim(self):
+        func = self.AT.get_func(self.AT.current_func_name)
+        var_name = func.current_var_name
+        var = func.get_var(var_name)
+        var.solve_dims(self.r)
+
+    def register_array_dim_lim_inf(self, lim_inf):
+        self.current_dim.set_lim_inf(lim_inf)
+
+    def register_array_dim_lim_sup(self, lim_sup):
+        if self.current_dim.get_lim_inf() > lim_sup:
+            raise NameError(f'Invalid array dimension interval')
+        self.current_dim.set_lim_sup(lim_sup)
+        func = self.AT.get_func(self.AT.current_func_name)
+        var_name = func.current_var_name
+        func.get_var(var_name).add_dim(self.current_dim)
+        
+        # Update r
+        self.r *= (self.current_dim.get_lim_sup() - self.current_dim.get_lim_inf() + 1)
 
     def register_read(self, var_name):
         func = self.AT.get_func(self.AT.current_func_name)

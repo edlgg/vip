@@ -110,8 +110,17 @@ def p_array_index(p):
 
 
 def p_array_dim(p):
-    '''array_dim : L_SQUARE_BRACKET CONST_I R_SQUARE_BRACKET L_SQUARE_BRACKET CONST_I R_SQUARE_BRACKET
-                 | L_SQUARE_BRACKET CONST_I R_SQUARE_BRACKET'''
+    '''array_dim : L_SQUARE_BRACKET array_dim_aux R_SQUARE_BRACKET array_dim_2 n_array_dim_done
+                 | L_SQUARE_BRACKET array_dim_aux R_SQUARE_BRACKET n_array_dim_done'''
+
+def p_array_dim_2(p):
+    '''array_dim_2 : L_SQUARE_BRACKET array_dim_aux R_SQUARE_BRACKET array_dim_2
+                   | L_SQUARE_BRACKET array_dim_aux R_SQUARE_BRACKET'''
+
+
+def p_array_dim_aux(p):
+    '''array_dim_aux : n_create_dim_node CONST_I n_array_dim_inf DOT DOT CONST_I n_array_dim_sup
+                     | n_create_dim_node CONST_I n_array_dim_sup'''
 
 
 def p_assignment(p):
@@ -272,7 +281,7 @@ def p_n_add_var(p):
 
 def p_n_add_var_arr(p):
     'n_add_var_arr : '
-    pass
+    Q.add_var(p[-1], is_array=True)
 
 
 def p_n_add_param(p):
@@ -356,6 +365,26 @@ def p_n_start_assignment(p):
     Q.init_assignment(p[-1])
 
 
+def p_n_create_dim_node(p):
+    'n_create_dim_node : '
+    Q.create_dim_node()
+
+
+def p_n_array_dim_done(p):
+    'n_array_dim_done : '
+    Q.end_array_dim()
+
+
+def p_n_array_dim_inf(p):
+    'n_array_dim_inf : '
+    Q.register_array_dim_lim_inf(p[-1])
+
+
+def p_n_array_dim_sup(p):
+    'n_array_dim_sup : '
+    Q.register_array_dim_lim_sup(p[-1])
+
+
 def p_n_print(p):
     'n_print : '
     Q.do_print()
@@ -402,7 +431,7 @@ def parse(input):
     # Check the input's syntax
     parser.parse(input)
 
-    # Q.print_all()
+    Q.print_all()
 
     obj_code = Q.generate_obj_code()
 

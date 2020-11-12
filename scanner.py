@@ -30,6 +30,7 @@ reserved = {
 tokens = [
     'ID',
     'COLON',
+    'DOT',
     'SEMICOLON',
     'L_KEY_BRACKET',
     'R_KEY_BRACKET',
@@ -70,6 +71,7 @@ t_NOT_EQUAL = r'!='
 t_L_PARENS = r'\('
 t_R_PARENS = r'\)'
 t_COMMA = r'\,'
+t_DOT = r'\.'
 t_PLUS = r'\+'
 t_MINUS = r'-'
 t_TIMES = r'\*'
