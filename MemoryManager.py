@@ -46,43 +46,43 @@ class MemoryManager:
         self.t_string_index = self.t_string_index - \
             (self.t_string_index % 1000)
 
-    def setAddress(self, scope, var_type):
+    def setAddress(self, scope, var_type, space_required=1):
         assignedAddress = None
         if scope == 'global':
             if var_type == Type.INT:
-                if self.g_int_index > self.g_int_end:
+                if (self.g_int_index + space_required - 1) > self.g_int_end:
                     return -1  # Memory limit exceeded.
                 assignedAddress = self.g_int_index
-                self.g_int_index += 1
+                self.g_int_index += space_required
             elif var_type == Type.FLOAT:
-                if self.g_float_index > self.g_float_end:
+                if (self.g_float_index + space_required - 1) > self.g_float_end:
                     return -1
                 assignedAddress = self.g_float_index
-                self.g_float_index += 1
+                self.g_float_index += space_required
             elif var_type == Type.STRING:
-                if self.g_string_index > self.g_string_end:
+                if (self.g_string_index + space_required - 1) > self.g_string_end:
                     return -1
                 assignedAddress = self.g_string_index
-                self.g_string_index += 1
+                self.g_string_index += space_required
             else:
                 return -2  # Invalid var_type given.
 
         elif scope == 'local':
             if var_type == Type.INT:
-                if self.l_int_index > self.l_int_end:
+                if (self.l_int_index + space_required - 1) > self.l_int_end:
                     return -1  # Memory limit exceeded.
                 assignedAddress = self.l_int_index
-                self.l_int_index += 1
+                self.l_int_index += space_required
             elif var_type == Type.FLOAT:
-                if self.l_float_index > self.l_float_end:
+                if (self.l_float_index + space_required - 1) > self.l_float_end:
                     return -1
                 assignedAddress = self.l_float_index
-                self.l_float_index += 1
+                self.l_float_index += space_required
             elif var_type == Type.STRING:
-                if self.l_string_index > self.l_string_end:
+                if (self.l_string_index + space_required - 1) > self.l_string_end:
                     return -1
                 assignedAddress = self.l_string_index
-                self.l_string_index += 1
+                self.l_string_index += space_required
             else:
                 return -2  # Invalid var_type given.
 

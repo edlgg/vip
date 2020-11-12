@@ -35,6 +35,9 @@ class Var:
     def add_dim(self, dim):
         self.dims.append(dim)
 
+    def set_address(self, address):
+        self.address = address
+
     def solve_dims(self, m):
         offset = 0
         for dim in self.dims:
@@ -143,8 +146,8 @@ class AddressTable:
                 if var.is_array:
                     print('It is array!')
                     print('Number of dims: ', len(var.dims))
-                    for dim in var.dims:
-                        print(dim.m)
+                    # for dim in var.dims:
+                    #     print(dim.m)
         print("CONSTANTES:")
         for key, value in self.constants_addresses[Type.INT].items():
             print(key, value)

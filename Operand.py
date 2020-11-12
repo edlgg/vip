@@ -1,5 +1,6 @@
 from constants import Type
 
+# TODO: Consider deleting this class. I'm not sure if the new implementation of var makes this useless.
 
 class Operand:
 

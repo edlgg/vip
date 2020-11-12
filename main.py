@@ -25,7 +25,7 @@ def main():
     # '''
     data = '''
     function main {
-        int a, b[1 .. 2][3 .. 6][0 .. 1];
+        int a, b[1 .. 2][3 .. 6][0 .. 1], c;
         print("Fin!");
     }
     '''

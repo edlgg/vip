@@ -283,16 +283,20 @@ class Quadruples:
 
     def add_var(self, var_name, is_param=False, is_array=False):
         func = self.AT.get_func(self.AT.current_func_name)
-        var_address = self.memory_manager.setAddress(
-            scope='local', var_type=types[self.last_var_type])
+        
         operand = Operand(
-            str_operand=var_name, op_type=types[self.last_var_type], address=var_address, is_array=is_array)
+            str_operand=var_name, op_type=types[self.last_var_type], is_array=is_array)
         func.add_var(operand)
         func.current_var_name = var_name
         if is_param:
             func.num_params += 1
         if is_array:
             self.r = 1
+        else:
+            # Address is only set for non-arrays for now. Address for arrays should be set after knowing the total needed memory space for the array.
+            var_address = self.memory_manager.setAddress(
+                scope='local', var_type=types[self.last_var_type])
+            func.get_var(var_name).set_address(var_address)
             
 
     def create_dim_node(self):
@@ -300,11 +304,14 @@ class Quadruples:
         self.current_dim = dim
         
     def end_array_dim(self):
+        var_address = self.memory_manager.setAddress(
+            scope='local', var_type=types[self.last_var_type], space_required=self.r)
         func = self.AT.get_func(self.AT.current_func_name)
         var_name = func.current_var_name
         var = func.get_var(var_name)
+        var.set_address(var_address)
         var.solve_dims(self.r)
-
+        
     def register_array_dim_lim_inf(self, lim_inf):
         self.current_dim.set_lim_inf(lim_inf)
 
