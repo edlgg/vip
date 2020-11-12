@@ -51,8 +51,8 @@ def p_statements(p):
 
 
 def p_function_params(p):
-    '''function_params : type ID n_add_param array_index COMMA function_params
-                       | type ID n_add_param array_index
+    '''function_params : type ID n_add_param_array array_index n_get_array_dir COMMA function_params
+                       | type ID n_add_param_array array_index n_get_array_dir
                        | type ID n_add_param COMMA function_params
                        | type ID n_add_param'''
 
@@ -105,8 +105,8 @@ def p_type(p):
 
 
 def p_array_index(p):
-    '''array_index : L_SQUARE_BRACKET expression R_SQUARE_BRACKET L_SQUARE_BRACKET expression R_SQUARE_BRACKET
-                   | L_SQUARE_BRACKET expression R_SQUARE_BRACKET'''
+    '''array_index : L_SQUARE_BRACKET expression n_ver_index R_SQUARE_BRACKET array_index
+                   | L_SQUARE_BRACKET expression n_ver_index R_SQUARE_BRACKET'''
 
 
 def p_array_dim(p):
@@ -119,13 +119,13 @@ def p_array_dim_2(p):
 
 
 def p_array_dim_aux(p):
-    '''array_dim_aux : n_create_dim_node CONST_I n_array_dim_inf DOT DOT CONST_I n_array_dim_sup
-                     | n_create_dim_node CONST_I n_array_dim_sup'''
+    '''array_dim_aux : n_create_dim_node CONST_I n_array_dim_inf_with_interval DOT DOT CONST_I n_array_dim_sup
+                     | n_create_dim_node n_array_dim_inf CONST_I n_array_dim_sup'''
 
 
 def p_assignment(p):
-    '''assignment : ID n_start_assignment array_index ASSIGN  expression
-                  | ID n_start_assignment array_index ASSIGN  read
+    '''assignment : ID n_start_assignment_array array_index n_get_array_dir ASSIGN  expression
+                  | ID n_start_assignment_array array_index n_get_array_dir ASSIGN  read
                   | ID n_start_assignment ASSIGN expression
                   | ID n_start_assignment ASSIGN read'''
     Q.assign()
@@ -242,7 +242,7 @@ def p_const(p):
 
 
 def p_array_access(p):
-    'array_access : ID array_index'
+    'array_access : ID n_add_operand_array array_index n_get_array_dir'
 
 
 ############################################################################################################################
@@ -287,6 +287,11 @@ def p_n_add_var_arr(p):
 def p_n_add_param(p):
     'n_add_param : '
     Q.add_var(p[-1], is_param=True)
+
+
+def p_n_add_param_array(p):
+    'n_add_param_array : '
+    Q.add_var(p[-1], is_param=True, is_array=True)
 
 
 def p_n_record_last_type(p):
@@ -350,6 +355,11 @@ def p_n_add_operand(p):
     Q.add_operand(p[-1])
 
 
+def p_n_add_operand_array(p):
+    'n_add_operand_array : '
+    Q.add_operand(p[-1], is_array=True)
+
+
 def p_n_add_operator(p):
     'n_add_operator : '
     Q.add_operator(operators[p[-1]])
@@ -364,6 +374,9 @@ def p_n_start_assignment(p):
     'n_start_assignment : '
     Q.init_assignment(p[-1])
 
+def p_n_start_assignment_array(p):
+    'n_start_assignment_array : '
+    Q.init_assignment(p[-1], is_array=True)
 
 def p_n_create_dim_node(p):
     'n_create_dim_node : '
@@ -374,15 +387,27 @@ def p_n_array_dim_done(p):
     'n_array_dim_done : '
     Q.end_array_dim()
 
-
 def p_n_array_dim_inf(p):
     'n_array_dim_inf : '
-    Q.register_array_dim_lim_inf(p[-1])
+    Q.register_array_dim_lim_inf()
+
+def p_n_array_dim_inf_with_interval(p):
+    'n_array_dim_inf_with_interval : '
+    Q.register_array_dim_lim_inf(lim_inf=p[-1])
 
 
 def p_n_array_dim_sup(p):
     'n_array_dim_sup : '
     Q.register_array_dim_lim_sup(p[-1])
+
+
+def p_n_ver_index(p):
+    'n_ver_index : '
+    Q.ver_index()
+
+def p_n_get_array_dir(p):
+    'n_get_array_dir : ' 
+    Q.get_array_dir()
 
 
 def p_n_print(p):

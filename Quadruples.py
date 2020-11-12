@@ -34,6 +34,10 @@ class Quadruples:
         # To keep track of the current array dim declaration.
         self.current_dim = None
         self.r = 1
+        self.current_array_call = None
+        self.current_array_dim_number = None
+        # To store the lim_inf value (not address) when defining an array dimension
+        self.current_dim_lim_inf_value = None
 
         # Generating the first quadruple which is a GOTO main.
         self.generate_quadruple(Operator.GOTO, None, None, None)
@@ -53,11 +57,14 @@ class Quadruples:
     def add_operator(self, operator):
         self.operators.append(operator)
 
-    def add_operand(self, str_operand, is_assigned=False):
+    def add_operand(self, str_operand, is_assigned=False, is_array=False):
         operand = self.build_operand_object(
             str_operand, is_assigned=is_assigned)
         self.operands.append(operand)
         self.add_type(operand.get_type())
+
+        if is_array and not operand.is_array:
+            raise NameError(f'Variable is not an array')
 
     def pop_fake_bottom(self):
         self.operators.pop()
@@ -101,7 +108,7 @@ class Quadruples:
             else:  # Variable
                 address = None
                 for _, value in func.vars.items():
-                    if value.str_operand == str_operand:
+                    if value.name == str_operand:
                         address = value.address
                 if address == None:
                     address = self.memory_manager.setAddress(
@@ -159,13 +166,20 @@ class Quadruples:
         start_while = self.jumps.pop()
         self.generate_quadruple(Operator.GOTO, None, None, start_while)
 
-    def init_assignment(self, var_name):
+    def init_assignment(self, var_name, is_array=False):
         func = self.AT.funcs[self.AT.current_func_name]
         operand = None
+        # Validate var exists
         if func.is_var(var_name):
             operand = func.get_var(var_name)
         else:
             raise NameError('Variable not declared')
+        # Array validation
+        if is_array :
+            self.current_array_call = operand
+            if not operand.is_array:
+                raise NameError(f'Variable {operand.name} is not an array')
+            
         self.add_existing_operand(operand)
 
     def assign(self):
@@ -312,12 +326,23 @@ class Quadruples:
         var.set_address(var_address)
         var.solve_dims(self.r)
         
-    def register_array_dim_lim_inf(self, lim_inf):
+    def register_array_dim_lim_inf(self, lim_inf=0):
+        # Register new constant if it hasn't been registered before
+        address = self.AT.get_constant_address(lim_inf, Type.INT)
+        if address == -1:  # It doesn't exist.
+            address = self.memory_manager.setConstantAddress(Type.INT)
+            self.AT.add_constant_address(lim_inf, Type.INT, address)
         self.current_dim.set_lim_inf(lim_inf)
+        self.current_dim_lim_inf_value = lim_inf
 
     def register_array_dim_lim_sup(self, lim_sup):
-        if self.current_dim.get_lim_inf() > lim_sup:
+        if self.current_dim_lim_inf_value > lim_sup:
             raise NameError(f'Invalid array dimension interval')
+        # Register new constant if it hasn't been registered before
+        address = self.AT.get_constant_address(lim_sup, Type.INT)
+        if address == -1:  # It doesn't exist.
+            address = self.memory_manager.setConstantAddress(Type.INT)
+            self.AT.add_constant_address(lim_sup, Type.INT, address)
         self.current_dim.set_lim_sup(lim_sup)
         func = self.AT.get_func(self.AT.current_func_name)
         var_name = func.current_var_name
@@ -325,6 +350,27 @@ class Quadruples:
         
         # Update r
         self.r *= (self.current_dim.get_lim_sup() - self.current_dim.get_lim_inf() + 1)
+        self.current_dim = None
+
+    def ver_index(self):
+        if self.current_dim == None:
+            self.current_dim = 0
+            self.current_array_dim_number = self.current_array_call.get_dim_count()
+        if self.current_dim == self.current_array_dim_number:
+            raise NameError(f'Trying to access a non-existent dimension')
+        s = self.operands.pop().get_address()
+        self.types.pop()
+        dim = self.current_array_call.get_dim(self.current_dim)
+        lim_inf = self.AT.get_constant_address(dim.get_lim_inf(), Type.INT)
+        lim_sup = self.AT.get_constant_address(dim.get_lim_sup(), Type.INT)
+        self.generate_quadruple(Operator.VER, s, lim_inf, lim_sup)
+        self.current_dim +=1
+        
+
+    def get_array_dir(self):
+
+        # Reset current_dim value
+        self.current_dim = None
 
     def register_read(self, var_name):
         func = self.AT.get_func(self.AT.current_func_name)

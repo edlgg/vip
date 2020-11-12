@@ -32,8 +32,20 @@ class Var:
         self.is_array = is_array
         self.dims = []
 
+    def get_type(self):
+        return self.type
+
+    def get_address(self):
+        return self.address
+
     def add_dim(self, dim):
         self.dims.append(dim)
+
+    def get_dim(self, index):
+        return self.dims[index]
+
+    def get_dim_count(self):
+        return len(self.dims)
 
     def set_address(self, address):
         self.address = address

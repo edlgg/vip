@@ -6,7 +6,9 @@ from VirtualMachine import VirtualMachine
 
 
 def main():
+    # print('We are testing our diagram converter here:')
     # print_rows()
+    # print('We are done testing our diagram converter')
 
     # data = " "
     # data = data.join(get_tokens())
@@ -26,23 +28,34 @@ def main():
     data = '''
     function main {
         int a, b[1 .. 2][3 .. 6][0 .. 1], c;
-        print("Fin!");
+        b[3 + 4][7][5] = 3;
     }
     '''
 
-    '''
-    while (2 < 5) {
-            b = b + 1;
-            print("test", b);
+    data2 = '''
+    function main {
+        int a;
+        a = 4;
+        print("value of a: ");
+        print(a);
+        if (a < 5) {
+            print("a is less than 5");
         }
-        b = 1;
+        else {
+            print("a is not less than 5");
+        }
+    }
     '''
 
     # Generate Object code.
     quadruples, constants = parse(data)
 
-    vm = VirtualMachine(quadruples, constants)
-    vm.run()
+
+    print("")
+    print("")
+    print("Virtual Machine output: ")
+    # vm = VirtualMachine(quadruples, constants)
+    # vm.run()
 
 
 main()

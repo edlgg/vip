@@ -43,6 +43,7 @@ class Operator(Enum):
     ENDFUNC = 22
     END = 23
     FAKE_BOTTOM = 24
+    VER = 25
 
 
 operators = {
