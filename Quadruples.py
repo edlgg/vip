@@ -15,6 +15,7 @@ class Quadruples:
         self.types = []
         self.jumps = []
         self.returns = []
+        self.arrays = []
 
         # To keep track of the next quadruple.
         self.q_count = 0
@@ -34,10 +35,11 @@ class Quadruples:
         # To keep track of the current array dim declaration.
         self.current_dim = None
         self.r = 1
-        self.current_array_call = None
         self.current_array_dim_number = None
         # To store the lim_inf value (not address) when defining an array dimension
         self.current_dim_lim_inf_value = None
+        # To calculate the current array address
+        self.current_array_address = 0
 
         # Generating the first quadruple which is a GOTO main.
         self.generate_quadruple(Operator.GOTO, None, None, None)
@@ -57,14 +59,12 @@ class Quadruples:
     def add_operator(self, operator):
         self.operators.append(operator)
 
-    def add_operand(self, str_operand, is_assigned=False, is_array=False):
+    def add_operand(self, str_operand, is_assigned=False):
         operand = self.build_operand_object(
             str_operand, is_assigned=is_assigned)
         self.operands.append(operand)
         self.add_type(operand.get_type())
 
-        if is_array and not operand.is_array:
-            raise NameError(f'Variable is not an array')
 
     def pop_fake_bottom(self):
         self.operators.pop()
@@ -110,6 +110,7 @@ class Quadruples:
                 for _, value in func.vars.items():
                     if value.name == str_operand:
                         address = value.address
+                        operand = value
                 if address == None:
                     address = self.memory_manager.setAddress(
                         'local', Type.STRING)
@@ -198,13 +199,13 @@ class Quadruples:
 
     def do_print(self, string=None):
         operand = self.operands.pop()
-        operand_type = self.types.pop()
+        self.types.pop()
         self.generate_quadruple(Operator.PRINT, None,
                                 None, operand.get_address())
 
     def add_return(self):
         return_val = self.operands.pop()
-        return_type = self.types.pop()
+        self.types.pop()
         self.returns.append(self.q_count)
         self.generate_quadruple(
             Operator.RETURN, return_val.get_address(), None, None)
@@ -274,7 +275,7 @@ class Quadruples:
 
     def validate_param(self, param):
         argument = self.operands.pop()
-        argument_type = self.types.pop()
+        self.types.pop()
 
         if self.param_count < self.AT.funcs[self.current_function_call].num_params:
             self.param_count += 1
@@ -353,24 +354,75 @@ class Quadruples:
         self.current_dim = None
 
     def ver_index(self):
-        if self.current_dim == None:
-            self.current_dim = 0
-            self.current_array_dim_number = self.current_array_call.get_dim_count()
+        var, dim_num = self.arrays.pop()
+        if dim_num == 0:
+            self.current_array_address = 0
+            self.current_array_dim_number = var.get_dim_count()
         if self.current_dim == self.current_array_dim_number:
             raise NameError(f'Trying to access a non-existent dimension')
         s = self.operands.pop().get_address()
         self.types.pop()
-        dim = self.current_array_call.get_dim(self.current_dim)
+        dim = var.get_dim(dim_num)
         lim_inf = self.AT.get_constant_address(dim.get_lim_inf(), Type.INT)
         lim_sup = self.AT.get_constant_address(dim.get_lim_sup(), Type.INT)
         self.generate_quadruple(Operator.VER, s, lim_inf, lim_sup)
-        self.current_dim +=1
+
+        # Following the formula s1*m1 + s2 + (-k)....
+        tmp_address = self.memory_manager.setTempAddress(Type.INT)
+        t = Operand(address=tmp_address, op_type=Type.INT)
+        m = dim.get_m()
+        m = self.AT.get_constant_address(m, Type.INT)
+        # If it doesn't exist, create a new constant address for it.
+        if m == -1:
+            m = self.memory_manager.setConstantAddress(Type.INT)
+            self.AT.add_constant_address(dim.get_m(), Type.INT, m)
+        # Multiply m of the current Dim node if it's not the last dim
+        if dim_num < self.current_array_dim_number - 1:
+            self.generate_quadruple(Operator.TIMES, s, m, tmp_address)
+        # Add (-k) if it's the last Dim node
+        else:
+            k = m
+            self.generate_quadruple(Operator.PLUS, s, k, tmp_address)
+        if dim_num != 0:
+            aux = self.operands.pop()
+            self.types.pop()
+            tmp_address_2 = self.memory_manager.setTempAddress(Type.INT)
+            self.generate_quadruple(
+                Operator.PLUS, aux.get_address(), tmp_address, tmp_address_2)
+            t.set_address(tmp_address_2)
+        self.operands.append(t)
+        self.types.append(Type.INT)
+        self.arrays.append((var, dim_num + 1))
         
 
     def get_array_dir(self):
+        operand = self.operands.pop()
+        var, _ = self.arrays.pop()
+        self.types.pop()
+        tmp_address = self.memory_manager.setTempAddress(Type.INT)
+        t = Operand(address=tmp_address)
+        # Add base address
+        base_address = var.get_address()
+        const_address = self.memory_manager.setConstantAddress(Type.INT)
+        self.AT.add_constant_address(base_address, Type.INT, const_address)
+        self.generate_quadruple(Operator.PLUS, operand.get_address(), const_address, '(' + str(tmp_address) + ')')
+        self.operands.append(t)
+        self.types.append(Type.INT)
 
-        # Reset current_dim value
-        self.current_dim = None
+    def validate_is_array(self):
+        array_id = self.operands.pop().get_name()
+        self.types.pop()
+        var = None
+        func = self.AT.get_func(self.AT.current_func_name)
+        if func.is_var(array_id):
+            var = func.get_var(array_id)
+        if var == None:
+            raise NameError(f'Variable {array_id} does not exist')
+        if not var.is_array:
+            raise NameError(f'Variable {array_id} is not an array')
+        self.arrays.append((var, 0))
+        self.operators.append(Operator.FAKE_BOTTOM)
+
 
     def register_read(self, var_name):
         func = self.AT.get_func(self.AT.current_func_name)

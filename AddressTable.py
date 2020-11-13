@@ -50,11 +50,17 @@ class Var:
     def set_address(self, address):
         self.address = address
 
+    def set_type(self, type):
+        self.type = type
+
+    def get_name(self):
+        return self.name
+
     def solve_dims(self, m):
         offset = 0
         for dim in self.dims:
             d = dim.get_lim_sup() - dim.get_lim_inf() + 1
-            m /= d
+            m = int(m/d)
             offset += (dim.get_lim_inf() * m)
             dim.set_m(m)
         # Setting -k in the m field of the last Dim node
@@ -155,11 +161,6 @@ class AddressTable:
             print("VARIABLES LOCALES:")
             for _, var in func.vars.items():
                 print(var.name, var.type, var.address)
-                if var.is_array:
-                    print('It is array!')
-                    print('Number of dims: ', len(var.dims))
-                    # for dim in var.dims:
-                    #     print(dim.m)
         print("CONSTANTES:")
         for key, value in self.constants_addresses[Type.INT].items():
             print(key, value)
