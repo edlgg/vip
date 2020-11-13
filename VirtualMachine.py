@@ -17,8 +17,10 @@ class VirtualMachine():
             return self.g_memory.get_value_from_address_helper(address)
         elif self.is_local_or_temp_address(address):
             return self.memories[-1].get_value_from_address_helper(address)
+        elif self.is_pointer(address):
+            aux = self.memories[-1].get_value_from_address_helper(-address)
+            return self.memories[-1].get_value_from_address_helper(aux)
         else:
-            # TODO:Check this later.
             return self.constants[address]
 
     def set_value_to_address(self, value, address):
@@ -26,12 +28,18 @@ class VirtualMachine():
             self.g_memory.set_value_to_address_helper(value, address)
         elif self.is_local_or_temp_address(address):
             self.memories[-1].set_value_to_address_helper(value, address)
+        elif self.is_pointer(address):
+            aux = self.memories[-1].get_value_from_address_helper(-address)
+            self.memories[-1].set_value_to_address_helper(value, aux)
 
     def is_global_address(self, address):
         return address >= self.g_memory.g_int_start and address < (self.g_memory.g_string_start + 1000)
 
     def is_local_or_temp_address(self, address):
         return address >= self.memories[-1].l_int_start and address < (self.memories[-1].t_string_start + 1000)
+
+    def is_pointer(self, address):
+        return address < 0
 
     def run(self):
         while self.quad_pointer < len(self.quadruples):
@@ -70,6 +78,13 @@ class VirtualMachine():
             return
         elif quad[0] == Operator.END:
             self.quad_pointer = len(self.quadruples) - 1
+            return
+        elif quad[0] == Operator.VER:
+            index = self.get_value_from_address(quad[1])
+            lim_inf = self.get_value_from_address(quad[2])
+            lim_sup = self.get_value_from_address(quad[3])
+            if not lim_inf <= index <= lim_sup:
+                raise NameError(f'array index out of range')
             return
 
 

@@ -32,6 +32,23 @@ def main():
     }
     '''
 
+    data3 = '''
+    function main {
+        int a[1 .. 5], c;
+        int cont;
+        cont = 1;
+        while (cont <= 5) {
+            a[cont] = cont;
+            cont = cont + 1;
+        }
+        cont = 1;
+        while (cont <= 5) {
+            print(a[cont]);
+            cont = cont + 1;
+        }
+    }
+    '''
+
     data2 = '''
     function main {
         int a;
@@ -48,14 +65,14 @@ def main():
     '''
 
     # Generate Object code.
-    quadruples, constants = parse(data)
+    quadruples, constants = parse(data3)
 
 
     print("")
     print("")
     print("Virtual Machine output: ")
-    # vm = VirtualMachine(quadruples, constants)
-    # vm.run()
+    vm = VirtualMachine(quadruples, constants)
+    vm.run()
 
 
 main()

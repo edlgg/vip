@@ -399,13 +399,15 @@ class Quadruples:
         operand = self.operands.pop()
         var, _ = self.arrays.pop()
         self.types.pop()
-        tmp_address = self.memory_manager.setTempAddress(Type.INT)
+        tmp_address = self.memory_manager.setTempAddress(Type.INT) * -1
         t = Operand(address=tmp_address)
         # Add base address
         base_address = var.get_address()
-        const_address = self.memory_manager.setConstantAddress(Type.INT)
-        self.AT.add_constant_address(base_address, Type.INT, const_address)
-        self.generate_quadruple(Operator.PLUS, operand.get_address(), const_address, '(' + str(tmp_address) + ')')
+        const_address = self.AT.get_constant_address(base_address, Type.INT)
+        if const_address == -1: # It doesn't exist.
+            const_address = self.memory_manager.setConstantAddress(Type.INT)
+            self.AT.add_constant_address(base_address, Type.INT, const_address)
+        self.generate_quadruple(Operator.PLUS, operand.get_address(), const_address, tmp_address * -1)
         self.operands.append(t)
         self.types.append(Type.INT)
 
