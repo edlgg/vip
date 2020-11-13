@@ -1,6 +1,12 @@
+'''
+VIP Memory Manager
+Authors: David Souza & Eduardo de la Garza
+'''
+
 from constants import Type
 
-
+'''The purpose of this class is to keep track of the number of assigned memory slots and
+assign memory addresses depending on the scope and type of variable'''
 class MemoryManager:
     def __init__(self):
         # Global Variables
