@@ -65,10 +65,7 @@ def p_function_type(p):
 
 
 def p_var(p):
-    '''var : type_aux ID n_add_var array_dim var_aux SEMICOLON
-           | type_aux ID n_add_var array_dim SEMICOLON
-           | type_aux ID n_add_var var_aux SEMICOLON
-           | type_aux ID n_add_var SEMICOLON'''
+    '''var : type_aux var_aux SEMICOLON'''
 
 
 def p_type_aux(p):
@@ -77,10 +74,10 @@ def p_type_aux(p):
 
 
 def p_var_aux(p):
-    '''var_aux : COMMA ID n_add_var array_dim var_aux
-               | COMMA ID n_add_var array_dim
-               | COMMA ID n_add_var var_aux
-               | COMMA ID n_add_var'''
+    '''var_aux : ID n_add_var_arr array_dim COMMA var_aux
+               | ID n_add_var_arr array_dim
+               | ID n_add_var COMMA var_aux
+               | ID n_add_var'''
 
 
 def p_statement(p):
@@ -107,21 +104,25 @@ def p_type(p):
             | STRING n_record_last_type'''
 
 
-def p_array_index(p):
-    '''array_index : L_SQUARE_BRACKET expression R_SQUARE_BRACKET L_SQUARE_BRACKET expression R_SQUARE_BRACKET
-                   | L_SQUARE_BRACKET expression R_SQUARE_BRACKET'''
-
-
 def p_array_dim(p):
-    '''array_dim : L_SQUARE_BRACKET CONST_I R_SQUARE_BRACKET L_SQUARE_BRACKET CONST_I R_SQUARE_BRACKET
-                 | L_SQUARE_BRACKET CONST_I R_SQUARE_BRACKET'''
+    '''array_dim : L_SQUARE_BRACKET array_dim_aux R_SQUARE_BRACKET array_dim_2 n_array_dim_done
+                 | L_SQUARE_BRACKET array_dim_aux R_SQUARE_BRACKET n_array_dim_done'''
+
+def p_array_dim_2(p):
+    '''array_dim_2 : L_SQUARE_BRACKET array_dim_aux R_SQUARE_BRACKET array_dim_2
+                   | L_SQUARE_BRACKET array_dim_aux R_SQUARE_BRACKET'''
+
+
+def p_array_dim_aux(p):
+    '''array_dim_aux : n_create_dim_node CONST_I n_array_dim_inf_with_interval DOT DOT CONST_I n_array_dim_sup
+                     | n_create_dim_node n_array_dim_inf CONST_I n_array_dim_sup'''
 
 
 def p_assignment(p):
-    '''assignment : ID n_start_assignment array_index ASSIGN  expression
-                  | ID n_start_assignment array_index ASSIGN  read
-                  | ID n_start_assignment ASSIGN expression
-                  | ID n_start_assignment ASSIGN read'''
+    '''assignment : ID n_start_assignment ASSIGN expression
+                  | ID n_start_assignment ASSIGN read
+                  | array_access ASSIGN  expression
+                  | array_access ASSIGN  read'''
     Q.assign()
 
 
@@ -236,7 +237,16 @@ def p_const(p):
 
 
 def p_array_access(p):
-    'array_access : ID array_index'
+    'array_access : ID n_add_operand n_validate_is_array array_index'
+
+
+def p_array_index(p):
+    '''array_index : L_SQUARE_BRACKET expression n_ver_index R_SQUARE_BRACKET array_index_aux'''
+
+
+def p_array_index_aux(p):
+    '''array_index_aux : array_index
+                       | n_get_array_dir'''
 
 
 ############################################################################################################################
@@ -273,6 +283,10 @@ def p_n_add_var(p):
     'n_add_var : '
     Q.add_var(p[-1])
 
+
+def p_n_add_var_arr(p):
+    'n_add_var_arr : '
+    Q.add_var(p[-1], is_array=True)
 
 def p_n_add_param(p):
     'n_add_param : '
@@ -354,6 +368,35 @@ def p_n_start_assignment(p):
     'n_start_assignment : '
     Q.init_assignment(p[-1])
 
+def p_n_create_dim_node(p):
+    'n_create_dim_node : '
+    Q.create_dim_node()
+
+
+def p_n_array_dim_done(p):
+    'n_array_dim_done : '
+    Q.end_array_dim()
+
+def p_n_array_dim_inf(p):
+    'n_array_dim_inf : '
+    Q.register_array_dim_lim_inf()
+
+def p_n_array_dim_inf_with_interval(p):
+    'n_array_dim_inf_with_interval : '
+    Q.register_array_dim_lim_inf(lim_inf=p[-1])
+
+
+def p_n_array_dim_sup(p):
+    'n_array_dim_sup : '
+    Q.register_array_dim_lim_sup(p[-1])
+
+def p_n_get_array_dir(p):
+    'n_get_array_dir : ' 
+    Q.get_array_dir()
+
+def p_n_ver_index(p):
+    'n_ver_index : '
+    Q.ver_index()
 
 def p_n_print(p):
     'n_print : '
@@ -388,6 +431,10 @@ def p_n_validate_function_call(p):
 def p_n_register_read(p):
     'n_register_read : '
     Q.register_read(p[-1])
+
+def p_n_validate_is_array(p):
+    'n_validate_is_array : '
+    Q.validate_is_array()
 
 
 def p_error(p):

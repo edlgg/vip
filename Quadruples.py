@@ -1,5 +1,5 @@
 from semantic_cube import semantic_cube
-from constants import types, Type, Operator
+from constants import types, Type, Operator, Scope
 from Operand import Operand
 from MemoryManager import MemoryManager
 from AddressTable import AddressTable, Dim
@@ -59,9 +59,9 @@ class Quadruples:
     def add_operator(self, operator):
         self.operators.append(operator)
 
-    def add_operand(self, str_operand, is_assigned=False):
+    def add_operand(self, str_operand, is_assigned=False, is_function_call=False):
         operand = self.build_operand_object(
-            str_operand, is_assigned=is_assigned)
+            str_operand, is_assigned=is_assigned, is_function_call=is_function_call)
         self.operands.append(operand)
         self.add_type(operand.get_type())
 
@@ -72,9 +72,9 @@ class Quadruples:
         self.add_type(operand.get_type())
         self.operands.append(operand)
 
-    def build_operand_object(self, str_operand, is_assigned=False):
+    def build_operand_object(self, str_operand, is_assigned=False, is_function_call=False):
         t = type(str_operand)
-        operand = Operand(str_operand, is_assigned=is_assigned)
+        operand = Operand(str_operand, is_assigned=is_assigned, is_function_call=is_function_call)
         func = self.AT.funcs[self.AT.current_func_name]
 
         if t == int:
@@ -112,7 +112,7 @@ class Quadruples:
                         operand = value
                 if address == None:
                     address = self.memory_manager.setAddress(
-                        'local', Type.STRING)
+                        Scope.LOCAL, Type.STRING)
                 operand.set_address(address)
                 operand_type = self.get_type_from_address(address)
                 operand.set_type(operand_type)
@@ -188,6 +188,7 @@ class Quadruples:
         assigning_variable = self.operands.pop()
         assigning_type = self.types.pop()
 
+
         # Semantic cube checking.
         if not semantic_cube[assigning_type][l_type][Operator.ASSIGN].value:
             raise NameError('Type mismatch')
@@ -203,8 +204,14 @@ class Quadruples:
                                 None, operand.get_address())
 
     def add_return(self):
+        func = self.AT.get_func(self.AT.current_func_name)
+        func_return_type = func.get_return_type()
+        if func_return_type == Type.VOID:
+            raise NameError(f'Void function should not return a value')
         return_val = self.operands.pop()
-        self.types.pop()
+        return_type = self.types.pop()
+        if not semantic_cube[func_return_type][return_type][Operator.ASSIGN].value:
+            raise NameError(f'\'{return_type}\' cannot be returned as \'{func_return_type}\'')
         self.returns.append(self.q_count)
         self.generate_quadruple(
             Operator.RETURN, return_val.get_address(), None, None)
@@ -228,7 +235,10 @@ class Quadruples:
 
     def register_func_type(self, func_type):
         func = self.AT.get_func(self.AT.current_func_name)
+        func_type = types[func_type]
         func.assign_return_type(func_type)
+        func_address = self.memory_manager.setAddress(Scope.GLOBAL, func_type)
+        self.AT.add_global_address(self.AT.current_func_name, func_type, func_address)
 
     def maybe_solve_operation(self, operations):
         operator = self.get_operator()
@@ -266,9 +276,10 @@ class Quadruples:
             self.current_function_call = func_id
         else:
             raise NameError(f"Calling undefined function: {func_id}")
-
+        
         func = self.AT.funcs[func_id]
-        self.generate_quadruple(Operator.ERA, func_id,
+        global_func_address = self.AT.get_global_address(func_id, func.get_return_type())
+        self.generate_quadruple(Operator.ERA, global_func_address,
                                 func.num_params, func.num_temp_vars)
         self.param_count = 0
 
@@ -301,6 +312,17 @@ class Quadruples:
         else:
             self.generate_quadruple(Operator.GOSUB, self.current_function_call,
                                     None, self.AT.funcs[self.current_function_call].first_quadruple)
+        
+        func = self.AT.get_func(self.current_function_call)
+
+        func_return_type = func.get_return_type()
+        if func_return_type is not Type.VOID:
+            tmp_address = self.memory_manager.setTempAddress(func_return_type)
+            temp = Operand(address=tmp_address)
+            func_address = self.AT.get_global_address(self.current_function_call, func_return_type)
+            self.generate_quadruple(Operator.ASSIGN, func_address, None, tmp_address)
+            self.operands.append(temp)
+            self.types.append(func_return_type)
 
     def increment_local_var_count(self):
         curr_func = self.AT.current_func_name
@@ -321,7 +343,7 @@ class Quadruples:
         else:
             # Address is only set for non-arrays for now. Address for arrays should be set after knowing the total needed memory space for the array.
             var_address = self.memory_manager.setAddress(
-                scope='local', var_type=types[self.last_var_type])
+                scope=Scope.LOCAL, var_type=types[self.last_var_type])
             func.get_var(var_name).set_address(var_address)
 
     def create_dim_node(self):
@@ -330,7 +352,7 @@ class Quadruples:
 
     def end_array_dim(self):
         var_address = self.memory_manager.setAddress(
-            scope='local', var_type=types[self.last_var_type], space_required=self.r)
+            scope=Scope.LOCAL, var_type=types[self.last_var_type], space_required=self.r)
         func = self.AT.get_func(self.AT.current_func_name)
         var_name = func.current_var_name
         var = func.get_var(var_name)

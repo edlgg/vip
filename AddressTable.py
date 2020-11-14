@@ -86,7 +86,7 @@ class Func:
         self.vars = {}
         self.param_names = []
         self.current_var_name = None
-        self.return_types = ["void", "int", "float", "string"]
+        self.return_types = [Type.INT, Type.FLOAT, Type.STRING, Type.VOID]
         self.first_quadruple = first_quadruple
 
     def add_var(self, operand):
@@ -119,12 +119,20 @@ class Func:
     def get_var_address(self, name):
         return self.vars[name].address
 
+    def get_return_type(self):
+        return self.return_type
+
 
 class AddressTable:
     def __init__(self):
         self.funcs = {}
         self.current_func_name = None
         self.constants_addresses = {
+            Type.INT: {},
+            Type.FLOAT: {},
+            Type.STRING: {},
+        }
+        self.global_addresses = {
             Type.INT: {},
             Type.FLOAT: {},
             Type.STRING: {},
@@ -148,6 +156,8 @@ class AddressTable:
     def del_func(self, name):
         del self.funcs[name]
 
+
+    # TODO: Encapsulate these 4 functions into 2.
     def add_constant_address(self, constant_value, constant_type, address):
         self.constants_addresses[constant_type][constant_value] = address
 
@@ -156,6 +166,15 @@ class AddressTable:
             return self.constants_addresses[constant_type][constant_value]
         else:
             return -1  # Constant doesn't exist yet.
+
+    def add_global_address(self, global_value, global_type, address):
+        self.global_addresses[global_type][global_value] = address
+
+    def get_global_address(self, global_value, global_type):
+        if global_value in self.global_addresses[global_type]:
+            return self.global_addresses[global_type][global_value]
+        else:
+            return -1 # Global doesn't exist yet.
 
     def print_all(self):
         for _, func in self.funcs.items():
@@ -169,4 +188,11 @@ class AddressTable:
         for key, value in self.constants_addresses[Type.FLOAT].items():
             print(key, value)
         for key, value in self.constants_addresses[Type.STRING].items():
+            print(key, value)
+        print("GLOBALES:")
+        for key, value in self.global_addresses[Type.INT].items():
+            print(key, value)
+        for key, value in self.global_addresses[Type.FLOAT].items():
+            print(key, value)
+        for key, value in self.global_addresses[Type.STRING].items():
             print(key, value)

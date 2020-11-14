@@ -3,7 +3,7 @@ VIP Memory Manager
 Authors: David Souza & Eduardo de la Garza
 '''
 
-from constants import Type
+from constants import Type, Scope
 
 '''The purpose of this class is to keep track of the number of assigned memory slots and
 assign memory addresses depending on the scope and type of variable'''
@@ -54,7 +54,7 @@ class MemoryManager:
 
     def setAddress(self, scope, var_type, space_required=1):
         assignedAddress = None
-        if scope == 'global':
+        if scope == Scope.GLOBAL:
             if var_type == Type.INT:
                 if (self.g_int_index + space_required - 1) > self.g_int_end:
                     return -1  # Memory limit exceeded.
@@ -73,7 +73,7 @@ class MemoryManager:
             else:
                 return -2  # Invalid var_type given.
 
-        elif scope == 'local':
+        elif scope == Scope.LOCAL:
             if var_type == Type.INT:
                 if (self.l_int_index + space_required - 1) > self.l_int_end:
                     return -1  # Memory limit exceeded.

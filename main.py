@@ -29,6 +29,7 @@ def main():
     function main {
         int a[1 .. 5], b[1 .. 2][3 .. 6][0 .. 1], c;
         a[4] = 3;
+        print(a[4]);
     }
     '''
 
@@ -67,9 +68,7 @@ def main():
     data4 = '''
         function suma(int a, int b): int {
             int c;
-            c = a + b;
-            print(a + b);
-            return c;
+            return a + b;
         }
 
         function main {
@@ -82,7 +81,7 @@ def main():
     '''
 
     # Generate Object code.
-    quadruples, constants = parse(data4)
+    quadruples, constants = parse(data)
 
     print("")
     print("")
