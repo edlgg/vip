@@ -282,6 +282,7 @@ class Quadruples:
         self.generate_quadruple(Operator.ERA, global_func_address,
                                 func.num_params, func.num_temp_vars)
         self.param_count = 0
+        self.operators.append(Operator.FAKE_BOTTOM)
 
     def validate_param(self, param):
         argument = self.operands.pop()
@@ -298,12 +299,6 @@ class Quadruples:
             self.param_count += 1
         else:
             raise NameError(f"Passing more arguments than expected.")
-
-        # function sum(int a[4], int b): int {
-        #     return a + b
-        # }
-
-        # sum(3+5, 2)
 
     def validate_function_call(self):
         if self.param_count != self.AT.funcs[self.current_function_call].num_params:
@@ -323,6 +318,7 @@ class Quadruples:
             self.generate_quadruple(Operator.ASSIGN, func_address, None, tmp_address)
             self.operands.append(temp)
             self.types.append(func_return_type)
+        self.operators.pop()
 
     def increment_local_var_count(self):
         curr_func = self.AT.current_func_name

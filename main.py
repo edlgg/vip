@@ -74,14 +74,17 @@ def main():
         function main {
             int a, b;
             a = 3;
-            b = 2;
-            a = suma(3,4);
+            b = 39;
+            print(b, a);
+            print("hola",b);
+            a = b - suma(3,4);
+            print(b,"-", suma(3,4), a);
             print(a);
         }
     '''
 
     # Generate Object code.
-    quadruples, constants = parse(data)
+    quadruples, constants = parse(data4)
 
     print("")
     print("")
