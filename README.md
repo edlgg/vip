@@ -8,4 +8,6 @@ The third iteration includes functionality to do numerical computations, assignm
 
 The fourth iteration includes cicles. Also we added funcitionality for ifs, elifs and elses. Added functionality to handle quadruples in a more ordered way.
 
-[Current] The fifth iteration is finally a semi functional version. We generate the object code with the quadruples and constants table. The virtual machine sets and gets addresses and it correctly runs simple inputs that don't have functions nor arrays.
+The fifth iteration is finally a semi functional version. We generate the object code with the quadruples and constants table. The virtual machine sets and gets addresses and it correctly runs simple inputs that don't have functions nor arrays.
+
+[Current] The sixth iteration includes array funcionality. vip Arrays allow you to define dimension intervals. e.g. int A[3 .. 6]; or just define the size of the dimension if no interval is given e.g. int A[4] (which goes from 0 to 3). We also have function calls, return value doesn't work yet.
