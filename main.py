@@ -64,9 +64,25 @@ def main():
     }
     '''
 
-    # Generate Object code.
-    quadruples, constants = parse(data3)
+    data4 = '''
+        function suma(int a, int b): int {
+            int c;
+            c = a + b;
+            print(a + b);
+            return c;
+        }
 
+        function main {
+            int a, b;
+            a = 3;
+            b = 2;
+            a = suma(3,4);
+            print(a);
+        }
+    '''
+
+    # Generate Object code.
+    quadruples, constants = parse(data4)
 
     print("")
     print("")

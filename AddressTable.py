@@ -1,5 +1,6 @@
 from constants import Type
 
+
 class Dim:
     def __init__(self):
         self.lim_inf = 0
@@ -67,7 +68,6 @@ class Var:
         self.dims[len(self.dims) - 1].set_m(-offset)
 
 
-
 class Const:
     def __init__(self, name, const_type, address=None):
         self.name = name
@@ -84,6 +84,7 @@ class Func:
         self.num_temp_vars = 0
         self.quad_start = None
         self.vars = {}
+        self.param_names = []
         self.current_var_name = None
         self.return_types = ["void", "int", "float", "string"]
         self.first_quadruple = first_quadruple
@@ -92,7 +93,8 @@ class Func:
         name = operand.str_operand
         if name in self.vars:
             raise NameError(f"Var {name} already defined")
-        self.vars[name] = Var(name, operand.type, operand.address, operand.is_array)
+        self.vars[name] = Var(name, operand.type,
+                              operand.address, operand.is_array)
 
     def get_var(self, name):
         return self.vars[name]
@@ -145,7 +147,7 @@ class AddressTable:
 
     def del_func(self, name):
         del self.funcs[name]
-    
+
     def add_constant_address(self, constant_value, constant_type, address):
         self.constants_addresses[constant_type][constant_value] = address
 

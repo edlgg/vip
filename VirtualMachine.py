@@ -11,6 +11,7 @@ class VirtualMachine():
         self.memories = []
         self.g_memory = RuntimeMemory(Scope.GLOBAL, -1)
         self.memories.append(self.g_memory)
+        self.return_val = None
 
     def get_value_from_address(self, address):
         if self.is_global_address(address):
@@ -47,6 +48,7 @@ class VirtualMachine():
             self.quad_pointer += 1
 
     def process_quad(self, quad):
+        print(quad)
         if quad[0] == Operator.ASSIGN:
             result = self.get_value_from_address(quad[1])
             self.set_value_to_address(result, quad[3])
@@ -70,7 +72,7 @@ class VirtualMachine():
             if self.memories[-1].scope == Scope.GLOBAL:
                 self.quad_pointer = len(self.quadruples) - 1
 
-            result = self.get_value_from_address(quad[-3])
+            self.return_val = self.get_value_from_address(quad[-3])
             return
         elif quad[0] == Operator.PRINT:
             value_to_print = self.get_value_from_address(quad[3])
@@ -86,7 +88,18 @@ class VirtualMachine():
             if not lim_inf <= index <= lim_sup:
                 raise NameError(f'array index out of range')
             return
-
+        elif quad[0] == Operator.GOSUB:
+            self.memories[-1].return_quad = self.quad_pointer
+            self.quad_pointer = quad[3] - 1
+            return
+        elif quad[0] == Operator.PARAM:
+            result_val = self.get_value_from_address(quad[1])
+            self.set_value_to_address(result_val, quad[3])
+            return
+        elif quad[0] == Operator.ENDFUNC:
+            self.quad_pointer = self.memories[-1].return_quad
+            self.memories.pop()
+            return
 
         # Expression operands.
         left_operand = self.get_value_from_address(quad[1])

@@ -65,7 +65,6 @@ class Quadruples:
         self.operands.append(operand)
         self.add_type(operand.get_type())
 
-
     def pop_fake_bottom(self):
         self.operators.pop()
 
@@ -176,11 +175,11 @@ class Quadruples:
         else:
             raise NameError('Variable not declared')
         # Array validation
-        if is_array :
+        if is_array:
             self.current_array_call = operand
             if not operand.is_array:
                 raise NameError(f'Variable {operand.name} is not an array')
-            
+
         self.add_existing_operand(operand)
 
     def assign(self):
@@ -278,11 +277,22 @@ class Quadruples:
         self.types.pop()
 
         if self.param_count < self.AT.funcs[self.current_function_call].num_params:
-            self.param_count += 1
+            address_in_func = None
+            func = self.AT.get_func(self.current_function_call)
+            param_name = func.param_names[self.param_count]
+            var = func.get_var(param_name)
+            address_in_func = var.get_address()
             self.generate_quadruple(
-                Operator.PARAM, argument.get_address(), None, "param" + str(self.param_count))
+                Operator.PARAM, argument.get_address(), None, address_in_func)
+            self.param_count += 1
         else:
             raise NameError(f"Passing more arguments than expected.")
+
+        # function sum(int a[4], int b): int {
+        #     return a + b
+        # }
+
+        # sum(3+5, 2)
 
     def validate_function_call(self):
         if self.param_count != self.AT.funcs[self.current_function_call].num_params:
@@ -298,13 +308,14 @@ class Quadruples:
 
     def add_var(self, var_name, is_param=False, is_array=False):
         func = self.AT.get_func(self.AT.current_func_name)
-        
+
         operand = Operand(
             str_operand=var_name, op_type=types[self.last_var_type], is_array=is_array)
         func.add_var(operand)
         func.current_var_name = var_name
         if is_param:
             func.num_params += 1
+            func.param_names.append(var_name)
         if is_array:
             self.r = 1
         else:
@@ -312,12 +323,11 @@ class Quadruples:
             var_address = self.memory_manager.setAddress(
                 scope='local', var_type=types[self.last_var_type])
             func.get_var(var_name).set_address(var_address)
-            
 
     def create_dim_node(self):
         dim = Dim()
         self.current_dim = dim
-        
+
     def end_array_dim(self):
         var_address = self.memory_manager.setAddress(
             scope='local', var_type=types[self.last_var_type], space_required=self.r)
@@ -326,7 +336,7 @@ class Quadruples:
         var = func.get_var(var_name)
         var.set_address(var_address)
         var.solve_dims(self.r)
-        
+
     def register_array_dim_lim_inf(self, lim_inf=0):
         # Register new constant if it hasn't been registered before
         address = self.AT.get_constant_address(lim_inf, Type.INT)
@@ -348,9 +358,10 @@ class Quadruples:
         func = self.AT.get_func(self.AT.current_func_name)
         var_name = func.current_var_name
         func.get_var(var_name).add_dim(self.current_dim)
-        
+
         # Update r
-        self.r *= (self.current_dim.get_lim_sup() - self.current_dim.get_lim_inf() + 1)
+        self.r *= (self.current_dim.get_lim_sup() -
+                   self.current_dim.get_lim_inf() + 1)
         self.current_dim = None
 
     def ver_index(self):
@@ -393,7 +404,6 @@ class Quadruples:
         self.operands.append(t)
         self.types.append(Type.INT)
         self.arrays.append((var, dim_num + 1))
-        
 
     def get_array_dir(self):
         operand = self.operands.pop()
@@ -404,10 +414,11 @@ class Quadruples:
         # Add base address
         base_address = var.get_address()
         const_address = self.AT.get_constant_address(base_address, Type.INT)
-        if const_address == -1: # It doesn't exist.
+        if const_address == -1:  # It doesn't exist.
             const_address = self.memory_manager.setConstantAddress(Type.INT)
             self.AT.add_constant_address(base_address, Type.INT, const_address)
-        self.generate_quadruple(Operator.PLUS, operand.get_address(), const_address, tmp_address * -1)
+        self.generate_quadruple(
+            Operator.PLUS, operand.get_address(), const_address, tmp_address * -1)
         self.operands.append(t)
         self.types.append(Type.INT)
 
@@ -424,7 +435,6 @@ class Quadruples:
             raise NameError(f'Variable {array_id} is not an array')
         self.arrays.append((var, 0))
         self.operators.append(Operator.FAKE_BOTTOM)
-
 
     def register_read(self, var_name):
         func = self.AT.get_func(self.AT.current_func_name)
