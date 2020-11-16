@@ -71,6 +71,11 @@ def main():
             return a + b;
         }
 
+        function print_this(): int{
+            print("this");
+            return 0;
+        }
+
         function main {
             int a, b;
             a = 3;
@@ -80,6 +85,7 @@ def main():
             a = b - suma(3,4);
             print(b,"-", suma(3,4), a);
             print(a);
+            print_this();
         }
     '''
 

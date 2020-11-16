@@ -14,17 +14,6 @@ def get_page_ids(df):
     return ids
 
 
-def select_page(df):
-    ids = get_page_ids(df)
-
-    print(f"{len(ids)} pages detectd. Select page: ")
-    selected_page = int(input())
-
-    if selected_page < 1 or selected_page > len(ids):
-        return None
-    return selected_page
-
-
 def get_page_data(df, selected_page):
     ids = get_page_ids(df)
     id_ = ids[selected_page]
@@ -89,7 +78,7 @@ def create_graph(data):
         node = Node(id_=index, shape=row.Name, text=text, isnan=isnan)
         nodes[index] = node
 
-        if text == "main":
+        if text == "main()":
             root = node
 
     for index, row in lines.iterrows():
@@ -110,6 +99,9 @@ def create_graph(data):
 
 def traverse_tree(node, pending):
     global r
+    if not node:
+        raise NameError(f"Missing main method")
+
     string = node.tostrs()
     r = r + string
     if node.isnan and node.shape == "Decision":
@@ -127,16 +119,20 @@ def traverse_tree(node, pending):
     return r
 
 
-def get_rows():
-    example_path = "/Users/davidsouza/Documents/ITESM/11vo semestre/Compiladores/vip/diagram_converter/examples/example1.csv"
-    HOME = os.environ["HOME"]
-    if HOME == "/Users/edg":
-        example_path = f"{HOME}/repos/vip/diagram_converter/examples/example1.csv"
-    df = pd.read_csv(example_path, index_col=0)
+def get_rows(csv_path, selected_page):
+    d ={
+        "simple":1,
+        "if":2,
+        "while":3,
+        "lists":4,
+        "functions":5,
+        "all":6
+    }
+    selected_page_index = d[selected_page]
+    df = pd.read_csv(csv_path, index_col=0)
 
-    selected_page = 2
-
-    data = get_page_data(df, selected_page)
+    data = get_page_data(df, selected_page_index)
+    print(data)
     root, _ = create_graph(data)
 
     pending = []
@@ -144,14 +140,14 @@ def get_rows():
     return r
 
 
-def print_rows():
-    rows = get_rows()
+def print_rows(csv_path, selected_page):
+    rows = get_rows(csv_path, selected_page)
     for row in rows:
         print(row)
 
 
-def get_tokens():
-    r = get_rows()
+def get_tokens(csv_path, selected_page):
+    r = get_rows(csv_path, selected_page)
     r = " ".join(r)
     r = r.replace("(", " ( ")
     r = r.replace(")", " ) ")
@@ -164,3 +160,20 @@ def get_tokens():
 
     r = list(filter(lambda x: x != "", r))
     return r
+
+def get_example_path():
+    example_path = "/Users/davidsouza/Documents/ITESM/11vo semestre/Compiladores/"
+    HOME = os.environ["HOME"]
+    if HOME == "/Users/edg":
+        example_path = f"{HOME}/repos/vip/diagram_converter/examples/example2.csv"
+
+    return example_path
+
+def main():
+    path = get_example_path()
+    selected_page = "functions" #simple, if, while, lists, functions, all
+
+    print_rows(path, selected_page)
+
+if __name__ == "__main__":
+    main()
