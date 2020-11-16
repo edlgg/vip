@@ -197,11 +197,15 @@ class Quadruples:
         self.operands.append(assigning_variable)
         self.types.append(assigning_type)
 
-    def do_print(self, string=None):
+    def do_print(self):
         operand = self.operands.pop()
         self.types.pop()
         self.generate_quadruple(Operator.PRINT, None,
                                 None, operand.get_address())
+
+    def end_print(self):
+        self.generate_quadruple(Operator.PRINT, None, None, None)
+
 
     def add_return(self):
         func = self.AT.get_func(self.AT.current_func_name)
@@ -321,8 +325,8 @@ class Quadruples:
         self.operators.pop()
 
     def increment_local_var_count(self):
-        curr_func = self.AT.current_func_name
-        self.AT.funcs[curr_func].num_local_vars += 1
+        current_func_name = self.AT.current_func_name
+        self.AT.funcs[current_func_name].num_local_vars += 1
 
     def add_var(self, var_name, is_param=False, is_array=False):
         func = self.AT.get_func(self.AT.current_func_name)

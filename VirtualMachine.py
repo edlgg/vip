@@ -44,6 +44,11 @@ class VirtualMachine():
     def is_pointer(self, address):
         return address < 0
 
+    def refactor_if_string(self, input):
+        if input is not None and type(input) is str:
+            if input[0] is '\"' and input[-1] is '\"':
+                return input[1:-1]
+        return input
     def run(self):
         while self.quad_pointer < len(self.quadruples):
             self.process_quad(self.quadruples[self.quad_pointer])
@@ -79,8 +84,13 @@ class VirtualMachine():
 
             return
         elif quad[0] == Operator.PRINT:
+            address = quad[3]
+            if address is None:
+                print()
+                return
             value_to_print = self.get_value_from_address(quad[3])
-            print(value_to_print)
+            value_to_print = self.refactor_if_string(value_to_print)
+            print(value_to_print, '', end = '')
             return
         elif quad[0] == Operator.END:
             self.quad_pointer = len(self.quadruples) - 1

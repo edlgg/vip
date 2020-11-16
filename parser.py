@@ -155,7 +155,7 @@ def p_while(p):
 
 
 def p_print(p):
-    '''print : PRINT L_PARENS print_aux R_PARENS
+    '''print : PRINT L_PARENS print_aux R_PARENS n_end_print
              | PRINT L_PARENS R_PARENS'''
 
 
@@ -401,6 +401,10 @@ def p_n_ver_index(p):
 def p_n_print(p):
     'n_print : '
     Q.do_print()
+
+def p_n_end_print(p):
+    'n_end_print : '
+    Q.end_print()
 
 
 def p_n_increment_local_var_count(p):
