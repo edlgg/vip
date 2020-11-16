@@ -49,7 +49,13 @@ class Node:
             string = f"{self.text}"
             string = self.split(string)
         if self.shape == "Terminator":
-            string = ["}" if self.isnan else f"function {self.text} {{"]
+            is_end = self.isnan or not "(" in self.text
+            if not is_end:
+                string = [f"function {self.text} {{"]
+            else:
+                temp = "" if self.isnan else f"return {self.text}; \n"
+                string = [f"{temp}}}\n"]
+            # string = ["}" if self.isnan else f"function {self.text} {{"]
 
         return string
 
@@ -71,15 +77,17 @@ def create_graph(data):
     blocks = data[data["Name"] != "Line"]
 
     nodes = {}
-    root = None
+    roots = []
     for index, row in blocks.iterrows():
         text = row["Text Area 1"]
+        type_ = row["Name"]
         isnan = False if type(text) == str else True
+        text = "" if type(text) == float else text
         node = Node(id_=index, shape=row.Name, text=text, isnan=isnan)
         nodes[index] = node
 
-        if text == "main()":
-            root = node
+        if type_ == "Terminator" and "(" in text:
+            roots.append(node)
 
     for index, row in lines.iterrows():
         source = row["Line Source"]
@@ -94,7 +102,7 @@ def create_graph(data):
         if nodes[destination].shape == "Decision":
             nodes[destination].needed_oks += 1
 
-    return root, nodes
+    return roots, nodes
 
 
 def traverse_tree(node, pending):
@@ -119,25 +127,36 @@ def traverse_tree(node, pending):
     return r
 
 
+def get_main_index(roots):
+    for i, root in enumerate(roots):
+        if "main()" in root.text:
+            return i
+
+
 def get_rows(csv_path, selected_page):
-    d ={
-        "simple":1,
-        "if":2,
-        "while":3,
-        "lists":4,
-        "functions":5,
-        "all":6
+    d = {
+        "simple": 1,
+        "if": 2,
+        "while": 3,
+        "lists": 4,
+        "functions": 5,
+        "all": 6
     }
     selected_page_index = d[selected_page]
     df = pd.read_csv(csv_path, index_col=0)
 
     data = get_page_data(df, selected_page_index)
-    print(data)
-    root, _ = create_graph(data)
+    roots, _ = create_graph(data)
 
-    pending = []
-    r = traverse_tree(root, pending)
-    return r
+    main_index = get_main_index(roots)
+
+    f = []
+    roots[main_index], roots[-1] = roots[-1], roots[main_index]
+    for root in roots:
+        pending = []
+        r = traverse_tree(root, pending)
+        f = r
+    return f
 
 
 def print_rows(csv_path, selected_page):
@@ -155,11 +174,23 @@ def get_tokens(csv_path, selected_page):
     r = r.replace("]", " ] ")
     r = r.replace(";", " ; ")
     r = r.replace(",", " , ")
+    r = r.replace("+", " + ")
+    r = r.replace("-", " - ")
     r = r.replace("\"", " \" ")
+    r = r.replace("\n", "")
     r = r.split(" ")
 
     r = list(filter(lambda x: x != "", r))
     return r
+
+
+def get_string(csv_path, selected_page):
+    tokens = get_tokens(csv_path, selected_page)
+    string = "".join(tokens)
+    string = string.replace("\n", "")
+    string = string.replace(" ", "")
+    return string
+
 
 def get_example_path():
     example_path = "/Users/davidsouza/Documents/ITESM/11vo semestre/Compiladores/"
@@ -169,11 +200,15 @@ def get_example_path():
 
     return example_path
 
+
 def main():
     path = get_example_path()
-    selected_page = "functions" #simple, if, while, lists, functions, all
+    selected_page = "all"  # simple, if, while, lists, functions, all
 
     print_rows(path, selected_page)
+    # tokens = get_string(path, selected_page)
+    # print(tokens)
+
 
 if __name__ == "__main__":
     main()

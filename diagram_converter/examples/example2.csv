@@ -81,7 +81,7 @@ Id,Name,Shape Library,Page ID,Contained By,Group,Line Source,Line Destination,So
 80,Line,,59,,,70,71,None,Arrow,
 81,Page,,,,,,,,,all
 82,Terminator,Flowchart Shapes,81,,,,,,,main()
-83,Process,Flowchart Shapes,81,,,,,,,"int i, a;i = 1;a = 5"
+83,Process,Flowchart Shapes,81,,,,,,,"int i, a;i = 1;a = 5;"
 84,Display,Flowchart Shapes,81,,,,,,,"a, ""+"", i, ""="", suma(a,i)"
 85,Manual Operation,Flowchart Shapes,81,,,,,,,while i < a
 86,Decision,Flowchart Shapes,81,,,,,,,if i < 3

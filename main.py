@@ -77,8 +77,7 @@ def main():
         }
 
         function main {
-            int a, b;
-            a = 3;
+            int a, b; a = 3;
             b = 39;
             print(b, a);
             print("hola",b);
@@ -89,8 +88,10 @@ def main():
         }
     '''
 
+    data5 = 'function main ( ) { int a , b , c ; a = 1 ; b = 2 ; c = a + b ; print ( " a , b , c: " , a , b , c ) ; }'
+
     # Generate Object code.
-    quadruples, constants = parse(data4)
+    quadruples, constants = parse(data5)
 
     print("")
     print("")
