@@ -93,7 +93,7 @@ def main():
     path = get_example_path()
     print("Printing the intermediate code")
     type_ = "functions"
-    print_rows(path, type_)
+    # print_rows(path, type_)
     print("*******************************")
     data6 = get_tokens(path, type_)
     data6 = " ".join(data6)

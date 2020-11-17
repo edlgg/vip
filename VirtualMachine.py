@@ -14,11 +14,12 @@ class VirtualMachine():
         self.return_val = None
         self.global_address = None
 
-    def get_value_from_address(self, address):
+    def get_value_from_address(self, address, from_previous_memory=False):
         if self.is_global_address(address):
             return self.g_memory.get_value_from_address_helper(address)
         elif self.is_local_or_temp_address(address):
-            return self.memories[-1].get_value_from_address_helper(address)
+            index = -2 if from_previous_memory else -1
+            return self.memories[index].get_value_from_address_helper(address)
         elif self.is_pointer(address):
             aux = self.memories[-1].get_value_from_address_helper(-address)
             return self.memories[-1].get_value_from_address_helper(aux)
@@ -44,8 +45,8 @@ class VirtualMachine():
         return address < 0
 
     def refactor_if_string(self, input):
-        if input is not None and type(input) is str:
-            if input[0] is '\"' and input[-1] is '\"':
+        if input != None and type(input) == str:
+            if input[0] == '\"' and input[-1] == '\"':
                 return input[1:-1]
         return input
 
@@ -107,7 +108,8 @@ class VirtualMachine():
             self.quad_pointer = quad[3] - 1
             return
         elif quad[0] == Operator.PARAM:
-            result_val = self.get_value_from_address(quad[1])
+            result_val = self.get_value_from_address(
+                quad[1], from_previous_memory=True)
             self.set_value_to_address(result_val, quad[3])
             return
         elif quad[0] == Operator.ENDFUNC:

@@ -241,9 +241,12 @@ class Quadruples:
         func = self.AT.get_func(self.AT.current_func_name)
         func_type = types[func_type]
         func.assign_return_type(func_type)
-        func_address = self.memory_manager.setAddress(Scope.GLOBAL, func_type)
-        self.AT.add_global_address(
-            self.AT.current_func_name, func_type, func_address)
+
+        if func_type is not Type.VOID:
+            func_address = self.memory_manager.setAddress(
+                Scope.GLOBAL, func_type)
+            self.AT.add_global_address(
+                self.AT.current_func_name, func_type, func_address)
 
     def maybe_solve_operation(self, operations):
         operator = self.get_operator()
@@ -284,8 +287,11 @@ class Quadruples:
             raise NameError(f"Calling undefined function: {func_id}")
 
         func = self.AT.funcs[func_id]
-        global_func_address = self.AT.get_global_address(
-            func_id, func.get_return_type())
+        func_return_type = func.get_return_type()
+        global_func_address = None
+        if func_return_type is not Type.VOID:
+            global_func_address = self.AT.get_global_address(
+                func_id, func.get_return_type())
         self.generate_quadruple(Operator.ERA, global_func_address,
                                 func.num_params, func.num_temp_vars)
         self.param_count = 0

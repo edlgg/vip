@@ -61,13 +61,13 @@ Id,Name,Shape Library,Page ID,Contained By,Group,Line Source,Line Destination,So
 60,Terminator,Flowchart Shapes,59,,,,,,,main()
 61,Process,Flowchart Shapes,59,,,,,,,"int a, b, c;a= 1;b=2;"
 62,Process,Flowchart Shapes,59,,,,,,,"c = suma(a, b);bark();"
-63,Display,Flowchart Shapes,59,,,,,,,"""c: "", c"
+63,Display,Flowchart Shapes,59,,,,,,," c,""c: "", c"
 64,Terminator,Flowchart Shapes,59,,,,,,,
-65,Terminator,Flowchart Shapes,59,,,,,,,"suma(int a, int b): int"
-66,Process,Flowchart Shapes,59,,,,,,,"int c;"
-67,Process,Flowchart Shapes,59,,,,,,,"c = a+b;"
-68,Terminator,Flowchart Shapes,59,,,,,,,c
-69,Terminator,Flowchart Shapes,59,,,,,,,bark()
+65,Terminator,Flowchart Shapes,59,,,,,,,"suma(int x, int y): int"
+66,Process,Flowchart Shapes,59,,,,,,,"int z;"
+67,Process,Flowchart Shapes,59,,,,,,,"z = x+y;"
+68,Terminator,Flowchart Shapes,59,,,,,,,z
+69,Terminator,Flowchart Shapes,59,,,,,,,bark(): void
 70,Display,Flowchart Shapes,59,,,,,,,"""waff waff"""
 71,Terminator,Flowchart Shapes,59,,,,,,,
 72,Line,,59,,,60,61,None,Arrow,

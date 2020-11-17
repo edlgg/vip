@@ -1,6 +1,7 @@
 import pandas as pd
 import math
 import os
+import copy
 
 r = []
 
@@ -53,8 +54,8 @@ class Node:
             if not is_end:
                 string = [f"function {self.text} {{"]
             else:
-                temp = "" if self.isnan else f"return {self.text}; \n"
-                string = [f"{temp}}}\n"]
+                temp = "" if self.isnan else f"return {self.text};"
+                string = [f"{temp}}}"]
             # string = ["}" if self.isnan else f"function {self.text} {{"]
 
         return string

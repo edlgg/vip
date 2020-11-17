@@ -156,9 +156,12 @@ class AddressTable:
     def del_func(self, name):
         del self.funcs[name]
 
-
     # TODO: Encapsulate these 4 functions into 2.
+
     def add_constant_address(self, constant_value, constant_type, address):
+        if constant_type == Type.STRING:
+            constant_value = constant_value[0] + \
+                constant_value[2:-2] + constant_value[-1]
         self.constants_addresses[constant_type][constant_value] = address
 
     def get_constant_address(self, constant_value, constant_type):
@@ -174,7 +177,7 @@ class AddressTable:
         if global_value in self.global_addresses[global_type]:
             return self.global_addresses[global_type][global_value]
         else:
-            return -1 # Global doesn't exist yet.
+            return -1  # Global doesn't exist yet.
 
     def print_all(self):
         for _, func in self.funcs.items():
