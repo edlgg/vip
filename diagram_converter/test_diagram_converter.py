@@ -1,6 +1,5 @@
 import pytest
-from diagram_converter import get_string, get_example_path
-import copy
+from diagram_converter import DiagramConverter
 
 simple_expected_result = """
     function main() {
@@ -48,12 +47,12 @@ function main() {
     c = a[4];
     d = a[b[2]];
     print("a[4], c: ", a[4], c);
-    print("b[2], a[b[2]]: ", a[4], a[b[2]]);
+    print("a[4] b[2], a[b[2]]: ", a[4], b[2], a[b[2]]);
 }
 """
 
 functions_expected_result = """
-function bark() {
+function bark():void {
     print("waff waff");
 }
 
@@ -127,19 +126,20 @@ function main() {
 @pytest.mark.parametrize(
     "a, b",
     [
-        # ("simple", simple_expected_result),
-        # ("if", if_expected_result),
-        # ("while", while_expected_result),
+        ("simple", simple_expected_result),
+        ("if", if_expected_result),
+        ("while", while_expected_result),
         ("lists", lists_expected_result),
-        # ("functions", functions_expected_result),
-        # ("all", all_expected_result),
-        # ("recursion", recursion_excpected_result)
+        ("functions", functions_expected_result),
+        ("all", all_expected_result),
+        ("recursion", recursion_excpected_result)
     ],
 )
 def test_diagram_conversion(a, b):
+    dc = DiagramConverter()
     expected_result = b.replace("\n", "")
     expected_result = expected_result.replace(" ", "")
 
-    path = get_example_path()
-    string = get_string(path, a)
+    path = dc.get_example_path()
+    string = dc.get_string(path, a)
     assert len(string) == len(expected_result)

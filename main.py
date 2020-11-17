@@ -1,4 +1,4 @@
-from diagram_converter.diagram_converter import get_rows, get_tokens, print_rows, get_string, get_example_path
+from diagram_converter.diagram_converter import DiagramConverter
 from parser import parse
 from AddressTable import AddressTable
 from Quadruples import Quadruples
@@ -90,12 +90,13 @@ def main():
 
     data5 = 'function main () { int a , b , c ; a = 1 ; b = 2 ; c = a + b ; print ( " a , b , c: " , a , b , c ) ; }'
 
-    path = get_example_path()
+    dc = DiagramConverter()
+    path = dc.get_example_path()
     print("Printing the intermediate code")
     type_ = "recursion"
     # print_rows(path, type_)
     print("*******************************")
-    data6 = get_tokens(path, type_)
+    data6 = dc.get_tokens(path, type_)
     data6 = " ".join(data6)
 
     # Generate Object code.

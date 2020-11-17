@@ -3,24 +3,6 @@ import math
 import os
 import copy
 
-r = []
-
-
-def get_page_ids(df):
-    pages = df[df["Name"] == "Page"]
-    ids = {}
-    for i, row in pages.reset_index().iterrows():
-        ids[i+1] = row.Id
-
-    return ids
-
-
-def get_page_data(df, selected_page):
-    ids = get_page_ids(df)
-    id_ = ids[selected_page]
-    data = df[df["Page ID"] == id_]
-    return data
-
 
 class Node:
     def __init__(self, id_, shape, text, isnan, right=None, left=None):
@@ -73,141 +55,152 @@ class Node:
         return s2
 
 
-def create_graph(data):
-    lines = data[data["Name"] == "Line"]
-    blocks = data[data["Name"] != "Line"]
+class DiagramConverter():
+    def __init__(self) -> None:
+        self.r = []
 
-    nodes = {}
-    roots = []
-    for index, row in blocks.iterrows():
-        text = row["Text Area 1"]
-        type_ = row["Name"]
-        isnan = False if type(text) == str else True
-        text = "" if type(text) == float else text
-        node = Node(id_=index, shape=row.Name, text=text, isnan=isnan)
-        nodes[index] = node
+    def get_page_ids(self, df):
+        pages = df[df["Name"] == "Page"]
+        ids = {}
+        for i, row in pages.reset_index().iterrows():
+            ids[i+1] = row.Id
 
-        if type_ == "Terminator" and "(" in text:
-            roots.append(node)
+        return ids
 
-    for index, row in lines.iterrows():
-        source = row["Line Source"]
-        destination = row["Line Destination"]
-        text = row["Text Area 1"]
-        # print(source, destination, text)
-        if text == "No":
-            nodes[source].left = nodes[destination]
-        else:
-            nodes[source].right = nodes[destination]
+    def get_page_data(self, df, selected_page):
+        ids = self.get_page_ids(df)
+        id_ = ids[selected_page]
+        data = df[df["Page ID"] == id_]
+        return data
 
-        if nodes[destination].shape == "Decision":
-            nodes[destination].needed_oks += 1
+    def create_graph(self, data):
+        lines = data[data["Name"] == "Line"]
+        blocks = data[data["Name"] != "Line"]
 
-    return roots, nodes
+        nodes = {}
+        roots = []
+        for index, row in blocks.iterrows():
+            text = row["Text Area 1"]
+            type_ = row["Name"]
+            isnan = False if type(text) == str else True
+            text = "" if type(text) == float else text
+            node = Node(id_=index, shape=row.Name, text=text, isnan=isnan)
+            nodes[index] = node
 
+            if type_ == "Terminator" and "(" in text:
+                roots.append(node)
 
-def traverse_tree(node, pending):
-    global r
-    if not node:
-        raise NameError(f"Missing main method")
+        for index, row in lines.iterrows():
+            source = row["Line Source"]
+            destination = row["Line Destination"]
+            text = row["Text Area 1"]
+            # print(source, destination, text)
+            if text == "No":
+                nodes[source].left = nodes[destination]
+            else:
+                nodes[source].right = nodes[destination]
 
-    string = node.tostrs()
-    r = r + string
-    if node.isnan and node.shape == "Decision":
-        node.needed_oks -= 1
-        if node.needed_oks == 1:
-            # print("else {")
-            r = r + ["else {"]
-        if node.needed_oks != 0:
-            return
-    if node.right:
-        traverse_tree(node.right, pending)
-    if node.left:
-        traverse_tree(node.left, pending)
+            if nodes[destination].shape == "Decision":
+                nodes[destination].needed_oks += 1
 
-    return r
+        return roots, nodes
 
+    def traverse_tree(self, node, pending):
+        if not node:
+            raise NameError(f"Missing main method")
 
-def get_main_index(roots):
-    for i, root in enumerate(roots):
-        if "main()" in root.text:
-            return i
+        string = node.tostrs()
+        self.r = self.r + string
+        if node.isnan and node.shape == "Decision":
+            node.needed_oks -= 1
+            if node.needed_oks == 1:
+                # print("else {")
+                self.r = self.r + ["else {"]
+            if node.needed_oks != 0:
+                return
+        if node.right:
+            self.traverse_tree(node.right, pending)
+        if node.left:
+            self.traverse_tree(node.left, pending)
 
+        return self.r
 
-def get_rows(csv_path, selected_page):
-    d = {
-        "simple": 1,
-        "if": 2,
-        "while": 3,
-        "lists": 4,
-        "functions": 5,
-        "all": 6,
-        "recursion": 7
-    }
-    selected_page_index = d[selected_page]
-    df = pd.read_csv(csv_path, index_col=0)
+    def get_main_index(self, roots):
+        for i, root in enumerate(roots):
+            if "main()" in root.text:
+                return i
 
-    data = get_page_data(df, selected_page_index)
-    roots, _ = create_graph(data)
+    def get_rows(self, csv_path, selected_page):
+        d = {
+            "simple": 1,
+            "if": 2,
+            "while": 3,
+            "lists": 4,
+            "functions": 5,
+            "all": 6,
+            "recursion": 7
+        }
+        selected_page_index = d[selected_page]
+        df = pd.read_csv(csv_path, index_col=0)
 
-    main_index = get_main_index(roots)
+        data = self.get_page_data(df, selected_page_index)
+        roots, _ = self.create_graph(data)
 
-    f = []
-    roots[main_index], roots[-1] = roots[-1], roots[main_index]
-    for root in roots:
-        pending = []
-        r = traverse_tree(root, pending)
-        f = r
-    return f
+        main_index = self.get_main_index(roots)
 
+        f = []
+        roots[main_index], roots[-1] = roots[-1], roots[main_index]
+        for root in roots:
+            pending = []
+            self.r = self.traverse_tree(root, pending)
+            f = self.r
+        return f
 
-def print_rows(csv_path, selected_page):
-    rows = get_rows(csv_path, selected_page)
-    for row in rows:
-        print(row)
+    def print_rows(self, csv_path, selected_page):
+        rows = self.get_rows(csv_path, selected_page)
+        for row in rows:
+            print(row)
 
+    def get_tokens(self, csv_path, selected_page):
+        r = self.get_rows(csv_path, selected_page)
+        r = " ".join(r)
+        r = r.replace("(", " ( ")
+        r = r.replace(")", " ) ")
+        r = r.replace("[", " [ ")
+        r = r.replace("]", " ] ")
+        r = r.replace(";", " ; ")
+        r = r.replace(",", " , ")
+        r = r.replace("+", " + ")
+        r = r.replace("-", " - ")
+        r = r.replace("\"", " \" ")
+        r = r.replace("\n", "")
+        r = r.split(" ")
 
-def get_tokens(csv_path, selected_page):
-    r = get_rows(csv_path, selected_page)
-    r = " ".join(r)
-    r = r.replace("(", " ( ")
-    r = r.replace(")", " ) ")
-    r = r.replace("[", " [ ")
-    r = r.replace("]", " ] ")
-    r = r.replace(";", " ; ")
-    r = r.replace(",", " , ")
-    r = r.replace("+", " + ")
-    r = r.replace("-", " - ")
-    r = r.replace("\"", " \" ")
-    r = r.replace("\n", "")
-    r = r.split(" ")
+        r = list(filter(lambda x: x != "", r))
+        return r
 
-    r = list(filter(lambda x: x != "", r))
-    return r
+    def get_string(self, csv_path, selected_page):
+        tokens = self.get_tokens(csv_path, selected_page)
+        string = "".join(tokens)
+        string = string.replace("\n", "")
+        string = string.replace(" ", "")
+        return string
 
+    def get_example_path(self):
+        example_path = "/Users/davidsouza/Documents/ITESM/11vo semestre/Compiladores/"
+        HOME = os.environ["HOME"]
+        if HOME == "/Users/edg":
+            example_path = f"{HOME}/repos/vip/diagram_converter/examples/example2.csv"
 
-def get_string(csv_path, selected_page):
-    tokens = get_tokens(csv_path, selected_page)
-    string = "".join(tokens)
-    string = string.replace("\n", "")
-    string = string.replace(" ", "")
-    return string
-
-
-def get_example_path():
-    example_path = "/Users/davidsouza/Documents/ITESM/11vo semestre/Compiladores/"
-    HOME = os.environ["HOME"]
-    if HOME == "/Users/edg":
-        example_path = f"{HOME}/repos/vip/diagram_converter/examples/example2.csv"
-
-    return example_path
+        return example_path
 
 
 def main():
-    path = get_example_path()
-    selected_page = "all"  # simple, if, while, lists, functions, all
+    dc = DiagramConverter()
+    path = dc.get_example_path()
+    selected_page = "recursion"  # simple, if, while, lists, functions, all, recursion
 
-    print_rows(path, selected_page)
+    dc.print_rows(path, selected_page)
     # tokens = get_string(path, selected_page)
     # print(tokens)
 
