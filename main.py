@@ -93,8 +93,8 @@ def main():
     dc = DiagramConverter()
     path = dc.get_example_path()
     print("Printing the intermediate code")
-    type_ = "recursion"
-    # print_rows(path, type_)
+    type_ = "simple"
+    dc.print_rows(path, type_)
     print("*******************************")
     data6 = dc.get_tokens(path, type_)
     data6 = " ".join(data6)
