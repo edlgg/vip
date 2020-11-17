@@ -122,3 +122,23 @@ def test_diagram_conversion(a, b):
     path = get_example_path()
     string = get_string(path, a)
     assert len(string) == len(expected_result)
+
+
+@pytest.mark.parametrize(
+    "a, b",
+    [
+        ("simple", simple_expected_result),
+        # ("if", if_expected_result),
+        # ("while", while_expected_result),
+        # ("lists", lists_expected_result),
+        # ("functions", functions_expected_result),
+        #("all", all_expected_result)
+    ],
+)
+def test_diagram_conversion2(a, b):
+    expected_result = b.replace("\n", "")
+    expected_result = expected_result.replace(" ", "")
+
+    path = get_example_path()
+    string = get_string(path, a)
+    assert len(string) == len(expected_result)

@@ -1,4 +1,4 @@
-from diagram_converter.diagram_converter import get_rows, get_tokens, print_rows
+from diagram_converter.diagram_converter import get_rows, get_tokens, print_rows, get_string, get_example_path
 from parser import parse
 from AddressTable import AddressTable
 from Quadruples import Quadruples
@@ -26,7 +26,7 @@ def main():
     # }
     # '''
     data = '''
-    function main {
+    function main () {
         int a[1 .. 5], b[1 .. 2][3 .. 6][0 .. 1], c;
         a[4] = 3;
         print(a[4]);
@@ -34,7 +34,7 @@ def main():
     '''
 
     data3 = '''
-    function main {
+    function main () {
         int a[1 .. 5], c;
         int cont;
         cont = 1;
@@ -51,7 +51,7 @@ def main():
     '''
 
     data2 = '''
-    function main {
+    function main () {
         int a;
         a = 4;
         print("value of a: ");
@@ -76,7 +76,7 @@ def main():
             return 0;
         }
 
-        function main {
+        function main () {
             int a, b; a = 3;
             b = 39;
             print(b, a);
@@ -88,10 +88,18 @@ def main():
         }
     '''
 
-    data5 = 'function main ( ) { int a , b , c ; a = 1 ; b = 2 ; c = a + b ; print ( " a , b , c: " , a , b , c ) ; }'
+    data5 = 'function main () { int a , b , c ; a = 1 ; b = 2 ; c = a + b ; print ( " a , b , c: " , a , b , c ) ; }'
+
+    path = get_example_path()
+    print("Printing the intermediate code")
+    type_ = "functions"
+    print_rows(path, type_)
+    print("*******************************")
+    data6 = get_tokens(path, type_)
+    data6 = " ".join(data6)
 
     # Generate Object code.
-    quadruples, constants = parse(data5)
+    quadruples, constants = parse(data6)
 
     print("")
     print("")
@@ -101,3 +109,13 @@ def main():
 
 
 main()
+
+
+'''
+
+int a;
+a = 4;
+if (if i < 3) .....a
+TODO: Arrojar error porque 'i' no esta declarado.
+
+'''

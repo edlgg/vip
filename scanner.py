@@ -76,56 +76,61 @@ t_PLUS = r'\+'
 t_MINUS = r'-'
 t_TIMES = r'\*'
 t_DIVIDE = r'/'
+t_CONST_STRING = r'("(\\"|[^"])*")'
 
 
 def t_ID(t):
-  r'[a-zA-Z_][a-zA-Z_0-9]*'
-  # Check if matched id is a reserved keyword.
-  t.type = reserved.get(t.value, 'ID')
-  return t
+    r'[a-zA-Z_][a-zA-Z_0-9]*'
+    # Check if matched id is a reserved keyword.
+    t.type = reserved.get(t.value, 'ID')
+    return t
+
 
 def t_CONST_F(t):
-  r'-?(\d*)?[.]\d+'
-  t.value = float(t.value)
-  return t
+    r'-?(\d*)?[.]\d+'
+    t.value = float(t.value)
+    return t
+
 
 def t_CONST_I(t):
-  r'-?(0|-?[1-9]\d*)'
-  t.value = int(t.value)
-  return t
+    r'-?(0|-?[1-9]\d*)'
+    t.value = int(t.value)
+    return t
 
-def t_CONST_STRING(t):
-   r'".*"'
-   t.value = str(t.value)
-   return t
+
+# def t_CONST_STRING(t):
+#     r'".*"'
+#     t.value = str(t.value)
+#     return t
+
 
 def t_newline(t):
-  r'[\r\n]+'
-  t.lexer.lineno += len(t.value)
+    r'[\r\n]+'
+    t.lexer.lineno += len(t.value)
 
 
 def t_comment(t):
-  r'\#.*\n'
-  t.lexer.lineno += 1
-  pass
-  # No return value. Token discarded.
+    r'\#.*\n'
+    t.lexer.lineno += 1
+    pass
+    # No return value. Token discarded.
 
 
 # Ignore space and tab characters.
 t_ignore = ' \t\r'
 
 
-#Error handling rule for lexer
+# Error handling rule for lexer
 def t_error(t):
     print("Illegal character '%s'" % t.value[0])
     t.lexer.skip(1)
 
 
-#Build the lexer
+# Build the lexer
 lexer = lex.lex()
 
 
-#data = '''function main {
+# data = '''function main {
 #        int a;
 #        a = 1;
 #        while(i < 5) {
@@ -136,11 +141,11 @@ lexer = lex.lex()
 #        }'''
 
 # Give the lexer some input
-#lexer.input(data)
+# lexer.input(data)
 
 # Tokenize
-#while True:
+# while True:
 #    tok = lexer.token()
-#    if not tok: 
+#    if not tok:
 #        break      # No more input
 #    print(tok)

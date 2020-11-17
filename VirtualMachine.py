@@ -13,7 +13,6 @@ class VirtualMachine():
         self.memories.append(self.g_memory)
         self.return_val = None
         self.global_address = None
-        
 
     def get_value_from_address(self, address):
         if self.is_global_address(address):
@@ -49,6 +48,7 @@ class VirtualMachine():
             if input[0] is '\"' and input[-1] is '\"':
                 return input[1:-1]
         return input
+
     def run(self):
         while self.quad_pointer < len(self.quadruples):
             self.process_quad(self.quadruples[self.quad_pointer])
@@ -78,7 +78,7 @@ class VirtualMachine():
             # WIP
             if self.memories[-1].scope == Scope.GLOBAL:
                 self.quad_pointer = len(self.quadruples) - 1
-            
+
             self.return_val = self.get_value_from_address(quad[-3])
             self.set_value_to_address(self.return_val, self.global_address)
 
@@ -90,7 +90,7 @@ class VirtualMachine():
                 return
             value_to_print = self.get_value_from_address(quad[3])
             value_to_print = self.refactor_if_string(value_to_print)
-            print(value_to_print, '', end = '')
+            print(value_to_print, '', end='')
             return
         elif quad[0] == Operator.END:
             self.quad_pointer = len(self.quadruples) - 1

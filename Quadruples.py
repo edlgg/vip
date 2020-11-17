@@ -74,7 +74,8 @@ class Quadruples:
 
     def build_operand_object(self, str_operand, is_assigned=False, is_function_call=False):
         t = type(str_operand)
-        operand = Operand(str_operand, is_assigned=is_assigned, is_function_call=is_function_call)
+        operand = Operand(str_operand, is_assigned=is_assigned,
+                          is_function_call=is_function_call)
         func = self.AT.funcs[self.AT.current_func_name]
 
         if t == int:
@@ -188,7 +189,6 @@ class Quadruples:
         assigning_variable = self.operands.pop()
         assigning_type = self.types.pop()
 
-
         # Semantic cube checking.
         if not semantic_cube[assigning_type][l_type][Operator.ASSIGN].value:
             raise NameError('Type mismatch')
@@ -206,7 +206,6 @@ class Quadruples:
     def end_print(self):
         self.generate_quadruple(Operator.PRINT, None, None, None)
 
-
     def add_return(self):
         func = self.AT.get_func(self.AT.current_func_name)
         func_return_type = func.get_return_type()
@@ -215,7 +214,8 @@ class Quadruples:
         return_val = self.operands.pop()
         return_type = self.types.pop()
         if not semantic_cube[func_return_type][return_type][Operator.ASSIGN].value:
-            raise NameError(f'\'{return_type}\' cannot be returned as \'{func_return_type}\'')
+            raise NameError(
+                f'\'{return_type}\' cannot be returned as \'{func_return_type}\'')
         self.returns.append(self.q_count)
         self.generate_quadruple(
             Operator.RETURN, return_val.get_address(), None, None)
@@ -242,7 +242,8 @@ class Quadruples:
         func_type = types[func_type]
         func.assign_return_type(func_type)
         func_address = self.memory_manager.setAddress(Scope.GLOBAL, func_type)
-        self.AT.add_global_address(self.AT.current_func_name, func_type, func_address)
+        self.AT.add_global_address(
+            self.AT.current_func_name, func_type, func_address)
 
     def maybe_solve_operation(self, operations):
         operator = self.get_operator()
@@ -253,6 +254,7 @@ class Quadruples:
             l_operand = self.operands.pop()
             l_type = self.types.pop()
             operator = self.operators.pop()
+
             result_type = semantic_cube[l_type][r_type][operator]
 
             if result_type == Type.ERROR:
@@ -280,9 +282,10 @@ class Quadruples:
             self.current_function_call = func_id
         else:
             raise NameError(f"Calling undefined function: {func_id}")
-        
+
         func = self.AT.funcs[func_id]
-        global_func_address = self.AT.get_global_address(func_id, func.get_return_type())
+        global_func_address = self.AT.get_global_address(
+            func_id, func.get_return_type())
         self.generate_quadruple(Operator.ERA, global_func_address,
                                 func.num_params, func.num_temp_vars)
         self.param_count = 0
@@ -311,15 +314,17 @@ class Quadruples:
         else:
             self.generate_quadruple(Operator.GOSUB, self.current_function_call,
                                     None, self.AT.funcs[self.current_function_call].first_quadruple)
-        
+
         func = self.AT.get_func(self.current_function_call)
 
         func_return_type = func.get_return_type()
         if func_return_type is not Type.VOID:
             tmp_address = self.memory_manager.setTempAddress(func_return_type)
             temp = Operand(address=tmp_address)
-            func_address = self.AT.get_global_address(self.current_function_call, func_return_type)
-            self.generate_quadruple(Operator.ASSIGN, func_address, None, tmp_address)
+            func_address = self.AT.get_global_address(
+                self.current_function_call, func_return_type)
+            self.generate_quadruple(
+                Operator.ASSIGN, func_address, None, tmp_address)
             self.operands.append(temp)
             self.types.append(func_return_type)
         self.operators.pop()

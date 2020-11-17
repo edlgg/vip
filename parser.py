@@ -27,7 +27,7 @@ def p_function(p):
 
 
 def p_main(p):
-    'main : FUNCTION MAIN n_start_main function_body n_end_main'
+    'main : FUNCTION MAIN L_PARENS R_PARENS n_start_main function_body n_end_main'
 
 
 def p_function_header(p):
@@ -108,6 +108,7 @@ def p_array_dim(p):
     '''array_dim : L_SQUARE_BRACKET array_dim_aux R_SQUARE_BRACKET array_dim_2 n_array_dim_done
                  | L_SQUARE_BRACKET array_dim_aux R_SQUARE_BRACKET n_array_dim_done'''
 
+
 def p_array_dim_2(p):
     '''array_dim_2 : L_SQUARE_BRACKET array_dim_aux R_SQUARE_BRACKET array_dim_2
                    | L_SQUARE_BRACKET array_dim_aux R_SQUARE_BRACKET'''
@@ -134,20 +135,29 @@ def p_return(p):
     'return : RETURN expression n_return'
 
 
+# def p_if(p):
+#     '''if : IF L_PARENS expression R_PARENS n_end_condition block elif else n_end_if
+#           | IF L_PARENS expression R_PARENS n_end_condition block elif n_end_if
+#           | IF L_PARENS expression R_PARENS n_end_condition block else n_end_if
+#           | IF L_PARENS expression R_PARENS n_end_condition block n_end_if'''
+
+
+# def p_elif(p):
+#     '''elif : ELIF n_start_else L_PARENS expression R_PARENS n_end_condition block elif
+#             | ELIF n_start_else L_PARENS expression R_PARENS n_end_condition block'''
+
+
+# def p_else(p):
+#     'else : ELSE n_start_else block'
+
 def p_if(p):
-    '''if : IF L_PARENS expression R_PARENS n_end_condition block elif else n_end_if
-          | IF L_PARENS expression R_PARENS n_end_condition block elif n_end_if
-          | IF L_PARENS expression R_PARENS n_end_condition block else n_end_if
-          | IF L_PARENS expression R_PARENS n_end_condition block n_end_if'''
+    '''if : IF if_condition'''
 
 
-def p_elif(p):
-    '''elif : ELIF n_start_else L_PARENS expression R_PARENS n_end_condition block elif
-            | ELIF n_start_else L_PARENS expression R_PARENS n_end_condition block'''
-
-
-def p_else(p):
-    'else : ELSE n_start_else block'
+def p_if_condition(p):
+    '''if_condition : L_PARENS expression R_PARENS n_end_condition block ELIF n_start_else if_condition n_end_if
+                    | L_PARENS expression R_PARENS n_end_condition block ELSE n_start_else block n_end_if
+                    | L_PARENS expression R_PARENS n_end_condition block n_end_if'''
 
 
 def p_while(p):
@@ -288,6 +298,7 @@ def p_n_add_var_arr(p):
     'n_add_var_arr : '
     Q.add_var(p[-1], is_array=True)
 
+
 def p_n_add_param(p):
     'n_add_param : '
     Q.add_var(p[-1], is_param=True)
@@ -368,6 +379,7 @@ def p_n_start_assignment(p):
     'n_start_assignment : '
     Q.init_assignment(p[-1])
 
+
 def p_n_create_dim_node(p):
     'n_create_dim_node : '
     Q.create_dim_node()
@@ -377,9 +389,11 @@ def p_n_array_dim_done(p):
     'n_array_dim_done : '
     Q.end_array_dim()
 
+
 def p_n_array_dim_inf(p):
     'n_array_dim_inf : '
     Q.register_array_dim_lim_inf()
+
 
 def p_n_array_dim_inf_with_interval(p):
     'n_array_dim_inf_with_interval : '
@@ -390,17 +404,21 @@ def p_n_array_dim_sup(p):
     'n_array_dim_sup : '
     Q.register_array_dim_lim_sup(p[-1])
 
+
 def p_n_get_array_dir(p):
-    'n_get_array_dir : ' 
+    'n_get_array_dir : '
     Q.get_array_dir()
+
 
 def p_n_ver_index(p):
     'n_ver_index : '
     Q.ver_index()
 
+
 def p_n_print(p):
     'n_print : '
     Q.do_print()
+
 
 def p_n_end_print(p):
     'n_end_print : '
@@ -435,6 +453,7 @@ def p_n_validate_function_call(p):
 def p_n_register_read(p):
     'n_register_read : '
     Q.register_read(p[-1])
+
 
 def p_n_validate_is_array(p):
     'n_validate_is_array : '
