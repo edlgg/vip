@@ -14,8 +14,8 @@ simple_expected_result = """
 
 if_expected_result = """
 function main() {
-    int a;
-    a = 4;
+    int i;
+    a = 6;
     if(i < 3) {
         print("smaller than 3: ", i);
     }
@@ -42,11 +42,13 @@ function main() {
 
 lists_expected_result = """
 function main() {
-    int a[1 .. 5], b, c;
+    int a[1 .. 5], b[1 .. 5], c, d;
     a[4] = 1;
-    b = 2;
-    c = a[4]+b;
+    b[2] = 4;
+    c = a[4];
+    d = a[b[2]];
     print("a[4], c: ", a[4], c);
+    print("b[2], a[b[2]]: ", a[4], a[b[2]]);
 }
 """
 
@@ -103,6 +105,24 @@ while(i < a) {
 }
 """
 
+recursion_excpected_result = """
+function fib(int i): int {
+int res;
+if(i < 2){
+    res = 1;
+}else{
+    res = fib(i-1) + fib(i - 2);
+}
+return res; 
+}
+
+function main() {
+    int i;
+    i = 5;
+    print("fib: ", i, " = ", fib(i));
+}   
+"""
+
 
 @pytest.mark.parametrize(
     "a, b",
@@ -110,32 +130,13 @@ while(i < a) {
         # ("simple", simple_expected_result),
         # ("if", if_expected_result),
         # ("while", while_expected_result),
-        # ("lists", lists_expected_result),
+        ("lists", lists_expected_result),
         # ("functions", functions_expected_result),
-        ("all", all_expected_result)
+        # ("all", all_expected_result),
+        # ("recursion", recursion_excpected_result)
     ],
 )
 def test_diagram_conversion(a, b):
-    expected_result = b.replace("\n", "")
-    expected_result = expected_result.replace(" ", "")
-
-    path = get_example_path()
-    string = get_string(path, a)
-    assert len(string) == len(expected_result)
-
-
-@pytest.mark.parametrize(
-    "a, b",
-    [
-        ("simple", simple_expected_result),
-        # ("if", if_expected_result),
-        # ("while", while_expected_result),
-        # ("lists", lists_expected_result),
-        # ("functions", functions_expected_result),
-        #("all", all_expected_result)
-    ],
-)
-def test_diagram_conversion2(a, b):
     expected_result = b.replace("\n", "")
     expected_result = expected_result.replace(" ", "")
 

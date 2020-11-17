@@ -141,7 +141,8 @@ def get_rows(csv_path, selected_page):
         "while": 3,
         "lists": 4,
         "functions": 5,
-        "all": 6
+        "all": 6,
+        "recursion": 7
     }
     selected_page_index = d[selected_page]
     df = pd.read_csv(csv_path, index_col=0)
