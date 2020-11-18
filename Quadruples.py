@@ -217,8 +217,9 @@ class Quadruples:
             raise NameError(
                 f'\'{return_type}\' cannot be returned as \'{func_return_type}\'')
         self.returns.append(self.q_count)
+        func_global_address = self.AT.get_global_address(self.AT.current_func_name, func_return_type)
         self.generate_quadruple(
-            Operator.RETURN, return_val.get_address(), None, None)
+            Operator.RETURN, return_val.get_address(), func_global_address, None)
 
     def end_function(self, is_main=False):
         while len(self.returns):
@@ -285,15 +286,8 @@ class Quadruples:
             self.current_function_call = func_id
         else:
             raise NameError(f"Calling undefined function: {func_id}")
-
-        func = self.AT.funcs[func_id]
-        func_return_type = func.get_return_type()
-        global_func_address = None
-        if func_return_type is not Type.VOID:
-            global_func_address = self.AT.get_global_address(
-                func_id, func.get_return_type())
-        self.generate_quadruple(Operator.ERA, global_func_address,
-                                func.num_params, func.num_temp_vars)
+        
+        self.generate_quadruple(Operator.ERA, None, None, None)
         self.param_count = 0
         self.operators.append(Operator.FAKE_BOTTOM)
 

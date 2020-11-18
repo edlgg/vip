@@ -12,7 +12,6 @@ class VirtualMachine():
         self.g_memory = RuntimeMemory(Scope.GLOBAL, -1)
         self.memories.append(self.g_memory)
         self.return_val = None
-        self.global_address = None
 
     def get_value_from_address(self, address, from_previous_memory=False):
         if self.is_global_address(address):
@@ -73,16 +72,15 @@ class VirtualMachine():
         elif quad[0] == Operator.ERA:
             new_memory_instance = RuntimeMemory(Scope.LOCAL, -1)
             self.memories.append(new_memory_instance)
-            self.global_address = quad[1]
             return
         elif quad[0] == Operator.RETURN:
             # WIP
             if self.memories[-1].scope == Scope.GLOBAL:
                 self.quad_pointer = len(self.quadruples) - 1
 
-            self.return_val = self.get_value_from_address(quad[-3])
-            self.set_value_to_address(self.return_val, self.global_address)
-
+            self.return_val = self.get_value_from_address(quad[1])
+            self.set_value_to_address(self.return_val, quad[2])
+            self.quad_pointer = quad[3] - 1
             return
         elif quad[0] == Operator.PRINT:
             address = quad[3]

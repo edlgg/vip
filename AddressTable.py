@@ -159,9 +159,10 @@ class AddressTable:
     # TODO: Encapsulate these 4 functions into 2.
 
     def add_constant_address(self, constant_value, constant_type, address):
-        if constant_type == Type.STRING:
-            constant_value = constant_value[0] + \
-                constant_value[2:-2] + constant_value[-1]
+        # TODO: Check this. Probably it's useful in some cases (WHICH?) but it's generating error at the moment.
+        # if constant_type == Type.STRING:
+        #     constant_value = constant_value[0] + \
+        #         constant_value[2:-2] + constant_value[-1]
         self.constants_addresses[constant_type][constant_value] = address
 
     def get_constant_address(self, constant_value, constant_type):

@@ -82,7 +82,7 @@ def main():
             print(b, a);
             print("hola",b);
             a = b - suma(3,4);
-            print(b,"-", suma(3,4), a);
+            print(b,"-", suma(3,4), "=", a);
             print(a);
             print_this();
         }
@@ -90,17 +90,48 @@ def main():
 
     data5 = 'function main () { int a , b , c ; a = 1 ; b = 2 ; c = a + b ; print ( " a , b , c: " , a , b , c ) ; }'
 
-    dc = DiagramConverter()
-    path = dc.get_example_path()
-    print("Printing the intermediate code")
-    type_ = "simple"
-    dc.print_rows(path, type_)
-    print("*******************************")
-    data6 = dc.get_tokens(path, type_)
-    data6 = " ".join(data6)
+    # ************************************************
+    # dc = DiagramConverter()
+    # path = dc.get_example_path()
+    # print("Printing the intermediate code")
+    # type_ = "simple"
+    # dc.print_rows(path, type_)
+    # print("*******************************")
+    # data6 = dc.get_tokens(path, type_)
+    # data6 = " ".join(data6)
+    # ************************************************
+
+
+    data7 = '''
+    function add_one(int a): int {
+        return (a + 1);
+    }
+
+    function suma(int a, int b): int {
+        b = add_one(b);
+        return (a + b);
+    }
+
+    function recursiva(int a): int {
+        print(a);
+        a = a - 1;
+        if (a < 2) {
+            print("Se acabo");
+            return 1;
+        }
+        return recursiva(a);
+    }
+
+    function main () {
+        int a, b;
+        a = 1;
+        b = recursiva(6);
+        print(suma(a,b));
+    }
+    '''
 
     # Generate Object code.
-    quadruples, constants = parse(data6)
+    quadruples, constants = parse(data7)
 
     print("")
     print("")
@@ -116,7 +147,7 @@ main()
 
 int a;
 a = 4;
-if (if i < 3) .....a
+if (i < 3) .....
 TODO: Arrojar error porque 'i' no esta declarado.
 
 '''
