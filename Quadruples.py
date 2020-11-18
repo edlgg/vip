@@ -271,7 +271,6 @@ class Quadruples:
             temp.set_address(address)
             current_func_name = self.AT.current_func_name
             current_func = self.AT.get_func(current_func_name)
-            current_func.num_temp_vars += 1
             self.curr_t_count += 1
 
             self.operands.append(temp)
@@ -330,21 +329,17 @@ class Quadruples:
             self.types.append(func_return_type)
         self.operators.pop()
 
-    def increment_local_var_count(self):
-        current_func_name = self.AT.current_func_name
-        self.AT.funcs[current_func_name].num_local_vars += 1
-
     def add_var(self, var_name, is_param=False, is_array=False):
         func = self.AT.get_func(self.AT.current_func_name)
 
         operand = Operand(
             str_operand=var_name, op_type=types[self.last_var_type], is_array=is_array)
         func.add_var(operand)
-        func.current_var_name = var_name
         if is_param:
             func.num_params += 1
             func.param_names.append(var_name)
         if is_array:
+            func.current_var_name = var_name
             self.r = 1
         else:
             # Address is only set for non-arrays for now. Address for arrays should be set after knowing the total needed memory space for the array.

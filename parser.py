@@ -41,8 +41,8 @@ def p_function_body(p):
 
 
 def p_vars(p):
-    '''vars : var n_increment_local_var_count vars
-            | var n_increment_local_var_count'''
+    '''vars : var vars
+            | var'''
 
 
 def p_statements(p):
@@ -423,12 +423,6 @@ def p_n_print(p):
 def p_n_end_print(p):
     'n_end_print : '
     Q.end_print()
-
-
-def p_n_increment_local_var_count(p):
-    'n_increment_local_var_count : '
-    Q.increment_local_var_count()
-
 
 def p_n_return(p):
     'n_return : '

@@ -85,12 +85,12 @@ def main():
 
 
     data7 = '''
-    function add_one(int a): int {
-        return (a + 1);
+    function print_hello(): void {
+        print("hello");
     }
 
     function suma(int a, int b): int {
-        b = add_one(b);
+        print_hello();
         return (a + b);
     }
 

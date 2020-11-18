@@ -78,3 +78,5 @@ scopes = {
     "local": Scope.LOCAL,
     "temp": Scope.TEMP,
 }
+
+allowed_return_types = [Type.INT, Type.FLOAT, Type.STRING, Type.VOID]
