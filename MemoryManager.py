@@ -2,13 +2,27 @@
 VIP Memory Manager
 Authors: David Souza & Eduardo de la Garza
 '''
-
 from constants import Type, Scope
 
-'''The purpose of this class is to keep track of the next memory slot to assign
-depending on the scope and type of variable'''
+
 class MemoryManager:
+    """
+    A class to manage the assignment of memory addresses.
+
+    '''
+    Attributes
+    ----------
+    None
+
+    Methods
+    -------
+    reset_temp_and_local_vars():
+        Resets the temporary and local variable indexes
+    """
     def __init__(self):
+        """
+        Initializes all the memory limits and indexes for the MemoryManager object.
+        """
         # Global Variables
         self.g_int_index = 1000
         self.g_int_end = 1999
@@ -41,10 +55,20 @@ class MemoryManager:
         self.c_string_index = 12000
         self.c_string_end = 12999
 
-    '''This method resets the temporary and local variable indexes.
-    It doesn't return anything.
+    '''
     '''
     def reset_temp_and_local_vars(self):
+        """
+        This method resets the temporary and local variable indexes.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+        """
         self.l_int_index = self.l_int_index - (self.l_int_index % 1000)
         self.l_float_index = self.l_float_index - (self.l_float_index % 1000)
         self.l_string_index = self.l_string_index - \
@@ -56,24 +80,38 @@ class MemoryManager:
             (self.t_string_index % 1000)
 
     def set_address(self, scope, var_type, space_required=1):
-        '''It receives scrope, variable type and space required as parameters
-        '''
-        assignedAddress = None
+        """
+        Returns the next available address for a variable.
+
+        Parameters
+        ----------
+            scope: Scope
+                The scope of the variable (Scope.GLOBAL or Scope.LOCAL)
+            var_type: Type
+                The type of the variable (Type.INT, Type.FLOAT, Type.STRING)
+            space_required: int, optional
+                Memory space required for that particular variable (default is 1)
+
+        Returns
+        -------
+            assigned_address (int): Memory address that is going to be assigned to the variable.
+        """
+        assigned_address = None
         if scope == Scope.GLOBAL:
             if var_type == Type.INT:
                 if (self.g_int_index + space_required - 1) > self.g_int_end:
                     return -1  # Memory limit exceeded.
-                assignedAddress = self.g_int_index
+                assigned_address = self.g_int_index
                 self.g_int_index += space_required
             elif var_type == Type.FLOAT:
                 if (self.g_float_index + space_required - 1) > self.g_float_end:
                     return -1
-                assignedAddress = self.g_float_index
+                assigned_address = self.g_float_index
                 self.g_float_index += space_required
             elif var_type == Type.STRING:
                 if (self.g_string_index + space_required - 1) > self.g_string_end:
                     return -1
-                assignedAddress = self.g_string_index
+                assigned_address = self.g_string_index
                 self.g_string_index += space_required
             else:
                 return -2  # Invalid var_type given.
@@ -82,65 +120,89 @@ class MemoryManager:
             if var_type == Type.INT:
                 if (self.l_int_index + space_required - 1) > self.l_int_end:
                     return -1  # Memory limit exceeded.
-                assignedAddress = self.l_int_index
+                assigned_address = self.l_int_index
                 self.l_int_index += space_required
             elif var_type == Type.FLOAT:
                 if (self.l_float_index + space_required - 1) > self.l_float_end:
                     return -1
-                assignedAddress = self.l_float_index
+                assigned_address = self.l_float_index
                 self.l_float_index += space_required
             elif var_type == Type.STRING:
                 if (self.l_string_index + space_required - 1) > self.l_string_end:
                     return -1
-                assignedAddress = self.l_string_index
+                assigned_address = self.l_string_index
                 self.l_string_index += space_required
             else:
                 return -2  # Invalid var_type given.
 
-        return assignedAddress
+        return assigned_address
 
     def set_temp_address(self, var_type):
-        assignedAddress = None
+        """
+        Returns the next available address for a temp variable.
+
+        Parameters
+        ----------
+            var_type: Type
+                The type of the variable (Type.INT, Type.FLOAT, Type.STRING)
+
+        Returns
+        -------
+            assigned_address (int): Memory address that is going to be assigned to the temporary variable.
+        """
+        assigned_address = None
 
         if var_type == Type.INT:
             if self.t_int_index > self.t_int_end:
                 return -1  # Memory limit exceeded.
-            assignedAddress = self.t_int_index
+            assigned_address = self.t_int_index
             self.t_int_index += 1
         elif var_type == Type.FLOAT:
             if self.t_float_index > self.t_float_end:
                 return -1
-            assignedAddress = self.t_float_index
+            assigned_address = self.t_float_index
             self.t_float_index += 1
         elif var_type == Type.STRING:
             if self.t_string_index > self.t_string_end:
                 return -1
-            assignedAddress = self.t_string_index
+            assigned_address = self.t_string_index
             self.t_string_index += 1
         else:
             return -2  # Invalid var_type given.
 
-        return assignedAddress
+        return assigned_address
 
-    def set_constant_address(self, var_type):
-        assignedAddress = None
+    def set_constant_address(self, constant_type):
+        """
+        Returns the next available address for a constant.
 
-        if var_type == Type.INT:
+        Parameters
+        ----------
+            constant_type: Type
+                The type of the variable (Type.INT, Type.FLOAT, Type.STRING)
+
+        Returns
+        -------
+            assigned_address (int): Memory address that is going to be assigned to the constant.
+        """
+        assigned_address = None
+
+        if constant_type == Type.INT:
             if self.c_int_index > self.c_int_end:
                 return -1  # Memory limit exceeded.
-            assignedAddress = self.c_int_index
+            assigned_address = self.c_int_index
             self.c_int_index += 1
-        elif var_type == Type.FLOAT:
+        elif constant_type == Type.FLOAT:
             if self.c_float_index > self.c_float_end:
                 return -1
-            assignedAddress = self.c_float_index
+            assigned_address = self.c_float_index
             self.c_float_index += 1
-        elif var_type == Type.STRING:
+        elif constant_type == Type.STRING:
             if self.c_string_index > self.c_string_end:
                 return -1
-            assignedAddress = self.c_string_index
+            assigned_address = self.c_string_index
             self.c_string_index += 1
         else:
-            return -2  # Invalid var_type given.
+            return -2  # Invalid type given.
 
-        return assignedAddress
+        return assigned_address
