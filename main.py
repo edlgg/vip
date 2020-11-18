@@ -6,25 +6,7 @@ from VirtualMachine import VirtualMachine
 
 
 def main():
-    # print('We are testing our diagram converter here:')
-    # print_rows()
-    # print('We are done testing our diagram converter')
-
-    # data = " "
-    # data = data.join(get_tokens())
-
-    # function test(int a, int b, int c): int {
-    #     int d, e
-    #     string f
-    #     return 1
-    # }
-
-    # data = '''
-    # function main {
-    #     int b, c;
-    #     b = 1 * (1 + 4);
-    # }
-    # '''
+    
     data = '''
     function main () {
         int a[1 .. 5], b[1 .. 2][3 .. 6][0 .. 1], c;

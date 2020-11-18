@@ -5,8 +5,8 @@ Authors: David Souza & Eduardo de la Garza
 
 from constants import Type, Scope
 
-'''The purpose of this class is to keep track of the number of assigned memory slots and
-assign memory addresses depending on the scope and type of variable'''
+'''The purpose of this class is to keep track of the next memory slot to assign
+depending on the scope and type of variable'''
 class MemoryManager:
     def __init__(self):
         # Global Variables
@@ -41,6 +41,9 @@ class MemoryManager:
         self.c_string_index = 12000
         self.c_string_end = 12999
 
+    '''This method resets the temporary and local variable indexes.
+    It doesn't return anything.
+    '''
     def reset_temp_and_local_vars(self):
         self.l_int_index = self.l_int_index - (self.l_int_index % 1000)
         self.l_float_index = self.l_float_index - (self.l_float_index % 1000)
@@ -52,7 +55,9 @@ class MemoryManager:
         self.t_string_index = self.t_string_index - \
             (self.t_string_index % 1000)
 
-    def setAddress(self, scope, var_type, space_required=1):
+    def set_address(self, scope, var_type, space_required=1):
+        '''It receives scrope, variable type and space required as parameters
+        '''
         assignedAddress = None
         if scope == Scope.GLOBAL:
             if var_type == Type.INT:
@@ -94,7 +99,7 @@ class MemoryManager:
 
         return assignedAddress
 
-    def setTempAddress(self, var_type):
+    def set_temp_address(self, var_type):
         assignedAddress = None
 
         if var_type == Type.INT:
@@ -117,7 +122,7 @@ class MemoryManager:
 
         return assignedAddress
 
-    def setConstantAddress(self, var_type):
+    def set_constant_address(self, var_type):
         assignedAddress = None
 
         if var_type == Type.INT:
