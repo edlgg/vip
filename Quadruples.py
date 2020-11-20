@@ -2,7 +2,7 @@ from semantic_cube import semantic_cube
 from constants import types, Type, Operator, Scope
 from Operand import Operand
 from MemoryManager import MemoryManager
-from AddressTable import AddressTable, Dim
+from AddressTable import AddressTable, Dim, Var
 
 
 class Quadruples:
@@ -59,9 +59,9 @@ class Quadruples:
     def add_operator(self, operator):
         self.operators.append(operator)
 
-    def add_operand(self, str_operand, is_assigned=False, is_function_call=False):
+    def add_operand(self, str_operand, is_function_call=False):
         operand = self.build_operand_object(
-            str_operand, is_assigned=is_assigned, is_function_call=is_function_call)
+            str_operand, is_function_call=is_function_call)
         self.operands.append(operand)
         self.add_type(operand.get_type())
 
@@ -70,11 +70,12 @@ class Quadruples:
 
     def add_existing_operand(self, operand):
         self.add_type(operand.get_type())
+        # Instead of using the add_operand method we directly append the operand to the stack
         self.operands.append(operand)
 
-    def build_operand_object(self, str_operand, is_assigned=False, is_function_call=False):
+    def build_operand_object(self, str_operand, is_function_call=False):
         t = type(str_operand)
-        operand = Operand(str_operand, is_assigned=is_assigned,
+        operand = Operand(str_operand,
                           is_function_call=is_function_call)
         func = self.AT.funcs[self.AT.current_func_name]
 
@@ -93,9 +94,9 @@ class Quadruples:
                 self.AT.add_constant_address(str_operand, Type.FLOAT, address)
             operand.set_address(address)
         elif t == str:
-            operand.set_type(Type.STRING)
             # if constant
             if str_operand[0] == "\"" and str_operand[-1] == "\"":
+                operand.set_type(Type.STRING)
                 address = self.AT.get_constant_address(
                     str_operand, Type.STRING)
                 if address == -1:  # It doesn't exist.
@@ -138,39 +139,45 @@ class Quadruples:
     def add_jump(self, jump):
         self.jumps.append(jump)
 
-    def get_operator(self):
+    def get_top_operator(self):
         if len(self.operators):
             return self.operators[-1]
         return None
 
     def register_condition(self):
-        self.types.pop()
         expression_result = self.operands.pop()
+        self.types.pop()
         self.generate_quadruple(
             Operator.GOTOF, expression_result.get_address(), None, None)
-        self.jumps.append(self.q_count - 1)
+        self.add_jump(self.q_count - 1)
 
     def register_else(self):
         self.generate_quadruple(Operator.GOTO, None, None, None)
         false = self.jumps.pop()
-        self.jumps.append(self.q_count - 1)
-        self.quadruples[false][3] = self.q_count
+        self.add_jump(self.q_count - 1)
+        self.fill_jump(false, self.q_count)
 
     def register_end_if(self):
         end = self.jumps.pop()
-        self.quadruples[end][3] = self.q_count
+        self.fill_jump(end, self.q_count)
+
+    def fill_jump(self, quad_index, jump):
+        self.quadruples[quad_index][3] = jump
 
     def register_start_while(self):
-        self.jumps.append(self.q_count)
+        self.add_jump(self.q_count)
 
     def register_end_while(self):
         end = self.jumps.pop()
-        self.quadruples[end][3] = self.q_count + 1
+        self.fill_jump(end, self.q_count + 1)
         start_while = self.jumps.pop()
         self.generate_quadruple(Operator.GOTO, None, None, start_while)
 
+    def get_current_func(self):
+        return self.AT.funcs[self.AT.current_func_name]
+
     def init_assignment(self, var_name, is_array=False):
-        func = self.AT.funcs[self.AT.current_func_name]
+        func = self.get_current_func()
         operand = None
         # Validate var exists
         if func.is_var(var_name):
@@ -209,7 +216,7 @@ class Quadruples:
         self.generate_quadruple(Operator.PRINT, None, None, None)
 
     def add_return(self):
-        func = self.AT.get_func(self.AT.current_func_name)
+        func = self.get_current_func()
         func_return_type = func.get_return_type()
         if func_return_type == Type.VOID:
             raise NameError(f'Void function should not return a value')
@@ -225,7 +232,7 @@ class Quadruples:
 
     def end_function(self, is_main=False):
         while len(self.returns):
-            self.quadruples[self.returns.pop()][3] = self.q_count
+            self.fill_jump(self.returns.pop(), self.q_count)
 
         if is_main:
             self.generate_quadruple(Operator.END, None, None, None)
@@ -252,7 +259,7 @@ class Quadruples:
                 self.AT.current_func_name, func_type, func_address)
 
     def maybe_solve_operation(self, operations):
-        operator = self.get_operator()
+        operator = self.get_top_operator()
 
         if operator in operations:
             r_operand = self.operands.pop()
@@ -266,8 +273,7 @@ class Quadruples:
             if result_type == Type.ERROR:
                 raise NameError(f"Type mismatch {l_type} {operator} {r_type}")
 
-            # TODO:Borrar esto del constructor despues
-            temp = Operand('t' + str(self.curr_t_count))
+            temp = Operand()
             temp.set_type(result_type)
             address = self.memory_manager.set_temp_address(result_type)
             temp.set_address(address)
@@ -276,7 +282,6 @@ class Quadruples:
             self.operands.append(temp)
             self.types.append(result_type)
 
-            # Development note: Beware, operands are objects now. Everything is perfectly fine... maybe.
             self.generate_quadruple(
                 operator, l_operand.get_address(), r_operand.get_address(), address)
 
@@ -331,7 +336,6 @@ class Quadruples:
 
     def add_var(self, var_name, is_param=False, is_array=False):
         func = self.AT.get_func(self.AT.current_func_name)
-
         operand = Operand(
             str_operand=var_name, op_type=types[self.last_var_type], is_array=is_array)
         func.add_var(operand)
@@ -354,7 +358,7 @@ class Quadruples:
     def end_array_dim(self):
         var_address = self.memory_manager.set_address(
             scope=Scope.LOCAL, var_type=types[self.last_var_type], space_required=self.r)
-        func = self.AT.get_func(self.AT.current_func_name)
+        func = self.get_current_func()
         var_name = func.current_var_name
         var = func.get_var(var_name)
         var.set_address(var_address)
@@ -378,7 +382,7 @@ class Quadruples:
             address = self.memory_manager.set_constant_address(Type.INT)
             self.AT.add_constant_address(lim_sup, Type.INT, address)
         self.current_dim.set_lim_sup(lim_sup)
-        func = self.AT.get_func(self.AT.current_func_name)
+        func = self.get_current_func()
         var_name = func.current_var_name
         func.get_var(var_name).add_dim(self.current_dim)
 
@@ -394,29 +398,31 @@ class Quadruples:
             self.current_array_dim_number = var.get_dim_count()
         if self.current_dim == self.current_array_dim_number:
             raise NameError(f'Trying to access a non-existent dimension')
-        s = self.operands.pop().get_address()
+        s_address = self.operands.pop().get_address()
         self.types.pop()
         dim = var.get_dim(dim_num)
         lim_inf = self.AT.get_constant_address(dim.get_lim_inf(), Type.INT)
         lim_sup = self.AT.get_constant_address(dim.get_lim_sup(), Type.INT)
-        self.generate_quadruple(Operator.VER, s, lim_inf, lim_sup)
+        self.generate_quadruple(Operator.VER, s_address, lim_inf, lim_sup)
 
         # Following the formula s1*m1 + s2 + (-k)....
         tmp_address = self.memory_manager.set_temp_address(Type.INT)
         t = Operand(address=tmp_address, op_type=Type.INT)
         m = dim.get_m()
-        m = self.AT.get_constant_address(m, Type.INT)
+        m_address = self.AT.get_constant_address(m, Type.INT)
         # If it doesn't exist, create a new constant address for it.
-        if m == -1:
-            m = self.memory_manager.set_constant_address(Type.INT)
-            self.AT.add_constant_address(dim.get_m(), Type.INT, m)
+        if m_address == -1:
+            m_address = self.memory_manager.set_constant_address(Type.INT)
+            self.AT.add_constant_address(m, Type.INT, m_address)
         # Multiply m of the current Dim node if it's not the last dim
         if dim_num < self.current_array_dim_number - 1:
-            self.generate_quadruple(Operator.TIMES, s, m, tmp_address)
+            self.generate_quadruple(
+                Operator.TIMES, s_address, m_address, tmp_address)
         # Add (-k) if it's the last Dim node
         else:
-            k = m
-            self.generate_quadruple(Operator.PLUS, s, k, tmp_address)
+            k_address = m_address
+            self.generate_quadruple(
+                Operator.PLUS, s_address, k_address, tmp_address)
         if dim_num != 0:
             aux = self.operands.pop()
             self.types.pop()
@@ -432,6 +438,7 @@ class Quadruples:
         operand = self.operands.pop()
         var, _ = self.arrays.pop()
         self.types.pop()
+        # To make things easy, our tp are normal temporary address but with negative address value
         tmp_address = self.memory_manager.set_temp_address(Type.INT) * -1
         t = Operand(address=tmp_address)
         # Add base address
@@ -460,7 +467,7 @@ class Quadruples:
         self.operators.append(Operator.FAKE_BOTTOM)
 
     def register_read(self, var_name):
-        func = self.AT.get_func(self.AT.current_func_name)
+        func = self.get_current_func()
         if func.is_var(var_name):
             operand = func.get_var(var_name)
             self.generate_quadruple(

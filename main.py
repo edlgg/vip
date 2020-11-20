@@ -107,14 +107,14 @@ def main():
     function main () {
         int a, b;
         a = 1;
-        # b = recursiva(6);
-        read(b);
+        b = recursiva(6);
+        # read(b);
         print(suma(a,b));
     }
     '''
 
     # Generate Object code.
-    quadruples, constants = parse(data2)
+    quadruples, constants = parse(data)
 
     print("")
     print("")

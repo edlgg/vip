@@ -4,7 +4,7 @@ from constants import Type
 
 class Operand:
 
-    def __init__(self, str_operand=None, op_type=None, address=None, is_assigned=False, is_array=False, is_function_call=False):
+    def __init__(self, str_operand=None, op_type=None, address=None, is_array=False, is_function_call=False):
         self.str_operand = str_operand
 
         self.type = op_type
@@ -12,8 +12,6 @@ class Operand:
         self.address = address
 
         self.is_array = is_array
-
-        self.is_assigned = is_assigned
 
         self.is_function_call = is_function_call
 
@@ -46,9 +44,3 @@ class Operand:
 
     def get_dims(self):
         return self.dims
-
-    def set_is_assigned(self, is_assigned):
-        self.is_assigned = is_assigned
-
-    def get_is_assigned(self):
-        return self.is_assigned

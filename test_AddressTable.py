@@ -1,34 +1,36 @@
 import pytest
 from AddressTable import Var, Func, AddressTable
+from constants import Type
 
 
 class TestFunc:
     @pytest.mark.parametrize(
         "name, var_type, address",
         [
-            ("a", "int", 1),
-            ("b", "int", 2),
-            ("c", "int", 3),
+            ("a", Type.INT, 1),
+            ("b", Type.INT, 2),
+            ("c", Type.INT, 3),
         ],
     )
-    def test_var_init(self, name, var_type, address):
-        var = Var(name=name, var_type=var_type, address=address)
+    def test_var_init(self, name, type, address):
+        var = Var(name=name, type=type, address=address)
         assert var.name == name
-        assert var.var_type == var_type
+        assert var.type == type
         assert var.address == address
 
     @pytest.mark.parametrize(
-        "name, return_type",
+        "name, return_type, first_quadruple",
         [
-            ("a", "int"),
-            ("b", "int"),
-            ("c", "int"),
+            ("a", Type.INT, 29),
+            ("b", Type.INT, 50),
+            ("c", Type.INT, 3),
         ],
     )
-    def test_func_init(self, name, return_type):
-        func = Func(name=name, return_type=return_type)
+    def test_func_init(self, name, return_type, first_quadruple):
+        func = Func(name=name, return_type=return_type, first_quadruple=first_quadruple)
         assert func.name == name
         assert func.return_type == return_type
+        assert func.first_quadruple == first_quadruple
 
     @pytest.mark.parametrize(
         "name, var_type, address",
@@ -39,8 +41,8 @@ class TestFunc:
         ],
     )
     def test_add_var(self, name, var_type, address):
-        func = Func(name="test", return_type="void")
-        func.add_var(name=name, var_type=var_type, address=address)
+        func = Func(name="test", return_type=Type.VOID, first_quadruple=15)
+        func.add_var(name=name, type=var_type, address=address)
         assert name in func.vars
 
     @pytest.mark.parametrize(
@@ -66,31 +68,11 @@ class TestFunc:
         ],
     )
     def test_is_var(self, name, search, result):
-        func = Func(name="test", return_type="void")
+        func = Func(name="test", return_type=Type.VOID)
         func.add_var(name=name, var_type="int", address=1)
         assert func.is_var(search) == result
 
-    @pytest.mark.parametrize(
-        "name, assign",
-        [
-            ("a", True),
-            ("a", False)
-        ],
-    )
-    def test_assign_var(self, name, assign):
-        func = Func(name="test", return_type="void")
-        func.add_var(name=name, var_type="int", address=1)
-
-        if assign:
-            func.assign_var(name=name)
-
-        is_assigned = False
-        for name, var in func.vars.items():
-            if var.name == name:
-                is_assigned = var.assigned
-
-        assert is_assigned == assign
-
+   
     @pytest.mark.parametrize(
         "name, assign",
         [
