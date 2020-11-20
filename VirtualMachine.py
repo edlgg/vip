@@ -1,5 +1,5 @@
 from Quadruples import Quadruples
-from constants import Operator, Scope
+from constants import Operator, Scope, Type
 from RuntimeMemory import RuntimeMemory
 
 
@@ -49,6 +49,19 @@ class VirtualMachine():
                 return input[1:-1]
         return input
 
+    def get_read_type(self, read_input):
+        t = type(read_input)
+
+        try:
+            read_input = int(read_input)
+            return read_input, Type.INT
+        except ValueError:
+            try:
+                read_input = float(read_input)
+                return read_input, Type.FLOAT
+            except ValueError:
+                return read_input, Type.STRING
+
     def run(self):
         while self.quad_pointer < len(self.quadruples):
             self.process_quad(self.quadruples[self.quad_pointer])
@@ -90,6 +103,16 @@ class VirtualMachine():
             value_to_print = self.get_value_from_address(quad[3])
             value_to_print = self.refactor_if_string(value_to_print)
             print(value_to_print, '', end='')
+            return
+        elif quad[0] == Operator.READ:
+            operand_type = quad[2]
+            address = quad[3]
+            read_input = input()
+            read_input, read_input_type = self.get_read_type(read_input)
+            # Type validation
+            if operand_type != read_input_type:
+                raise NameError(f'Invalid input type. Expected {operand_type}, got {read_input_type} instead.')
+            self.set_value_to_address(read_input, address)
             return
         elif quad[0] == Operator.END:
             self.quad_pointer = len(self.quadruples) - 1

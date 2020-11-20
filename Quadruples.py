@@ -269,8 +269,6 @@ class Quadruples:
             temp.set_type(result_type)
             address = self.memory_manager.set_temp_address(result_type)
             temp.set_address(address)
-            current_func_name = self.AT.current_func_name
-            current_func = self.AT.get_func(current_func_name)
             self.curr_t_count += 1
 
             self.operands.append(temp)
@@ -464,7 +462,7 @@ class Quadruples:
         if func.is_var(var_name):
             operand = func.get_var(var_name)
             self.generate_quadruple(
-                Operator.READ, None, None, operand.get_address())
+                Operator.READ, None, operand.get_type(), operand.get_address())
         else:
             raise NameError(f"Undefined variable.")
 
