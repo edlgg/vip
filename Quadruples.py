@@ -112,8 +112,10 @@ class Quadruples:
                         address = value.address
                         operand = value
                 if address == None:
-                    address = self.memory_manager.set_address(
-                        Scope.LOCAL, Type.STRING)
+                    raise NameError(f'Undeclared variable {str_operand}')
+                    # print('por supuesto')
+                    # address = self.memory_manager.set_address(
+                    #     Scope.LOCAL, Type.STRING)
                 operand.set_address(address)
                 operand_type = self.get_type_from_address(address)
                 operand.set_type(operand_type)

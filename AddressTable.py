@@ -13,7 +13,7 @@ class Dim:
     lim_sup : int
         Upper limit of the dimension
     m : int
-        TODO: Describe this
+        Variable needed to calculate array addresses
     has_range : bool
         It indicates if the dimension has a defined range e.g. A[1 .. 4].
         If it doesn't have a range, then the lower limit is always 0.

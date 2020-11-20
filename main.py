@@ -114,7 +114,7 @@ def main():
     '''
 
     # Generate Object code.
-    quadruples, constants = parse(data7)
+    quadruples, constants = parse(data2)
 
     print("")
     print("")
@@ -125,12 +125,3 @@ def main():
 
 main()
 
-
-'''
-
-int a;
-a = 4;
-if (i < 3) .....
-TODO: Arrojar error porque 'i' no esta declarado.
-
-'''

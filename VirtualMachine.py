@@ -50,8 +50,6 @@ class VirtualMachine():
         return input
 
     def get_read_type(self, read_input):
-        t = type(read_input)
-
         try:
             read_input = int(read_input)
             return read_input, Type.INT
