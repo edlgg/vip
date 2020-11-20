@@ -8,10 +8,22 @@ from VirtualMachine import VirtualMachine
 def main():
     
     data = '''
+    global int d;
+
+    function test(): void {
+        int d;
+        d = 145;
+        print(d);
+    }
+
     function main () {
         int a[1 .. 5], b[1 .. 2][3 .. 6][0 .. 1], c;
-        a[4] = 3;
-        print(a[4]);
+        d = 14;
+        # a[4] = 3;
+        # print(a[4]);
+        c = d + 3;
+        print(c);
+        test();
     }
     '''
 
@@ -114,7 +126,7 @@ def main():
     '''
 
     # Generate Object code.
-    quadruples, constants = parse(data)
+    quadruples, constants = parse(data2)
 
     print("")
     print("")

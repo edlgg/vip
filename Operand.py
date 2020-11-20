@@ -4,8 +4,8 @@ from constants import Type
 
 class Operand:
 
-    def __init__(self, str_operand=None, op_type=None, address=None, is_array=False, is_function_call=False):
-        self.str_operand = str_operand
+    def __init__(self, name=None, op_type=None, address=None, is_array=False, is_function_call=False):
+        self.name = name
 
         self.type = op_type
 
@@ -16,13 +16,13 @@ class Operand:
         self.is_function_call = is_function_call
 
     def __repr__(self):
-        return f"Operand({self.str_operand}, {self.type}, {self.address})"
+        return f"Operand({self.name}, {self.type}, {self.address})"
 
-    def set_str_operand(self, str_operand):
-        self.str_operand = str_operand
+    def set_name(self, name):
+        self.name = name
 
-    def get_str_operand(self):
-        return self.str_operand
+    def get_name(self):
+        return self.name
 
     def set_type(self, type):
         self.type = type

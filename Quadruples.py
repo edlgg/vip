@@ -27,6 +27,8 @@ class Quadruples:
         self.current_function_call = None
         # To keep track of type in var definition.
         self.last_var_type = None
+        # To keep track of global variable declaration
+        self.is_global = False
 
         self.AT = AddressTable()
         self.memory_manager = MemoryManager()
@@ -56,12 +58,15 @@ class Quadruples:
         self.quadruples.append(quad)
         self.q_count += 1
 
+    def set_is_global(self, is_global):
+        self.is_global = is_global
+
     def add_operator(self, operator):
         self.operators.append(operator)
 
-    def add_operand(self, str_operand, is_function_call=False):
+    def add_operand(self, name, is_function_call=False):
         operand = self.build_operand_object(
-            str_operand, is_function_call=is_function_call)
+            name, is_function_call=is_function_call)
         self.operands.append(operand)
         self.add_type(operand.get_type())
 
@@ -73,52 +78,44 @@ class Quadruples:
         # Instead of using the add_operand method we directly append the operand to the stack
         self.operands.append(operand)
 
-    def build_operand_object(self, str_operand, is_function_call=False):
-        t = type(str_operand)
-        operand = Operand(str_operand,
+    def build_operand_object(self, name, is_function_call=False):
+        t = type(name)
+        operand = Operand(name,
                           is_function_call=is_function_call)
-        func = self.AT.funcs[self.AT.current_func_name]
 
         if t == int:
             operand.set_type(Type.INT)
-            address = self.AT.get_constant_address(str_operand, Type.INT)
+            address = self.AT.get_constant_address(name, Type.INT)
             if address == -1:  # It doesn't exist.
                 address = self.memory_manager.set_constant_address(Type.INT)
-                self.AT.add_constant_address(str_operand, Type.INT, address)
+                self.AT.add_constant_address(name, Type.INT, address)
             operand.set_address(address)
         elif t == float:
             operand.set_type(Type.FLOAT)
-            address = self.AT.get_constant_address(str_operand, Type.FLOAT)
+            address = self.AT.get_constant_address(name, Type.FLOAT)
             if address == -1:  # It doesn't exist.
                 address = self.memory_manager.set_constant_address(Type.FLOAT)
-                self.AT.add_constant_address(str_operand, Type.FLOAT, address)
+                self.AT.add_constant_address(name, Type.FLOAT, address)
             operand.set_address(address)
         elif t == str:
             # if constant
-            if str_operand[0] == "\"" and str_operand[-1] == "\"":
+            if name[0] == "\"" and name[-1] == "\"":
                 operand.set_type(Type.STRING)
                 address = self.AT.get_constant_address(
-                    str_operand, Type.STRING)
+                    name, Type.STRING)
                 if address == -1:  # It doesn't exist.
                     address = self.memory_manager.set_constant_address(
                         Type.STRING)
                     self.AT.add_constant_address(
-                        str_operand, Type.STRING, address)
+                        name, Type.STRING, address)
                 operand.set_address(address)
 
             else:  # Variable
-                address = None
-                for _, value in func.vars.items():
-                    if value.name == str_operand:
-                        address = value.address
-                        operand = value
-                if address == None:
-                    raise NameError(f'Undeclared variable {str_operand}')
-                    # print('por supuesto')
-                    # address = self.memory_manager.set_address(
-                    #     Scope.LOCAL, Type.STRING)
-                operand.set_address(address)
-                operand_type = self.get_type_from_address(address)
+                var = self.find_var_in_address_table(name)
+                if var == -1:
+                    raise NameError(f'Undeclared variable {name}')
+                operand.set_address(var.get_address())
+                operand_type = self.get_type_from_address(var.get_address())
                 operand.set_type(operand_type)
 
         return operand
@@ -174,23 +171,23 @@ class Quadruples:
         self.generate_quadruple(Operator.GOTO, None, None, start_while)
 
     def get_current_func(self):
-        return self.AT.funcs[self.AT.current_func_name]
+        if self.AT.current_func_name:
+            return self.AT.funcs[self.AT.current_func_name]
+        else:
+            return None
 
     def init_assignment(self, var_name, is_array=False):
-        func = self.get_current_func()
-        operand = None
         # Validate var exists
-        if func.is_var(var_name):
-            operand = func.get_var(var_name)
-        else:
+        var = self.find_var_in_address_table(var_name)
+        if var == -1:
             raise NameError('Variable not declared')
         # Array validation
         if is_array:
-            self.current_array_call = operand
-            if not operand.is_array:
-                raise NameError(f'Variable {operand.name} is not an array')
+            self.current_array_call = var
+            if not var.is_array:
+                raise NameError(f'Variable {var.name} is not an array')
 
-        self.add_existing_operand(operand)
+        self.add_existing_operand(var)
 
     def assign(self):
         l_operand = self.operands.pop()
@@ -226,7 +223,7 @@ class Quadruples:
             raise NameError(
                 f'\'{return_type}\' cannot be returned as \'{func_return_type}\'')
         self.returns.append(self.q_count)
-        func_global_address = self.AT.get_global_address(self.AT.current_func_name, func_return_type)
+        func_global_address = self.AT.get_global_var(self.AT.current_func_name).get_address()
         self.generate_quadruple(
             Operator.RETURN, return_val.get_address(), func_global_address, None)
 
@@ -255,8 +252,8 @@ class Quadruples:
         if func_type is not Type.VOID:
             func_address = self.memory_manager.set_address(
                 Scope.GLOBAL, func_type)
-            self.AT.add_global_address(
-                self.AT.current_func_name, func_type, func_address)
+            var = Var(self.AT.current_func_name, func_type, address=func_address)
+            self.AT.add_global_address(var)
 
     def maybe_solve_operation(self, operations):
         operator = self.get_top_operator()
@@ -303,7 +300,7 @@ class Quadruples:
             address_in_func = None
             func = self.AT.get_func(self.current_function_call)
             param_name = func.param_names[self.param_count]
-            var = func.get_var(param_name)
+            var = self.find_var_in_address_table(param_name)
             address_in_func = var.get_address()
             self.generate_quadruple(
                 Operator.PARAM, argument.get_address(), None, address_in_func)
@@ -326,19 +323,32 @@ class Quadruples:
             tmp_address = self.memory_manager.set_temp_address(
                 func_return_type)
             temp = Operand(address=tmp_address)
-            func_address = self.AT.get_global_address(
-                self.current_function_call, func_return_type)
+            func_address = self.AT.get_global_var(
+                self.current_function_call).get_address()
             self.generate_quadruple(
                 Operator.ASSIGN, func_address, None, tmp_address)
             self.operands.append(temp)
             self.types.append(func_return_type)
         self.operators.pop()
 
+    def find_var_in_address_table(self, name):
+        func = self.get_current_func()
+        var = -1
+        if func:
+            var = func.get_var(name)
+        if var == -1:
+            var = self.AT.get_global_var(name)
+        return var
+
     def add_var(self, var_name, is_param=False, is_array=False):
-        func = self.AT.get_func(self.AT.current_func_name)
+        func = None
         operand = Operand(
-            str_operand=var_name, op_type=types[self.last_var_type], is_array=is_array)
-        func.add_var(operand)
+            name=var_name, op_type=types[self.last_var_type], is_array=is_array)
+        if self.is_global:
+            self.AT.add_global_address(operand)
+        else:   
+            func = self.get_current_func()
+            func.add_var(operand)
         if is_param:
             func.num_params += 1
             func.param_names.append(var_name)
@@ -347,20 +357,23 @@ class Quadruples:
             self.r = 1
         else:
             # Address is only set for non-arrays for now. Address for arrays should be set after knowing the total needed memory space for the array.
+            scope = Scope.GLOBAL if self.is_global else Scope.LOCAL
             var_address = self.memory_manager.set_address(
-                scope=Scope.LOCAL, var_type=types[self.last_var_type])
-            func.get_var(var_name).set_address(var_address)
+                scope=scope, var_type=types[self.last_var_type])
+            var = self.find_var_in_address_table(var_name)
+            var.set_address(var_address)
 
     def create_dim_node(self):
         dim = Dim()
         self.current_dim = dim
 
     def end_array_dim(self):
+        scope = Scope.GLOBAL if self.is_global else Scope.LOCAL
         var_address = self.memory_manager.set_address(
-            scope=Scope.LOCAL, var_type=types[self.last_var_type], space_required=self.r)
+            scope=scope, var_type=types[self.last_var_type], space_required=self.r)
         func = self.get_current_func()
         var_name = func.current_var_name
-        var = func.get_var(var_name)
+        var = self.find_var_in_address_table(var_name)
         var.set_address(var_address)
         var.solve_dims(self.r)
 
@@ -384,7 +397,8 @@ class Quadruples:
         self.current_dim.set_lim_sup(lim_sup)
         func = self.get_current_func()
         var_name = func.current_var_name
-        func.get_var(var_name).add_dim(self.current_dim)
+        var = self.find_var_in_address_table(var_name)
+        var.add_dim(self.current_dim)
 
         # Update r
         self.r *= (self.current_dim.get_lim_sup() -
@@ -455,11 +469,8 @@ class Quadruples:
     def validate_is_array(self):
         array_id = self.operands.pop().get_name()
         self.types.pop()
-        var = None
-        func = self.AT.get_func(self.AT.current_func_name)
-        if func.is_var(array_id):
-            var = func.get_var(array_id)
-        if var == None:
+        var = self.find_var_in_address_table(array_id)
+        if var == -1:
             raise NameError(f'Variable {array_id} does not exist')
         if not var.is_array:
             raise NameError(f'Variable {array_id} is not an array')
@@ -467,13 +478,13 @@ class Quadruples:
         self.operators.append(Operator.FAKE_BOTTOM)
 
     def register_read(self, var_name):
-        func = self.get_current_func()
-        if func.is_var(var_name):
-            operand = func.get_var(var_name)
-            self.generate_quadruple(
-                Operator.READ, None, operand.get_type(), operand.get_address())
-        else:
+        var = self.find_var_in_address_table(var_name)
+        if var == -1:
             raise NameError(f"Undefined variable.")
+        else:
+            self.generate_quadruple(
+                Operator.READ, None, var.get_type(), var.get_address())
+            
 
     def generate_obj_code(self):
         constants = {}

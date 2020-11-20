@@ -13,13 +13,15 @@ Q = Quadruples()
 
 
 def p_program(p):
-    '''program : program_aux main
+    '''program : vars functions main
+               | vars main
+               | functions main
                | main'''
 
 
-def p_program_aux(p):
-    '''program_aux : program_aux function
-                   | function'''
+def p_functions(p):
+    '''functions : functions function
+                 | function'''
 
 
 def p_function(p):
@@ -65,11 +67,11 @@ def p_function_type(p):
 
 
 def p_var(p):
-    '''var : type_aux var_aux SEMICOLON'''
+    '''var : type_aux var_aux n_reset_is_global SEMICOLON'''
 
 
 def p_type_aux(p):
-    '''type_aux : GLOBAL type
+    '''type_aux : GLOBAL n_is_global type
                 | type'''
 
 
@@ -359,6 +361,14 @@ def p_n_end_while(p):
     'n_end_while : '
     Q.register_end_while()
 
+def p_n_is_global(p):
+    'n_is_global : '
+    Q.set_is_global(True)
+
+def p_n_reset_is_global(p):
+    'n_reset_is_global : '
+    Q.set_is_global(False)
+
 
 def p_n_add_operand(p):
     'n_add_operand : '
@@ -465,7 +475,7 @@ def parse(input):
     # Check the input's syntax
     parser.parse(input)
 
-    Q.print_all()
+    # Q.print_all()
 
     obj_code = Q.generate_obj_code()
 

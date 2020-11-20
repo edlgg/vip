@@ -97,6 +97,9 @@ class Var:
         self.is_array = is_array
         self.dims = []
 
+    def __repr__(self):
+        return f"{self.name} {self.type} {self.address}"
+
     def get_type(self):
         return self.type
 
@@ -213,14 +216,17 @@ class Func:
         -------
         None
         """
-        name = operand.str_operand
+        name = operand.name
         if name in self.vars:
             raise NameError(f"Var {name} already defined")
         self.vars[name] = Var(name, operand.type,
                               operand.address, operand.is_array)
 
     def get_var(self, name):
-        return self.vars[name]
+        if name in self.vars:
+            return self.vars[name]
+        else:
+            return -1
 
     def delete_var(self, name):
         del self.vars[name]
@@ -280,11 +286,7 @@ class AddressTable:
             Type.FLOAT: {},
             Type.STRING: {},
         }
-        self.global_addresses = {
-            Type.INT: {},
-            Type.FLOAT: {},
-            Type.STRING: {},
-        }
+        self.global_addresses = {}
 
     def add_func(self, name, first_quadruple=None, return_type=Type.VOID):
         if name in self.funcs:
@@ -317,12 +319,16 @@ class AddressTable:
         else:
             return -1  # Constant doesn't exist yet.
 
-    def add_global_address(self, global_value, global_type, address):
-        self.global_addresses[global_type][global_value] = address
+    def add_global_address(self, operand):
+        name = operand.name
+        if name in self.global_addresses:
+            raise NameError(f"Var {name} already defined")
+        self.global_addresses[name] = Var(name, operand.type,
+                              operand.address, operand.is_array)
 
-    def get_global_address(self, global_value, global_type):
-        if global_value in self.global_addresses[global_type]:
-            return self.global_addresses[global_type][global_value]
+    def get_global_var(self, global_value):
+        if global_value in self.global_addresses:
+            return self.global_addresses[global_value]
         else:
             return -1  # Global doesn't exist yet.
 
@@ -340,9 +346,5 @@ class AddressTable:
         for key, value in self.constants_addresses[Type.STRING].items():
             print(key, value)
         print("GLOBALES:")
-        for key, value in self.global_addresses[Type.INT].items():
-            print(key, value)
-        for key, value in self.global_addresses[Type.FLOAT].items():
-            print(key, value)
-        for key, value in self.global_addresses[Type.STRING].items():
-            print(key, value)
+        for _, var in self.global_addresses.items():
+            print(var.name, var.type, var.address)
