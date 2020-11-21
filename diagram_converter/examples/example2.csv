@@ -145,12 +145,12 @@ Id,Name,Shape Library,Page ID,Contained By,Group,Line Source,Line Destination,So
 144,Line,,123,,,134,125,None,Arrow,
 145,Page,,,,,,,,,global
 146,Terminator,Flowchart Shapes,145,,,,,,,main()
-147,Process,Flowchart Shapes,145,,,,,,,"int a, b, c;a = 1;"
+147,Process,Flowchart Shapes,145,,,,,,,"int b, c;a = 1;"
 148,Process,Flowchart Shapes,145,,,,,,,"b = 2;"
 149,Process,Flowchart Shapes,145,,,,,,,"c = a+b;"
 150,Display,Flowchart Shapes,145,,,,,,,"""a, b, c: "", a, b, c"
 151,Terminator,Flowchart Shapes,145,,,,,,,
-152,Predefined Process,Flowchart Shapes,145,,,,,,,"global int d;int e;global int f;"
+152,Predefined Process,Flowchart Shapes,145,,,,,,,"global int a;int e;global int f;"
 153,Line,,145,,,146,147,None,Arrow,
 154,Line,,145,,,147,148,None,Arrow,
 155,Line,,145,,,148,149,None,Arrow,
