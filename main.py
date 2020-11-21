@@ -123,8 +123,6 @@ def main():
     print("*******************************")
     dc = DiagramConverter()
     data6 = dc.get_tokens(path, type_)
-    print("data6")
-    print(data6)
     data6 = " ".join(data6)
     # ************************************************
 
