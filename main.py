@@ -84,17 +84,6 @@ def main():
 
     data5 = 'function main () { int a , b , c ; a = 1 ; b = 2 ; c = a + b ; print ( " a , b , c: " , a , b , c ) ; }'
 
-    # ************************************************
-    # dc = DiagramConverter()
-    # path = dc.get_example_path()
-    # print("Printing the intermediate code")
-    # type_ = "simple"
-    # dc.print_rows(path, type_)
-    # print("*******************************")
-    # data6 = dc.get_tokens(path, type_)
-    # data6 = " ".join(data6)
-    # ************************************************
-
 
     data7 = '''
     function print_hello(): void {
@@ -125,8 +114,22 @@ def main():
     }
     '''
 
+    # ************************************************
+    dc = DiagramConverter()
+    path = dc.get_example_path()
+    print("Printing the intermediate code")
+    type_ = "simple"
+    dc.print_rows(path, type_)
+    print("*******************************")
+    dc = DiagramConverter()
+    data6 = dc.get_tokens(path, type_)
+    print("data6")
+    print(data6)
+    data6 = " ".join(data6)
+    # ************************************************
+
     # Generate Object code.
-    quadruples, constants = parse(data2)
+    quadruples, constants = parse(data6)
 
     print("")
     print("")

@@ -177,6 +177,7 @@ class DiagramConverter():
         r = r.split(" ")
 
         r = list(filter(lambda x: x != "", r))
+   
         return r
 
     def get_string(self, csv_path, selected_page):
