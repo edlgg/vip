@@ -118,7 +118,7 @@ def main():
     dc = DiagramConverter()
     path = dc.get_example_path()
     print("Printing the intermediate code")
-    type_ = "simple"
+    type_ = "global"
     dc.print_rows(path, type_)
     print("*******************************")
     dc = DiagramConverter()

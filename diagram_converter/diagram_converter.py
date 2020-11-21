@@ -138,12 +138,24 @@ class DiagramConverter():
             "lists": 4,
             "functions": 5,
             "all": 6,
-            "recursion": 7
+            "recursion": 7,
+            "global": 8
         }
         selected_page_index = d[selected_page]
         df = pd.read_csv(csv_path, index_col=0)
 
         data = self.get_page_data(df, selected_page_index)
+
+        premain_process = data[data["Name"] == "Predefined Process"]
+        premain_lines = []
+        if len(premain_process) > 0:
+            premain_text = premain_process.iloc[0]["Text Area 1"]
+            premain_rows = premain_text.split(";")[:-1]
+            premain_rows = [row.replace("global", "") for row in premain_rows]
+            premain_rows = ["global " + row for row in premain_rows]
+            premain_lines = ";".join(premain_rows) + ";"
+            print("AAA", premain_lines)
+
         roots, _ = self.create_graph(data)
 
         main_index = self.get_main_index(roots)
@@ -154,6 +166,11 @@ class DiagramConverter():
             pending = []
             self.r = self.traverse_tree(root, pending)
             f = self.r
+        print(type(premain_lines))
+        print(type(f))
+        print(f)
+        f = [premain_lines] + f
+        print(f)
         return f
 
     def print_rows(self, csv_path, selected_page):
