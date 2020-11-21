@@ -12,6 +12,7 @@ class VirtualMachine():
         self.g_memory = RuntimeMemory(Scope.GLOBAL, -1)
         self.memories.append(self.g_memory)
         self.return_val = None
+        self.calling_function = False
 
     def get_value_from_address(self, address, from_previous_memory=False):
         if self.is_global_address(address):
@@ -25,14 +26,15 @@ class VirtualMachine():
         else:
             return self.constants[address]
 
-    def set_value_to_address(self, value, address):
+    def set_value_to_address(self, value, address, from_previous_memory=False):
+        index = -2 if from_previous_memory else -1
         if self.is_global_address(address):
             self.g_memory.set_value_to_address_helper(value, address)
         elif self.is_local_or_temp_address(address):
-            self.memories[-1].set_value_to_address_helper(value, address)
+            self.memories[index].set_value_to_address_helper(value, address)
         elif self.is_pointer(address):
-            aux = self.memories[-1].get_value_from_address_helper(-address)
-            self.memories[-1].set_value_to_address_helper(value, aux)
+            aux = self.memories[index].get_value_from_address_helper(-address)
+            self.memories[index].set_value_to_address_helper(value, aux)
 
     def is_global_address(self, address):
         return address >= self.g_memory.g_int_start and address < (self.g_memory.g_string_start + 1000)
@@ -81,6 +83,7 @@ class VirtualMachine():
                 self.quad_pointer = quad[3] - 1
             return
         elif quad[0] == Operator.ERA:
+            self.calling_function = True
             new_memory_instance = RuntimeMemory(Scope.LOCAL, -1)
             self.memories.append(new_memory_instance)
             return
@@ -109,7 +112,8 @@ class VirtualMachine():
             read_input, read_input_type = self.get_read_type(read_input)
             # Type validation
             if operand_type != read_input_type:
-                raise NameError(f'Invalid input type. Expected {operand_type}, got {read_input_type} instead.')
+                raise NameError(
+                    f'Invalid input type. Expected {operand_type}, got {read_input_type} instead.')
             self.set_value_to_address(read_input, address)
             return
         elif quad[0] == Operator.END:
@@ -125,10 +129,11 @@ class VirtualMachine():
         elif quad[0] == Operator.GOSUB:
             self.memories[-1].return_quad = self.quad_pointer
             self.quad_pointer = quad[3] - 1
+            self.calling_function = False
             return
         elif quad[0] == Operator.PARAM:
             result_val = self.get_value_from_address(
-                quad[1], from_previous_memory=True)
+                quad[1], from_previous_memory=self.calling_function)
             self.set_value_to_address(result_val, quad[3])
             return
         elif quad[0] == Operator.ENDFUNC:
@@ -137,8 +142,11 @@ class VirtualMachine():
             return
 
         # Expression operands.
-        left_operand = self.get_value_from_address(quad[1])
-        right_operand = self.get_value_from_address(quad[2])
+        left_operand = self.get_value_from_address(
+            quad[1], from_previous_memory=self.calling_function)
+        right_operand = self.get_value_from_address(
+            quad[2], from_previous_memory=self.calling_function)
+
         result = None
 
         if quad[0] == Operator.PLUS:
@@ -170,4 +178,5 @@ class VirtualMachine():
         else:
             return
 
-        self.set_value_to_address(result, quad[3])
+        self.set_value_to_address(
+            result, quad[3], from_previous_memory=self.calling_function)

@@ -6,7 +6,7 @@ from VirtualMachine import VirtualMachine
 
 
 def main():
-    
+
     data = '''
     global int d;
 
@@ -84,7 +84,6 @@ def main():
 
     data5 = 'function main () { int a , b , c ; a = 1 ; b = 2 ; c = a + b ; print ( " a , b , c: " , a , b , c ) ; }'
 
-
     data7 = '''
     function print_hello(): void {
         print("hello");
@@ -114,11 +113,48 @@ def main():
     }
     '''
 
+    data72 = """
+    function factorial_ciclo(int a): int {
+        int res;
+        res = 1;
+        while (a > 0 ){
+            res = res * a;
+            a = a - 1;
+        }
+        return res;
+    }
+
+    function main () {
+        int a;
+        a = 6;
+        print(factorial_ciclo(a));
+    }
+    """
+
+    data8 = """
+    function fib(int i): int {
+        int res;
+        if(i <= 2) {
+            res = 1;
+        }
+        else {
+            res = fib(i - 1) + fib(i - 2);
+        }
+        return res;
+    }
+    
+    function main() {
+        int i, j;
+        i = 15;
+        print("fib: ", i, " = ", fib(i));
+    }
+    """
+
     # ************************************************
     dc = DiagramConverter()
     path = dc.get_example_path()
     print("Printing the intermediate code")
-    type_ = "global"
+    type_ = "all"
     dc.print_rows(path, type_)
     print("*******************************")
     dc = DiagramConverter()
@@ -137,4 +173,3 @@ def main():
 
 
 main()
-

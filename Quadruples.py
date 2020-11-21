@@ -223,7 +223,8 @@ class Quadruples:
             raise NameError(
                 f'\'{return_type}\' cannot be returned as \'{func_return_type}\'')
         self.returns.append(self.q_count)
-        func_global_address = self.AT.get_global_var(self.AT.current_func_name).get_address()
+        func_global_address = self.AT.get_global_var(
+            self.AT.current_func_name).get_address()
         self.generate_quadruple(
             Operator.RETURN, return_val.get_address(), func_global_address, None)
 
@@ -252,7 +253,8 @@ class Quadruples:
         if func_type is not Type.VOID:
             func_address = self.memory_manager.set_address(
                 Scope.GLOBAL, func_type)
-            var = Var(self.AT.current_func_name, func_type, address=func_address)
+            var = Var(self.AT.current_func_name,
+                      func_type, address=func_address)
             self.AT.add_global_address(var)
 
     def maybe_solve_operation(self, operations):
@@ -287,7 +289,7 @@ class Quadruples:
             self.current_function_call = func_id
         else:
             raise NameError(f"Calling undefined function: {func_id}")
-        
+
         self.generate_quadruple(Operator.ERA, None, None, None)
         self.param_count = 0
         self.operators.append(Operator.FAKE_BOTTOM)
@@ -297,10 +299,10 @@ class Quadruples:
         self.types.pop()
 
         if self.param_count < self.AT.funcs[self.current_function_call].num_params:
-            address_in_func = None
             func = self.AT.get_func(self.current_function_call)
             param_name = func.param_names[self.param_count]
-            var = self.find_var_in_address_table(param_name)
+            var = self.find_var_in_address_table(
+                param_name, of_function=self.current_function_call)
             address_in_func = var.get_address()
             self.generate_quadruple(
                 Operator.PARAM, argument.get_address(), None, address_in_func)
@@ -331,8 +333,10 @@ class Quadruples:
             self.types.append(func_return_type)
         self.operators.pop()
 
-    def find_var_in_address_table(self, name):
+    def find_var_in_address_table(self, name, of_function=None):
         func = self.get_current_func()
+        if of_function is not None:
+            func = self.AT.get_func(of_function)
         var = -1
         if func:
             var = func.get_var(name)
@@ -346,7 +350,7 @@ class Quadruples:
             name=var_name, op_type=types[self.last_var_type], is_array=is_array)
         if self.is_global:
             self.AT.add_global_address(operand)
-        else:   
+        else:
             func = self.get_current_func()
             func.add_var(operand)
         if is_param:
@@ -484,7 +488,6 @@ class Quadruples:
         else:
             self.generate_quadruple(
                 Operator.READ, None, var.get_type(), var.get_address())
-            
 
     def generate_obj_code(self):
         constants = {}

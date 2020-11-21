@@ -361,9 +361,11 @@ def p_n_end_while(p):
     'n_end_while : '
     Q.register_end_while()
 
+
 def p_n_is_global(p):
     'n_is_global : '
     Q.set_is_global(True)
+
 
 def p_n_reset_is_global(p):
     'n_reset_is_global : '
@@ -434,6 +436,7 @@ def p_n_end_print(p):
     'n_end_print : '
     Q.end_print()
 
+
 def p_n_return(p):
     'n_return : '
     Q.add_return()
@@ -475,7 +478,7 @@ def parse(input):
     # Check the input's syntax
     parser.parse(input)
 
-    # Q.print_all()
+    Q.print_all()
 
     obj_code = Q.generate_obj_code()
 
