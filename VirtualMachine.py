@@ -48,7 +48,10 @@ class VirtualMachine():
     def refactor_if_string(self, input):
         if input != None and type(input) == str:
             if input[0] == '\"' and input[-1] == '\"':
-                return input[1:-1]
+                if input[1] == ' ' and input[-2] == ' ':
+                    return input[2:-2]
+                else:
+                    return input[1:-1]
         return input
 
     def get_read_type(self, read_input):
@@ -79,7 +82,7 @@ class VirtualMachine():
         elif quad[0] == Operator.GOTOF:
             # Operator.GOTOF, condition, None, destination.
             condition = self.get_value_from_address(quad[1])
-            if not condition:
+            if condition == 0:
                 self.quad_pointer = quad[3] - 1
             return
         elif quad[0] == Operator.ERA:
@@ -123,6 +126,8 @@ class VirtualMachine():
             index = self.get_value_from_address(quad[1])
             lim_inf = self.get_value_from_address(quad[2])
             lim_sup = self.get_value_from_address(quad[3])
+            # print("lim_inf", lim_inf, " lim_sup", lim_sup)
+            # print("index", index)
             if not lim_inf <= index <= lim_sup:
                 raise NameError(f'array index out of range')
             return
@@ -161,20 +166,29 @@ class VirtualMachine():
             result = left_operand / right_operand
         elif quad[0] == Operator.GREATER:
             result = left_operand > right_operand
+            result = 1 if result == True else 0
         elif quad[0] == Operator.LESS:
             result = left_operand < right_operand
+            result = 1 if result == True else 0
+            # print(left_operand, right_operand, result)
         elif quad[0] == Operator.GREATER_EQ:
             result = left_operand >= right_operand
+            result = 1 if result == True else 0
         elif quad[0] == Operator.LESS_EQ:
             result = left_operand <= right_operand
+            result = 1 if result == True else 0
         elif quad[0] == Operator.EQUALS:
             result = left_operand == right_operand
+            result = 1 if result == True else 0
         elif quad[0] == Operator.NOT_EQUAL:
             result = left_operand != right_operand
+            result = 1 if result == True else 0
         elif quad[0] == Operator.AND:
             result = 1 if (left_operand and right_operand) else 0
+            result = 1 if result == True else 0
         elif quad[0] == Operator.OR:
             result = 1 if (left_operand or right_operand) else 0
+            result = 1 if result == True else 0
         else:
             return
 

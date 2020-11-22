@@ -165,24 +165,25 @@ Id,Name,Shape Library,Page ID,Contained By,Group,Line Source,Line Destination,So
 164,Manual Operation,Flowchart Shapes,156,,,,,,,while i > 0
 165,Process,Flowchart Shapes,156,,,,,,,"res = res * i;i = i - 1;"
 166,Manual Operation,Flowchart Shapes,156,,,,,,,
-167,Terminator,Flowchart Shapes,156,,,,,,,main()
-168,Process,Flowchart Shapes,156,,,,,,,"int a, b;a = 1;b = 5;"
-169,Display,Flowchart Shapes,156,,,,,,,"a, "" smaller than 3: "", b"
-170,Manual Operation,Flowchart Shapes,156,,,,,,,while a < b
-171,Process,Flowchart Shapes,156,,,,,,,"a = a + 1;"
-172,Manual Operation,Flowchart Shapes,156,,,,,,,
-173,Terminator,Flowchart Shapes,156,,,,,,,
-174,Line,,156,,,158,159,None,Arrow,
-175,Line,,156,,,160,161,None,Arrow,
-176,Line,,156,,,161,164,None,Arrow,
-177,Line,,156,,,157,163,None,Arrow,
-178,Line,,156,,,163,158,None,Arrow,
-179,Line,,156,,,164,165,None,Arrow,
-180,Line,,156,,,165,166,None,Arrow,
-181,Line,,156,,,166,162,None,Arrow,
-182,Line,,156,,,167,168,None,Arrow,
-183,Line,,156,,,168,170,None,Arrow,
-184,Line,,156,,,170,169,None,Arrow,
-185,Line,,156,,,171,172,None,Arrow,
-186,Line,,156,,,172,173,None,Arrow,
-187,Line,,156,,,169,171,None,Arrow,
+167,Line,,156,,,158,159,None,Arrow,
+168,Line,,156,,,160,161,None,Arrow,
+169,Line,,156,,,161,164,None,Arrow,
+170,Line,,156,,,157,163,None,Arrow,
+171,Line,,156,,,163,158,None,Arrow,
+172,Line,,156,,,164,165,None,Arrow,
+173,Line,,156,,,165,166,None,Arrow,
+174,Line,,156,,,166,162,None,Arrow,
+175,Page,,,,,,,,,factorial_ciclo2
+176,Terminator,Flowchart Shapes,175,,,,,,,main()
+177,Process,Flowchart Shapes,175,,,,,,,"int a, b;a = 1;b = 5;"
+178,Display,Flowchart Shapes,175,,,,,,,"a, "" smaller than 3: "", b"
+179,Manual Operation,Flowchart Shapes,175,,,,,,,while a < b
+180,Process,Flowchart Shapes,175,,,,,,,"a = a + 1;"
+181,Manual Operation,Flowchart Shapes,175,,,,,,,
+182,Terminator,Flowchart Shapes,175,,,,,,,
+183,Line,,175,,,176,177,None,Arrow,
+184,Line,,175,,,177,179,None,Arrow,
+185,Line,,175,,,179,178,None,Arrow,
+186,Line,,175,,,180,181,None,Arrow,
+187,Line,,175,,,181,182,None,Arrow,
+188,Line,,175,,,178,180,None,Arrow,

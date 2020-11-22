@@ -8,86 +8,85 @@ from scanner import tokens
 from Quadruples import Quadruples
 from constants import Operator, operators
 
-global Q
 Q = Quadruples()
 
 
-def p_program(p):
+def p_program(p):  # YA ESTA
     '''program : vars functions main
                | vars main
                | functions main
                | main'''
 
 
-def p_functions(p):
+def p_functions(p):  # YA ESTA
     '''functions : functions function
                  | function'''
 
 
-def p_function(p):
+def p_function(p):  # YA ESTA
     'function : function_header function_body n_end_function'
 
 
-def p_main(p):
+def p_main(p):  # YA ESTA
     'main : FUNCTION MAIN L_PARENS R_PARENS n_start_main function_body n_end_main'
 
 
-def p_function_header(p):
+def p_function_header(p):  # YA ESTA
     '''function_header : FUNCTION ID n_add_function_name L_PARENS function_params R_PARENS COLON function_type
                        | FUNCTION ID n_add_function_name L_PARENS R_PARENS COLON function_type'''
 
 
-def p_function_body(p):
+def p_function_body(p):  # YA ESTA
     '''function_body : L_KEY_BRACKET vars statements R_KEY_BRACKET
                      | L_KEY_BRACKET statements R_KEY_BRACKET'''
 
 
-def p_vars(p):
+def p_vars(p):  # YA ESTA
     '''vars : var vars
             | var'''
 
 
-def p_statements(p):
+def p_statements(p):  # YA ESTA
     '''statements : statement statements
-                           | statement'''
+                  | statement'''
 
 
-def p_function_params(p):
+def p_function_params(p):  # YA ESTA
     '''function_params : type ID n_add_param array_index COMMA function_params
                        | type ID n_add_param array_index
                        | type ID n_add_param COMMA function_params
                        | type ID n_add_param'''
 
 
-def p_function_type(p):
+def p_function_type(p):  # YA ESTA
     '''function_type : INT n_add_function_type
                      | FLOAT n_add_function_type
                      | STRING n_add_function_type
                      | VOID n_add_function_type'''
 
 
-def p_var(p):
+def p_var(p):  # YA ESTA
     '''var : type_aux var_aux n_reset_is_global SEMICOLON'''
 
 
-def p_type_aux(p):
+def p_type_aux(p):  # YA ESTA
     '''type_aux : GLOBAL n_is_global type
                 | type'''
 
 
-def p_var_aux(p):
+def p_var_aux(p):  # YA ESTA
     '''var_aux : ID n_add_var_arr array_dim COMMA var_aux
                | ID n_add_var_arr array_dim
                | ID n_add_var COMMA var_aux
                | ID n_add_var'''
 
 
-def p_statement(p):
+def p_statement(p):  # YA ESTA
     '''statement : statement_aux SEMICOLON
                  | statement_aux_2'''
 
 
-def p_statement_aux(p):
+def p_statement_aux(p):  # YA ESTA
     '''statement_aux : assignment
                      | function_call
                      | return
@@ -95,33 +94,33 @@ def p_statement_aux(p):
                      | read'''
 
 
-def p_statement_aux_2(p):
+def p_statement_aux_2(p):  # YA ESTA
     '''statement_aux_2 : if
                        | while'''
 
 
-def p_type(p):
+def p_type(p):  # YA ESTA
     '''type : INT n_record_last_type
             | FLOAT n_record_last_type
             | STRING n_record_last_type'''
 
 
-def p_array_dim(p):
+def p_array_dim(p):  # YA ESTA
     '''array_dim : L_SQUARE_BRACKET array_dim_aux R_SQUARE_BRACKET array_dim_2 n_array_dim_done
                  | L_SQUARE_BRACKET array_dim_aux R_SQUARE_BRACKET n_array_dim_done'''
 
 
-def p_array_dim_2(p):
+def p_array_dim_2(p):  # YA ESTA
     '''array_dim_2 : L_SQUARE_BRACKET array_dim_aux R_SQUARE_BRACKET array_dim_2
                    | L_SQUARE_BRACKET array_dim_aux R_SQUARE_BRACKET'''
 
 
-def p_array_dim_aux(p):
+def p_array_dim_aux(p):  # YA ESTA
     '''array_dim_aux : n_create_dim_node CONST_I n_array_dim_inf_with_interval DOT DOT CONST_I n_array_dim_sup
                      | n_create_dim_node n_array_dim_inf CONST_I n_array_dim_sup'''
 
 
-def p_assignment(p):
+def p_assignment(p):  # YA ESTA
     '''assignment : ID n_start_assignment ASSIGN expression
                   | ID n_start_assignment ASSIGN read
                   | array_access ASSIGN  expression
@@ -129,83 +128,68 @@ def p_assignment(p):
     Q.assign()
 
 
-def p_function_call(p):
+def p_function_call(p):  # YA ESTA
     'function_call : ID n_calling_func params_pass n_validate_function_call'
 
 
-def p_return(p):
+def p_return(p):  # YA ESTA
     'return : RETURN expression n_return'
 
 
-# def p_if(p):
-#     '''if : IF L_PARENS expression R_PARENS n_end_condition block elif else n_end_if
-#           | IF L_PARENS expression R_PARENS n_end_condition block elif n_end_if
-#           | IF L_PARENS expression R_PARENS n_end_condition block else n_end_if
-#           | IF L_PARENS expression R_PARENS n_end_condition block n_end_if'''
-
-
-# def p_elif(p):
-#     '''elif : ELIF n_start_else L_PARENS expression R_PARENS n_end_condition block elif
-#             | ELIF n_start_else L_PARENS expression R_PARENS n_end_condition block'''
-
-
-# def p_else(p):
-#     'else : ELSE n_start_else block'
-
-def p_if(p):
+def p_if(p):  # YA ESTA
     '''if : IF if_condition'''
 
 
-def p_if_condition(p):
+def p_if_condition(p):  # YA ESTA
     '''if_condition : L_PARENS expression R_PARENS n_end_condition block ELIF n_start_else if_condition n_end_if
                     | L_PARENS expression R_PARENS n_end_condition block ELSE n_start_else block n_end_if
                     | L_PARENS expression R_PARENS n_end_condition block n_end_if'''
 
 
-def p_while(p):
+def p_while(p):  # YA ESTA
     'while : WHILE n_start_while L_PARENS expression R_PARENS n_end_condition block n_end_while'
 
 
-def p_print(p):
+def p_print(p):  # YA ESTA
     '''print : PRINT L_PARENS print_aux R_PARENS n_end_print
              | PRINT L_PARENS R_PARENS'''
 
 
-def p_print_aux(p):
+def p_print_aux(p):  # YA ESTA
     '''print_aux : expression n_print COMMA print_aux
                  | expression n_print'''
 
 
-def p_expression(p):
+def p_expression(p):  # YA ESTA
     '''expression : exp n_eval_exp AND n_add_operator expression
                   | exp n_eval_exp'''
 
 
-def p_read(p):
+def p_read(p):  # YA ESTA
     'read : READ L_PARENS ID n_register_read R_PARENS'
 
 
-def p_params_pass(p):
+def p_params_pass(p):  # YA ESTA
     '''params_pass : L_PARENS expression n_validate_param params_pass_aux R_PARENS
                    | L_PARENS expression n_validate_param R_PARENS
                    | L_PARENS R_PARENS'''
 
 
-def p_params_pass_aux(p):
+def p_params_pass_aux(p):  # YA ESTA
     '''params_pass_aux : COMMA expression n_validate_param params_pass_aux
                        | COMMA expression n_validate_param'''
 
 
-def p_block(p):
+def p_block(p):  # YA ESTA
     'block : L_KEY_BRACKET statements R_KEY_BRACKET'
 
 
-def p_exp(p):
+def p_exp(p):  # Ya ESTA
     '''exp : xp n_eval_xp OR n_add_operator exp
            | xp n_eval_xp'''
 
 
-def p_xp(p):
+def p_xp(p):  # YA ESTA
     '''xp : x n_eval_x NOT_EQUAL n_add_operator xp
           | x n_eval_x EQUALS n_add_operator xp
           | x n_eval_x GREATER n_add_operator xp
@@ -215,31 +199,31 @@ def p_xp(p):
           | x n_eval_x'''
 
 
-def p_x(p):
+def p_x(p):  # YA ESTA
     '''x : term n_eval_term PLUS n_add_operator x
          | term n_eval_term MINUS n_add_operator x
          | term n_eval_term'''
 
 
-def p_term(p):
+def p_term(p):  # YA ESTA
     '''term : factor n_eval_factor TIMES  n_add_operator term
             | factor n_eval_factor DIVIDE n_add_operator term
             | factor n_eval_factor'''
 
 
-def p_factor(p):
+def p_factor(p):  # YA ESTA
     '''factor : NOT factor_aux
               | factor_aux'''
 
 
-def p_factor_aux(p):
+def p_factor_aux(p):  # YA ESTA
     '''factor_aux : L_PARENS n_add_operator expression n_pop_fake_bottom R_PARENS
                   | PLUS const
                   | MINUS const
                   | const'''
 
 
-def p_const(p):
+def p_const(p):  # YA ESTA
     '''const : ID n_add_operand
              | CONST_F n_add_operand
              | CONST_I n_add_operand
@@ -248,15 +232,15 @@ def p_const(p):
              | array_access'''
 
 
-def p_array_access(p):
-    'array_access : ID n_add_operand n_validate_is_array array_index'
+def p_array_access(p):  # YA ESTA
+    'array_access : ID n_add_operand n_validate_is_array array_index n_pop_fake_bottom'
 
 
-def p_array_index(p):
+def p_array_index(p):  # YA ESTA
     '''array_index : L_SQUARE_BRACKET expression n_ver_index R_SQUARE_BRACKET array_index_aux'''
 
 
-def p_array_index_aux(p):
+def p_array_index_aux(p):  # YA ESTA
     '''array_index_aux : array_index
                        | n_get_array_dir'''
 
@@ -266,6 +250,7 @@ def p_array_index_aux(p):
 ############################################################################################################################
 
 
+###
 def p_n_start_main(p):
     'n_start_main : '
     Q.start_main()

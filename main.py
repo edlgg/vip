@@ -3,6 +3,7 @@ from parser import parse
 from AddressTable import AddressTable
 from Quadruples import Quadruples
 from VirtualMachine import VirtualMachine
+import numpy as np
 
 
 def main():
@@ -84,70 +85,134 @@ def main():
 
     data5 = 'function main () { int a , b , c ; a = 1 ; b = 2 ; c = a + b ; print ( " a , b , c: " , a , b , c ) ; }'
 
-    data7 = '''
-    function print_hello(): void {
-        print("hello");
-    }
-
-    function suma(int a, int b): int {
-        print_hello();
-        return (a + b);
-    }
-
-    function recursiva(int a): int {
-        print(a);
-        a = a - 1;
+    factorial_recursivo = '''
+    function factorial_recursivo(int a): int {
         if (a < 2) {
-            print("Se acabo");
             return 1;
         }
-        return recursiva(a);
+        return a * factorial_recursivo(a - 1);
     }
 
     function main () {
-        int a, b;
-        a = 1;
-        b = recursiva(6);
-        # read(b);
-        print(suma(a,b));
+        print(factorial_recursivo(6));
     }
     '''
 
-    data72 = """
-    function factorial_ciclo(int a): int {
-        int res;
-        res = 1;
-        while (a > 0 ){
-            res = res * a;
-            a = a - 1;
+    find = """
+    
+    function main() {
+        int l[1 .. 10], i, n, wanted;
+        n = 1;
+        while (n < 11) {
+            l[n] = n * 2 + 1;
+            n = n + 1;
         }
-        return res;
-    }
 
-    function main () {
-        int a;
-        a = 6;
-        print(factorial_ciclo(a));
+        n = 1;
+        while (n < 11){
+            print(l[n]);
+            n = n + 1;
+        }
+
+        n = 1;
+        wanted = 11;
+        while (n < 11){
+            if (l[n] == wanted) {
+                print("wanted: ", l[n], n);
+            }
+            n = n + 1;
+        }
     }
     """
 
-    data8 = """
-    function fib(int i): int {
-        int res;
-        if(i <= 2) {
-            res = 1;
+    sort = """
+
+    function main(){
+        int l[1 .. 10], i, j, n, sign, min_index, pointer, temp;
+        n = 1;
+        sign = -1;
+        while (n < 11) {
+            l[n] = sign * (n * 2 + 1);
+            sign = sign * -1;
+            n = n + 1;
         }
-        else {
-            res = fib(i - 1) + fib(i - 2);
+
+        n=1;
+        while (n < 11) {
+            print(l[n]);
+            n = n + 1;
         }
-        return res;
+
+
+        i = 1;
+        while (i < 11){
+            j = i;
+            min_index = i;
+            while (j < 11) {
+                if (l[j] < l[min_index]) {
+                    min_index = j;
+                }
+                j = j + 1;
+            }
+            temp = l[i];
+            l[i] = l[min_index];
+            l[min_index] = temp;
+
+            i = i + 1;
+        }
+
+        print("**********************");
+
+        n=1;
+        while (n < 11) {
+            print(l[n]);
+            n = n + 1;
+        }
     }
-    
-    function main() {
-        int i, j;
-        i = 15;
-        print("fib: ", i, " = ", fib(i));
-    }
+    """
+
+    mat_mult = """
+        function main() {
+            int A[0 .. 1][0 .. 2], B[0 .. 2][0 .. 1], C[0 .. 1][0 .. 1];
+            int m, n, p, q, i, j, k;
+            m = 2;
+            n = 3;
+            p = 3;
+            q = 2;
+
+            A[0][0] = 0;
+            A[0][1] = 3;
+            A[0][2] = 7;
+            A[1][0] = 5;
+            A[1][1] = 5;
+            A[1][2] = 2;
+
+            B[0][0] = 3;
+            B[0][1] = 3;
+            B[1][0] = 3;
+            B[1][1] = 4;
+            B[2][0] = -2;
+            B[2][1] = -2;
+
+            i = 0;
+            while (i < m) {
+                j = 0;
+                while (j < q){
+                    k = 0;
+                    C[i][j] = 0;
+                    while (k < p){
+                        C[i][j] = C[i][j] + (A[i][k] * B[k][j]);
+                        k = k + 1;
+                    }
+                    j = j + 1;
+                }
+                i = i + 1;
+            }
+
+            print(C[0][0],C[0][1]);
+            print(C[1][0],C[1][1]);
+        }
+
     """
 
     # ************************************************
