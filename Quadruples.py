@@ -229,6 +229,11 @@ class Quadruples:
             Operator.RETURN, return_val.get_address(), func_global_address, None)
 
     def end_function(self, is_main=False):
+        func = self.get_current_func()
+        if func.get_return_type() != Type.VOID:
+            if len(self.returns) == 0:
+                raise NameError(
+                    f'{func.get_return_type()} function {func.get_name()} has no return. Expected at least 1.')
         while len(self.returns):
             self.fill_jump(self.returns.pop(), self.q_count)
 

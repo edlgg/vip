@@ -22,6 +22,7 @@ class Dim:
     -------
     None
     """
+
     def __init__(self):
         """
         Constructs all the necessary attributes with their default values for the dim object
@@ -69,13 +70,14 @@ class Var:
         Indicates wheter or not the variable is an array (default is False)
     dims: Dim []
         Contains the Var dims when it is an array (default is None)
-   
+
 
     Methods
     -------
     solve_dims(m)
         It iterates through dims to calculate their 'm' attribute
     """
+
     def __init__(self, name, type, address=None, is_array=False):
         """
         Constructs all the necessary attributes for the var object
@@ -170,13 +172,14 @@ class Func:
         List of parameter names
     current_var_name : str
         auxiliary variable to keep track of the current variable we are definig, used in array declaration
-    
+
 
     Methods
     -------
     add_var(operand)
         Adds a local var to the function
     """
+
     def __init__(self, name, first_quadruple, return_type=Type.VOID):
         """
         Constructs all the necessary attributes for the Func object
@@ -248,6 +251,9 @@ class Func:
     def get_return_type(self):
         return self.return_type
 
+    def get_name(self):
+        return self.name
+
 
 class AddressTable:
     """
@@ -264,13 +270,14 @@ class AddressTable:
         Dictionary of dictionaries to store our constants addresses
     global_addresses: Type {{}}
         Dictionary of dictionaries to store our global variables addreses
-    
+
 
     Methods
     -------
     add_func(operand)
         Adds a function to the address table
     """
+
     def __init__(self):
         """
         Constructs all the necessary attributes for the AddressTable object
@@ -324,7 +331,7 @@ class AddressTable:
         if name in self.global_addresses:
             raise NameError(f"Var {name} already defined")
         self.global_addresses[name] = Var(name, operand.type,
-                              operand.address, operand.is_array)
+                                          operand.address, operand.is_array)
 
     def get_global_var(self, global_value):
         if global_value in self.global_addresses:

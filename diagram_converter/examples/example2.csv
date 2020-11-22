@@ -119,71 +119,138 @@ Id,Name,Shape Library,Page ID,Contained By,Group,Line Source,Line Destination,So
 118,Line,,81,,,83,85,None,Arrow,
 119,Line,,81,,,85,101,None,Arrow,
 120,Line,,81,,,101,86,None,Arrow,
-121,Page,,,,,,,,,recursion
+121,Page,,,,,,,,,global
 122,Terminator,Flowchart Shapes,121,,,,,,,main()
-123,Display,Flowchart Shapes,121,,,,,,,"""fib: "", i, "" = "", fib(i)"
-124,Terminator,Flowchart Shapes,121,,,,,,,
-125,Terminator,Flowchart Shapes,121,,,,,,,fib(int i): int
-126,Decision,Flowchart Shapes,121,,,,,,,if i <= 2
-127,Process,Flowchart Shapes,121,,,,,,,"int res;"
-128,Process,Flowchart Shapes,121,,,,,,,"res = 1;"
-129,Process,Flowchart Shapes,121,,,,,,,"res = fib(i-1) + fib(i - 2);"
-130,Decision,Flowchart Shapes,121,,,,,,,
-131,Terminator,Flowchart Shapes,121,,,,,,,res
-132,Process,Flowchart Shapes,121,,,,,,,"int i;i = 5;"
-133,Line,,121,,,123,124,None,Arrow,
-134,Line,,121,,,125,127,None,Arrow,
-135,Line,,121,,,127,126,None,Arrow,
-136,Line,,121,,,126,128,None,Arrow,Yes
-137,Line,,121,,,126,129,None,Arrow,No
-138,Line,,121,,,128,130,None,Arrow,
-139,Line,,121,,,129,130,None,Arrow,
-140,Line,,121,,,130,131,None,Arrow,Yes
-141,Line,,121,,,122,132,None,Arrow,
-142,Line,,121,,,132,123,None,Arrow,
-143,Page,,,,,,,,,global
-144,Terminator,Flowchart Shapes,143,,,,,,,main()
-145,Process,Flowchart Shapes,143,,,,,,,"int b, c;a = 1;"
-146,Process,Flowchart Shapes,143,,,,,,,"b = 2;"
-147,Process,Flowchart Shapes,143,,,,,,,"c = a+b;"
-148,Display,Flowchart Shapes,143,,,,,,,"""a, b, c: "", a, b, c"
-149,Terminator,Flowchart Shapes,143,,,,,,,
-150,Predefined Process,Flowchart Shapes,143,,,,,,,"global int a;int e;global int f;"
-151,Line,,143,,,144,145,None,Arrow,
-152,Line,,143,,,145,146,None,Arrow,
-153,Line,,143,,,146,147,None,Arrow,
-154,Line,,143,,,147,148,None,Arrow,
-155,Line,,143,,,148,149,None,Arrow,
-156,Page,,,,,,,,,factorial_ciclo
-157,Terminator,Flowchart Shapes,156,,,,,,,main()
-158,Display,Flowchart Shapes,156,,,,,,,"""fac: "", factorial_ciclo(a)"
-159,Terminator,Flowchart Shapes,156,,,,,,,
-160,Terminator,Flowchart Shapes,156,,,,,,,factorial_ciclo(int i): int
-161,Process,Flowchart Shapes,156,,,,,,,"int res;res = 1;"
-162,Terminator,Flowchart Shapes,156,,,,,,,res
-163,Process,Flowchart Shapes,156,,,,,,,"int a;a = 6;"
-164,Manual Operation,Flowchart Shapes,156,,,,,,,while i > 0
-165,Process,Flowchart Shapes,156,,,,,,,"res = res * i;i = i - 1;"
-166,Manual Operation,Flowchart Shapes,156,,,,,,,
-167,Line,,156,,,158,159,None,Arrow,
-168,Line,,156,,,160,161,None,Arrow,
-169,Line,,156,,,161,164,None,Arrow,
-170,Line,,156,,,157,163,None,Arrow,
-171,Line,,156,,,163,158,None,Arrow,
-172,Line,,156,,,164,165,None,Arrow,
-173,Line,,156,,,165,166,None,Arrow,
-174,Line,,156,,,166,162,None,Arrow,
-175,Page,,,,,,,,,factorial_ciclo2
+123,Process,Flowchart Shapes,121,,,,,,,"int b, c;a = 1;"
+124,Process,Flowchart Shapes,121,,,,,,,"b = 2;"
+125,Process,Flowchart Shapes,121,,,,,,,"c = a+b;"
+126,Display,Flowchart Shapes,121,,,,,,,"""a, b, c: "", a, b, c"
+127,Terminator,Flowchart Shapes,121,,,,,,,
+128,Predefined Process,Flowchart Shapes,121,,,,,,,"global int a;int e;global int f;"
+129,Line,,121,,,122,123,None,Arrow,
+130,Line,,121,,,123,124,None,Arrow,
+131,Line,,121,,,124,125,None,Arrow,
+132,Line,,121,,,125,126,None,Arrow,
+133,Line,,121,,,126,127,None,Arrow,
+134,Page,,,,,,,,,factorial_ciclo
+135,Terminator,Flowchart Shapes,134,,,,,,,main()
+136,Display,Flowchart Shapes,134,,,,,,,"""fac: "", factorial_ciclo(a)"
+137,Terminator,Flowchart Shapes,134,,,,,,,
+138,Terminator,Flowchart Shapes,134,,,,,,,factorial_ciclo(int i): int
+139,Process,Flowchart Shapes,134,,,,,,,"int res;res = 1;"
+140,Terminator,Flowchart Shapes,134,,,,,,,res
+141,Process,Flowchart Shapes,134,,,,,,,"int a;a = 6;"
+142,Manual Operation,Flowchart Shapes,134,,,,,,,while i > 0
+143,Process,Flowchart Shapes,134,,,,,,,"res = res * i;i = i - 1;"
+144,Manual Operation,Flowchart Shapes,134,,,,,,,
+145,Line,,134,,,136,137,None,Arrow,
+146,Line,,134,,,138,139,None,Arrow,
+147,Line,,134,,,139,142,None,Arrow,
+148,Line,,134,,,135,141,None,Arrow,
+149,Line,,134,,,141,136,None,Arrow,
+150,Line,,134,,,142,143,None,Arrow,
+151,Line,,134,,,143,144,None,Arrow,
+152,Line,,134,,,144,140,None,Arrow,
+153,Page,,,,,,,,,factorial_recursivo
+154,Terminator,Flowchart Shapes,153,,,,,,,main()
+155,Display,Flowchart Shapes,153,,,,,,,"""fact: "", i, "" = "", factorial_recursivo(i)"
+156,Terminator,Flowchart Shapes,153,,,,,,,
+157,Terminator,Flowchart Shapes,153,,,,,,,factorial_recursivo(int i): int
+158,Decision,Flowchart Shapes,153,,,,,,,if i < 2
+159,Process,Flowchart Shapes,153,,,,,,,"int res;"
+160,Process,Flowchart Shapes,153,,,,,,,"res = 1;"
+161,Process,Flowchart Shapes,153,,,,,,,"res = i * factorial_recursivo(i - 1);"
+162,Decision,Flowchart Shapes,153,,,,,,,
+163,Terminator,Flowchart Shapes,153,,,,,,,res
+164,Process,Flowchart Shapes,153,,,,,,,"int i;i = 5;"
+165,Line,,153,,,155,156,None,Arrow,
+166,Line,,153,,,157,159,None,Arrow,
+167,Line,,153,,,159,158,None,Arrow,
+168,Line,,153,,,158,160,None,Arrow,Yes
+169,Line,,153,,,158,161,None,Arrow,No
+170,Line,,153,,,160,162,None,Arrow,
+171,Line,,153,,,161,162,None,Arrow,
+172,Line,,153,,,162,163,None,Arrow,Yes
+173,Line,,153,,,154,164,None,Arrow,
+174,Line,,153,,,164,155,None,Arrow,
+175,Page,,,,,,,,,fibonacci_ciclo
 176,Terminator,Flowchart Shapes,175,,,,,,,main()
-177,Process,Flowchart Shapes,175,,,,,,,"int a, b;a = 1;b = 5;"
-178,Display,Flowchart Shapes,175,,,,,,,"a, "" smaller than 3: "", b"
-179,Manual Operation,Flowchart Shapes,175,,,,,,,while a < b
-180,Process,Flowchart Shapes,175,,,,,,,"a = a + 1;"
-181,Manual Operation,Flowchart Shapes,175,,,,,,,
-182,Terminator,Flowchart Shapes,175,,,,,,,
-183,Line,,175,,,176,177,None,Arrow,
-184,Line,,175,,,177,179,None,Arrow,
-185,Line,,175,,,179,178,None,Arrow,
-186,Line,,175,,,180,181,None,Arrow,
-187,Line,,175,,,181,182,None,Arrow,
-188,Line,,175,,,178,180,None,Arrow,
+177,Display,Flowchart Shapes,175,,,,,,,"""fibonacci ciclo: "", res;"
+178,Terminator,Flowchart Shapes,175,,,,,,,
+179,Terminator,Flowchart Shapes,175,,,,,,,fibonacci_ciclo(int n): int
+180,Process,Flowchart Shapes,175,,,,,,,"int i, a, b, c;a = 1;b = 1;i = 1;"
+181,Terminator,Flowchart Shapes,175,,,,,,,c
+182,Process,Flowchart Shapes,175,,,,,,,"int res;res = fibonacci_ciclo(6);"
+183,Manual Operation,Flowchart Shapes,175,,,,,,,while i < n - 1
+184,Process,Flowchart Shapes,175,,,,,,,"c = a + b;a = b;b = c;i = i + 1;"
+185,Manual Operation,Flowchart Shapes,175,,,,,,,
+186,Line,,175,,,177,178,None,Arrow,
+187,Line,,175,,,179,180,None,Arrow,
+188,Line,,175,,,180,183,None,Arrow,
+189,Line,,175,,,176,182,None,Arrow,
+190,Line,,175,,,182,177,None,Arrow,
+191,Line,,175,,,183,184,None,Arrow,
+192,Line,,175,,,184,185,None,Arrow,
+193,Line,,175,,,185,181,None,Arrow,
+194,Page,,,,,,,,,fibonacci_recursivo
+195,Terminator,Flowchart Shapes,194,,,,,,,main()
+196,Display,Flowchart Shapes,194,,,,,,,"""fib: "", i, "" = "", fib(i)"
+197,Terminator,Flowchart Shapes,194,,,,,,,
+198,Terminator,Flowchart Shapes,194,,,,,,,fib(int i): int
+199,Decision,Flowchart Shapes,194,,,,,,,if i <= 2
+200,Process,Flowchart Shapes,194,,,,,,,"int res;"
+201,Process,Flowchart Shapes,194,,,,,,,"res = 1;"
+202,Process,Flowchart Shapes,194,,,,,,,"res = fib(i-1) + fib(i - 2);"
+203,Decision,Flowchart Shapes,194,,,,,,,
+204,Terminator,Flowchart Shapes,194,,,,,,,res
+205,Process,Flowchart Shapes,194,,,,,,,"int i;i = 5;"
+206,Line,,194,,,196,197,None,Arrow,
+207,Line,,194,,,198,200,None,Arrow,
+208,Line,,194,,,200,199,None,Arrow,
+209,Line,,194,,,199,201,None,Arrow,Yes
+210,Line,,194,,,199,202,None,Arrow,No
+211,Line,,194,,,201,203,None,Arrow,
+212,Line,,194,,,202,203,None,Arrow,
+213,Line,,194,,,203,204,None,Arrow,Yes
+214,Line,,194,,,195,205,None,Arrow,
+215,Line,,194,,,205,196,None,Arrow,
+216,Page,,,,,,,,,find
+217,Terminator,Flowchart Shapes,216,,,,,,,main()
+218,Process,Flowchart Shapes,216,,,,,,,"        int l[1 ..10], i, n, wanted;n = 1;"
+219,Manual Operation,Flowchart Shapes,216,,,,,,,while n < 11
+220,Process,Flowchart Shapes,216,,,,,,,"l[n] = n * 2 + 1;n = n + 1;"
+221,Manual Operation,Flowchart Shapes,216,,,,,,,
+222,Process,Flowchart Shapes,216,,,,,,,"n = 1;"
+223,Manual Operation,Flowchart Shapes,216,,,,,,,while n < 11
+224,Process,Flowchart Shapes,216,,,,,,,"print(l[n]);n = n + 1;"
+225,Manual Operation,Flowchart Shapes,216,,,,,,,
+226,Process,Flowchart Shapes,216,,,,,,,"n = 1;wanted = 11;"
+227,Manual Operation,Flowchart Shapes,216,,,,,,,while n < 11
+228,Manual Operation,Flowchart Shapes,216,,,,,,,
+229,Decision,Flowchart Shapes,216,,,,,,,l[n] == wanted
+230,Process,Flowchart Shapes,216,,,,,,,Process
+231,Decision,Flowchart Shapes,216,,,,,,,
+232,Process,Flowchart Shapes,216,,,,,,,"n = n + 1;"
+233,Display,Flowchart Shapes,216,,,,,,,"""wanted: "", l[n], n"
+234,Terminator,Flowchart Shapes,216,,,,,,,
+235,Line,,216,,,217,218,None,Arrow,
+236,Line,,216,,,229,233,None,Arrow,Yes
+237,Line,,216,,,229,230,None,Arrow,No
+238,Line,,216,,,230,231,None,Arrow,
+239,Line,,216,,,233,231,None,Arrow,
+240,Line,,216,,,231,232,None,Arrow,Yes
+241,Line,,216,,,232,228,None,Arrow,
+242,Line,,216,,,228,234,None,Arrow,
+243,Line,,216,,,227,229,None,Arrow,
+244,Line,,216,,,218,219,None,Arrow,
+245,Line,,216,,,219,220,None,Arrow,
+246,Line,,216,,,220,221,None,Arrow,
+247,Line,,216,,,221,222,None,Arrow,
+248,Line,,216,,,222,223,None,Arrow,
+249,Line,,216,,,223,224,None,Arrow,
+250,Line,,216,,,224,225,None,Arrow,
+251,Line,,216,,,225,226,None,Arrow,
+252,Line,,216,,,226,227,None,Arrow,
+253,Page,,,,,,,,,sort
+254,Page,,,,,,,,,mat_mult
+255,Page,,,,,,,,,otro

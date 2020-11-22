@@ -63,7 +63,8 @@ def main():
     data4 = '''
         function suma(int a, int b): int {
             int c;
-            return a + b;
+            c = a + b;
+            return c;
         }
 
         function print_this(): int{
@@ -86,17 +87,38 @@ def main():
     data5 = 'function main () { int a , b , c ; a = 1 ; b = 2 ; c = a + b ; print ( " a , b , c: " , a , b , c ) ; }'
 
     factorial_recursivo = '''
-    function factorial_recursivo(int a): int {
-        if (a < 2) {
+    function factorial_recursivo(int i): int {
+        if (i < 2) {
             return 1;
         }
-        return a * factorial_recursivo(a - 1);
+        return i * factorial_recursivo(i - 1);
     }
 
     function main () {
-        print(factorial_recursivo(6));
+        print(factorial_recursivo(5));
     }
     '''
+
+    fibonacci_ciclo = """
+    function fibonacci_ciclo(int n): int{
+        int i, a, b, c;
+        a = 1;
+        b = 1;
+        i = 1;
+        while (i < n - 1) {
+            c = a + b;
+            a = b;
+            b = c;
+            i = i + 1;
+        }
+        return c;
+    }
+    function main() {
+        int res;
+        res = fibonacci_ciclo(f);
+        print("res: ", res);
+    }
+    """
 
     find = """
     
@@ -219,16 +241,16 @@ def main():
     dc = DiagramConverter()
     path = dc.get_example_path()
     print("Printing the intermediate code")
-    type_ = "all"
+    type_ = "fibonacci_ciclo"
     dc.print_rows(path, type_)
     print("*******************************")
     dc = DiagramConverter()
-    data6 = dc.get_tokens(path, type_)
-    data6 = " ".join(data6)
+    converter = dc.get_tokens(path, type_)
+    converter = " ".join(converter)
     # ************************************************
 
     # Generate Object code.
-    quadruples, constants = parse(data6)
+    quadruples, constants = parse(converter)
 
     print("")
     print("")

@@ -138,13 +138,15 @@ class DiagramConverter():
             "lists": 4,
             "functions": 5,
             "all": 6,
-            "recursion": 7,
-            "global": 8,
-            "factorial_ciclo": 9,
-            "factorial_recursivo": 10,
-            "find": 11,
-            "sort": 12,
-            "mat_mult": 13
+            "global": 7,
+            "factorial_ciclo": 8,
+            "factorial_recursivo": 9,
+            "fibonacci_ciclo": 10,
+            "fibonacci_recursivo": 11,
+            "find": 12,
+            "sort": 13,
+            "mat_mult": 14,
+            "otro": 15
         }
         selected_page_index = d[selected_page]
         df = pd.read_csv(csv_path, index_col=0)
