@@ -175,7 +175,7 @@ Id,Name,Shape Library,Page ID,Contained By,Group,Line Source,Line Destination,So
 174,Line,,153,,,164,155,None,Arrow,
 175,Page,,,,,,,,,fibonacci_ciclo
 176,Terminator,Flowchart Shapes,175,,,,,,,main()
-177,Display,Flowchart Shapes,175,,,,,,,"""fibonacci ciclo: "", res;"
+177,Display,Flowchart Shapes,175,,,,,,,"""fibonacci ciclo: "", res"
 178,Terminator,Flowchart Shapes,175,,,,,,,
 179,Terminator,Flowchart Shapes,175,,,,,,,fibonacci_ciclo(int n): int
 180,Process,Flowchart Shapes,175,,,,,,,"int i, a, b, c;a = 1;b = 1;i = 1;"
@@ -216,41 +216,132 @@ Id,Name,Shape Library,Page ID,Contained By,Group,Line Source,Line Destination,So
 215,Line,,194,,,205,196,None,Arrow,
 216,Page,,,,,,,,,find
 217,Terminator,Flowchart Shapes,216,,,,,,,main()
-218,Process,Flowchart Shapes,216,,,,,,,"        int l[1 ..10], i, n, wanted;n = 1;"
+218,Process,Flowchart Shapes,216,,,,,,,"int l[1 .. 10], i, n, wanted, current;n = 1;"
 219,Manual Operation,Flowchart Shapes,216,,,,,,,while n < 11
 220,Process,Flowchart Shapes,216,,,,,,,"l[n] = n * 2 + 1;n = n + 1;"
 221,Manual Operation,Flowchart Shapes,216,,,,,,,
 222,Process,Flowchart Shapes,216,,,,,,,"n = 1;"
 223,Manual Operation,Flowchart Shapes,216,,,,,,,while n < 11
-224,Process,Flowchart Shapes,216,,,,,,,"print(l[n]);n = n + 1;"
+224,Process,Flowchart Shapes,216,,,,,,,"n = n + 1;"
 225,Manual Operation,Flowchart Shapes,216,,,,,,,
 226,Process,Flowchart Shapes,216,,,,,,,"n = 1;wanted = 11;"
 227,Manual Operation,Flowchart Shapes,216,,,,,,,while n < 11
 228,Manual Operation,Flowchart Shapes,216,,,,,,,
-229,Decision,Flowchart Shapes,216,,,,,,,l[n] == wanted
-230,Process,Flowchart Shapes,216,,,,,,,Process
-231,Decision,Flowchart Shapes,216,,,,,,,
-232,Process,Flowchart Shapes,216,,,,,,,"n = n + 1;"
-233,Display,Flowchart Shapes,216,,,,,,,"""wanted: "", l[n], n"
-234,Terminator,Flowchart Shapes,216,,,,,,,
-235,Line,,216,,,217,218,None,Arrow,
-236,Line,,216,,,229,233,None,Arrow,Yes
-237,Line,,216,,,229,230,None,Arrow,No
-238,Line,,216,,,230,231,None,Arrow,
-239,Line,,216,,,233,231,None,Arrow,
-240,Line,,216,,,231,232,None,Arrow,Yes
-241,Line,,216,,,232,228,None,Arrow,
-242,Line,,216,,,228,234,None,Arrow,
-243,Line,,216,,,227,229,None,Arrow,
-244,Line,,216,,,218,219,None,Arrow,
-245,Line,,216,,,219,220,None,Arrow,
-246,Line,,216,,,220,221,None,Arrow,
-247,Line,,216,,,221,222,None,Arrow,
-248,Line,,216,,,222,223,None,Arrow,
-249,Line,,216,,,223,224,None,Arrow,
-250,Line,,216,,,224,225,None,Arrow,
-251,Line,,216,,,225,226,None,Arrow,
-252,Line,,216,,,226,227,None,Arrow,
-253,Page,,,,,,,,,sort
-254,Page,,,,,,,,,mat_mult
-255,Page,,,,,,,,,otro
+229,Decision,Flowchart Shapes,216,,,,,,,if l[n] == wanted
+230,Decision,Flowchart Shapes,216,,,,,,,
+231,Process,Flowchart Shapes,216,,,,,,,"n = n + 1;"
+232,Display,Flowchart Shapes,216,,,,,,,"""wanted: "", l[n], n"
+233,Terminator,Flowchart Shapes,216,,,,,,,
+234,Display,Flowchart Shapes,216,,,,,,,l[n]
+235,Process,Flowchart Shapes,216,,,,,,,"current = 1;"
+236,Line,,216,,,217,218,None,Arrow,
+237,Line,,216,,,229,232,None,Arrow,Yes
+238,Line,,216,,,232,230,None,Arrow,
+239,Line,,216,,,230,231,None,Arrow,Yes
+240,Line,,216,,,231,228,None,Arrow,
+241,Line,,216,,,228,233,None,Arrow,
+242,Line,,216,,,218,219,None,Arrow,
+243,Line,,216,,,219,220,None,Arrow,
+244,Line,,216,,,220,221,None,Arrow,
+245,Line,,216,,,221,222,None,Arrow,
+246,Line,,216,,,222,223,None,Arrow,
+247,Line,,216,,,224,225,None,Arrow,
+248,Line,,216,,,225,226,None,Arrow,
+249,Line,,216,,,226,227,None,Arrow,
+250,Line,,216,,,223,234,None,Arrow,
+251,Line,,216,,,234,224,None,Arrow,
+252,Line,,216,,,227,229,None,Arrow,
+253,Line,,216,,,229,235,None,Arrow,No
+254,Line,,216,,,235,230,None,Arrow,
+255,Page,,,,,,,,,sort
+256,Terminator,Flowchart Shapes,255,,,,,,,main()
+257,Process,Flowchart Shapes,255,,,,,,,"int l[1 .. 10], i, j, n, sign, min_index, pointer, temp, a;n = 1;sign = -1;"
+258,Manual Operation,Flowchart Shapes,255,,,,,,,while n < 11
+259,Process,Flowchart Shapes,255,,,,,,,"l[n] = sign * (n * 2 + 1);sign = sign * -1;n = n + 1;"
+260,Manual Operation,Flowchart Shapes,255,,,,,,,
+261,Process,Flowchart Shapes,255,,,,,,,"n = 1;"
+262,Manual Operation,Flowchart Shapes,255,,,,,,,while n < 11
+263,Process,Flowchart Shapes,255,,,,,,,"n = n + 1;"
+264,Manual Operation,Flowchart Shapes,255,,,,,,,
+265,Process,Flowchart Shapes,255,,,,,,,"i = 1;"
+266,Manual Operation,Flowchart Shapes,255,,,,,,,while i < 11
+267,Display,Flowchart Shapes,255,,,,,,,l[n]
+268,Process,Flowchart Shapes,255,,,,,,,"j = i;min_index = i;"
+269,Manual Operation,Flowchart Shapes,255,,,,,,,while j < 11
+270,Decision,Flowchart Shapes,255,,,,,,,if l[j] < l[min_index]
+271,Process,Flowchart Shapes,255,,,,,,,"min_index = j;"
+272,Decision,Flowchart Shapes,255,,,,,,,
+273,Process,Flowchart Shapes,255,,,,,,,"a = 1;"
+274,Process,Flowchart Shapes,255,,,,,,,"j = j + 1;"
+275,Manual Operation,Flowchart Shapes,255,,,,,,,
+276,Process,Flowchart Shapes,255,,,,,,,"temp = l[i];l[i] = l[min_index];l[min_index] = temp;i = i + 1;"
+277,Manual Operation,Flowchart Shapes,255,,,,,,,
+278,Display,Flowchart Shapes,255,,,,,,,"""*******"""
+279,Process,Flowchart Shapes,255,,,,,,,"n = 1;"
+280,Manual Operation,Flowchart Shapes,255,,,,,,,while n < 11
+281,Process,Flowchart Shapes,255,,,,,,,"n = n + 1;"
+282,Manual Operation,Flowchart Shapes,255,,,,,,,
+283,Display,Flowchart Shapes,255,,,,,,,l[n]
+284,Terminator,Flowchart Shapes,255,,,,,,,
+285,Line,,255,,,256,257,None,Arrow,
+286,Line,,255,,,257,258,None,Arrow,
+287,Line,,255,,,258,259,None,Arrow,
+288,Line,,255,,,259,260,None,Arrow,
+289,Line,,255,,,260,261,None,Arrow,
+290,Line,,255,,,261,262,None,Arrow,
+291,Line,,255,,,263,264,None,Arrow,
+292,Line,,255,,,264,265,None,Arrow,
+293,Line,,255,,,265,266,None,Arrow,
+294,Line,,255,,,262,267,None,Arrow,
+295,Line,,255,,,267,263,None,Arrow,
+296,Line,,255,,,266,268,None,Arrow,
+297,Line,,255,,,270,271,None,Arrow,Yes
+298,Line,,255,,,271,272,None,Arrow,
+299,Line,,255,,,273,272,None,Arrow,
+300,Line,,255,,,270,273,None,Arrow,No
+301,Line,,255,,,274,275,None,Arrow,
+302,Line,,255,,,275,276,None,Arrow,
+303,Line,,255,,,276,277,None,Arrow,
+304,Line,,255,,,277,278,None,Arrow,
+305,Line,,255,,,268,269,None,Arrow,
+306,Line,,255,,,269,270,None,Arrow,
+307,Line,,255,,,272,274,None,Arrow,
+308,Line,,255,,,279,280,None,Arrow,
+309,Line,,255,,,281,282,None,Arrow,
+310,Line,,255,,,280,283,None,Arrow,
+311,Line,,255,,,283,281,None,Arrow,
+312,Line,,255,,,278,279,None,Arrow,
+313,Line,,255,,,282,284,None,Arrow,
+314,Page,,,,,,,,,mat_mult
+315,Terminator,Flowchart Shapes,314,,,,,,,main()
+316,Process,Flowchart Shapes,314,,,,,,,"int A[0 .. 1][0 .. 2], B[0 .. 2][0 .. 1], C[0 .. 1][0 .. 1];int m, n, p, q, i, j, k;m = 2;n = 3;p = 3;q = 2;A[0][0] = 0;A[0][1] = 3;A[0][2] = 7;A[1][0] = 5;A[1][1] = 5;A[1][2] = 2;B[0][0] = 3;B[0][1] = 3;B[1][0] = 3;B[1][1] = 4;B[2][0] = -2;B[2][1] = -2;i = 0;"
+317,Manual Operation,Flowchart Shapes,314,,,,,,,while i < m
+318,Process,Flowchart Shapes,314,,,,,,,"j = 0;"
+319,Manual Operation,Flowchart Shapes,314,,,,,,,while j < q
+320,Process,Flowchart Shapes,314,,,,,,,"k = 0;C[i][j] = 0;"
+321,Manual Operation,Flowchart Shapes,314,,,,,,,while k < p
+322,Process,Flowchart Shapes,314,,,,,,,"C[i][j] = C[i][j] + (A[i][k] * B[k][j]);k = k + 1;"
+323,Manual Operation,Flowchart Shapes,314,,,,,,,
+324,Process,Flowchart Shapes,314,,,,,,,"j = j + 1;"
+325,Manual Operation,Flowchart Shapes,314,,,,,,,
+326,Process,Flowchart Shapes,314,,,,,,,"i = i + 1;"
+327,Display,Flowchart Shapes,314,,,,,,,"C[0][0], C[0][1]"
+328,Display,Flowchart Shapes,314,,,,,,,"C[1][0], C[1][1]"
+329,Terminator,Flowchart Shapes,314,,,,,,,
+330,Manual Operation,Flowchart Shapes,314,,,,,,,
+331,Line,,314,,,315,316,None,Arrow,
+332,Line,,314,,,316,317,None,Arrow,
+333,Line,,314,,,317,318,None,Arrow,
+334,Line,,314,,,318,319,None,Arrow,
+335,Line,,314,,,319,320,None,Arrow,
+336,Line,,314,,,320,321,None,Arrow,
+337,Line,,314,,,321,322,None,Arrow,
+338,Line,,314,,,322,323,None,Arrow,
+339,Line,,314,,,323,324,None,Arrow,
+340,Line,,314,,,324,325,None,Arrow,
+341,Line,,314,,,325,326,None,Arrow,
+342,Line,,314,,,327,328,None,Arrow,
+343,Line,,314,,,328,329,None,Arrow,
+344,Line,,314,,,326,330,None,Arrow,
+345,Line,,314,,,330,327,None,Arrow,
+346,Page,,,,,,,,,otro

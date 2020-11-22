@@ -150,7 +150,7 @@ def main():
     sort = """
 
     function main(){
-        int l[1 .. 10], i, j, n, sign, min_index, pointer, temp;
+        int l[1 .. 10], i, j, n, sign, min_index, pointer, temp, a;
         n = 1;
         sign = -1;
         while (n < 11) {
@@ -173,6 +173,8 @@ def main():
             while (j < 11) {
                 if (l[j] < l[min_index]) {
                     min_index = j;
+                }else {
+                    a = 1;
                 }
                 j = j + 1;
             }
@@ -241,7 +243,7 @@ def main():
     dc = DiagramConverter()
     path = dc.get_example_path()
     print("Printing the intermediate code")
-    type_ = "fibonacci_ciclo"
+    type_ = "sort"
     dc.print_rows(path, type_)
     print("*******************************")
     dc = DiagramConverter()
