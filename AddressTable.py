@@ -31,7 +31,7 @@ class Dim:
         ----------
         None
         """
-        self.lim_inf = 0
+        self.lim_inf = None
         self.lim_sup = 0
         self.m = None
         self.has_range = False

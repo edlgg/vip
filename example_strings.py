@@ -234,3 +234,18 @@ function main () {
     print("var == ", d);
 }
 """
+
+mas_un_return = """
+function is_uno (int a): string {
+    if (a == 1){
+        return "uno!";
+    } else {
+        return "not uno :(";
+    }
+}
+function main() {
+    int a;
+    a = 1;
+    print(a, " is ", is_uno(a));
+}
+"""

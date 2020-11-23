@@ -8,23 +8,20 @@ import os
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 from constants import Type
-from example_strings import input
+from example_strings import input, mas_un_return
 
 
 def main():
     type_ = sys.argv[1]
 
+    quadruples, constants = None, None
     if type_ == "examples":
-        quadruples, constants = parse(input)
-        vm = VirtualMachine(quadruples, constants)
-        vm.run()
-        return
-
-    # Convert diagram to vip code.
-    converted_diagram = convert_diagram(type_=type_)
-
-    # Generate Object code.
-    quadruples, constants = parse(converted_diagram)
+        quadruples, constants = parse(mas_un_return)
+    else:
+        # Convert diagram to vip code.
+        converted_diagram = convert_diagram(type_=type_)
+        # Generate Object code.
+        quadruples, constants = parse(converted_diagram)
 
     if len(sys.argv) > 2:
         if sys.argv[2] == "1":

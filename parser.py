@@ -116,8 +116,8 @@ def p_array_dim_2(p):
 
 
 def p_array_dim_aux(p):
-    '''array_dim_aux : n_create_dim_node CONST_I n_array_dim_inf_with_interval DOT DOT CONST_I n_array_dim_sup
-                     | n_create_dim_node n_array_dim_inf CONST_I n_array_dim_sup'''
+    '''array_dim_aux : n_create_dim_node CONST_I n_array_dim_sup
+                     | n_create_dim_node CONST_I n_array_dim_inf DOT DOT CONST_I n_array_dim_sup'''
 
 
 def p_assignment(p):
@@ -397,19 +397,14 @@ def p_n_create_dim_node(p):  # YA ESTA
     Q.create_dim_node()
 
 
-def p_n_array_dim_done(p):  # YA ESTA
+def p_n_array_dim_done(p):
     'n_array_dim_done : '
     Q.end_array_dim()
 
 
 def p_n_array_dim_inf(p):  # YA ESTA
     'n_array_dim_inf : '
-    Q.register_array_dim_lim_inf(lim_inf=None)
-
-
-def p_n_array_dim_inf_with_interval(p):  # YA ESTA
-    'n_array_dim_inf_with_interval : '
-    Q.register_array_dim_lim_inf(lim_inf=p[-1])
+    Q.register_array_dim_lim_inf(p[-1])
 
 
 def p_n_array_dim_sup(p):  # YA ESTA

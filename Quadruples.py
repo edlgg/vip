@@ -1,3 +1,4 @@
+from os import linesep
 from semantic_cube import semantic_cube
 from constants import types, Type, Operator, Scope
 from Operand import Operand
@@ -426,7 +427,15 @@ class Quadruples:
 
     def register_array_dim_lim_sup(self, lim_sup):
         # Array dimension declaration using size. e.g. A[5];
+        # Array dimension declaration using size. e.g. A[5];
         if self.current_dim.get_lim_inf() == None:
+            self.current_dim.set_lim_inf(0)
+            self.current_dim.set_lim_sup(lim_sup - 1)
+        # Array dimension declaration using interinl. e.g. A[1.. 4]
+        else:
+            self.current_dim.set_lim_sup(lim_sup)
+
+        if self.current_dim.get_lim_inf() > lim_sup:
             self.current_dim.set_lim_inf(0)
             self.current_dim.set_lim_sup(lim_sup - 1)
         # Array dimension declaration using interval. e.g. A[1.. 4]
@@ -435,7 +444,7 @@ class Quadruples:
 
         if self.current_dim.get_lim_inf() > lim_sup:
             raise NameError(f'Invalid array dimension interval')
-        
+
         # Register new constant if it hasn't been registered before
         address = self.AT.get_constant_address(lim_sup, Type.INT)
         if address == -1:  # It doesn't exist.

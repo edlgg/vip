@@ -16,6 +16,8 @@ class Node:
 
     def tostrs(self):
         string = []
+        if self.shape == "Manual Input":
+            string = [f"read({self.text});"]
         if self.shape == "Decision":  # if
             string = "}" if self.isnan else f"({self.text}) {{"
             string = string.replace("(if", "if(")
@@ -147,8 +149,8 @@ class DiagramConverter():
             "sort": 13,
             "mat_mult": 14,
             "input": 15,
-            "otro": 16,
-            "otro2": 17
+            "multiple_returns": 16,
+            "otro": 17
         }
         selected_page_index = d[selected_page]
         df = pd.read_csv(csv_path, index_col=0)

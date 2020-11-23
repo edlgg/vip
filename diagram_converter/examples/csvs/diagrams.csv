@@ -175,7 +175,7 @@ Id,Name,Shape Library,Page ID,Contained By,Group,Line Source,Line Destination,So
 174,Line,,153,,,164,155,None,Arrow,
 175,Page,,,,,,,,,fibonacci_ciclo
 176,Terminator,Flowchart Shapes,175,,,,,,,main()
-177,Display,Flowchart Shapes,175,,,,,,,"""fibonacci ciclo: "", res"
+177,Display,Flowchart Shapes,175,,,,,,,"""fibonacci ciclo 6: "", res"
 178,Terminator,Flowchart Shapes,175,,,,,,,
 179,Terminator,Flowchart Shapes,175,,,,,,,fibonacci_ciclo(int n): int
 180,Process,Flowchart Shapes,175,,,,,,,"int i, a, b, c;a = 1;b = 1;i = 1;"
@@ -344,4 +344,39 @@ Id,Name,Shape Library,Page ID,Contained By,Group,Line Source,Line Destination,So
 343,Line,,314,,,328,329,None,Arrow,
 344,Line,,314,,,326,330,None,Arrow,
 345,Line,,314,,,330,327,None,Arrow,
-346,Page,,,,,,,,,otro
+346,Page,,,,,,,,,input
+347,Terminator,Flowchart Shapes,346,,,,,,,main()
+348,Process,Flowchart Shapes,346,,,,,,,"int d;"
+349,Display,Flowchart Shapes,346,,,,,,,"""var == "", d"
+350,Terminator,Flowchart Shapes,346,,,,,,,
+351,Display,Flowchart Shapes,346,,,,,,,"""Insert var"""
+352,Manual Input,Flowchart Shapes,346,,,,,,,d
+353,Line,,346,,,347,348,None,Arrow,
+354,Line,,346,,,348,351,None,Arrow,
+355,Line,,346,,,349,350,None,Arrow,
+356,Line,,346,,,351,352,None,Arrow,
+357,Line,,346,,,352,349,None,Arrow,
+358,Page,,,,,,,,,multiple_returns
+359,Terminator,Flowchart Shapes,358,,,,,,,is_uno(int a): string
+360,Decision,Flowchart Shapes,358,,,,,,,if a == 1
+361,Process,Flowchart Shapes,358,,,,,,,"return ""uno!"";"
+362,Process,Flowchart Shapes,358,,,,,,,"return ""not uno"";"
+363,Decision,Flowchart Shapes,358,,,,,,,
+364,Terminator,Flowchart Shapes,358,,,,,,,
+365,Terminator,Flowchart Shapes,358,,,,,,,main()
+366,Process,Flowchart Shapes,358,,,,,,,"int d;"
+367,Display,Flowchart Shapes,358,,,,,,,"d, ""is "", is_uno(d)"
+368,Terminator,Flowchart Shapes,358,,,,,,,
+369,Display,Flowchart Shapes,358,,,,,,,"""Insert var"""
+370,Manual Input,Flowchart Shapes,358,,,,,,,d
+371,Line,,358,,,359,360,None,Arrow,
+372,Line,,358,,,360,361,None,Arrow,Yes
+373,Line,,358,,,360,362,None,Arrow,No
+374,Line,,358,,,362,363,None,Arrow,
+375,Line,,358,,,361,363,None,Arrow,
+376,Line,,358,,,363,364,None,Arrow,Yes
+377,Line,,358,,,365,366,None,Arrow,
+378,Line,,358,,,366,369,None,Arrow,
+379,Line,,358,,,367,368,None,Arrow,
+380,Line,,358,,,369,370,None,Arrow,
+381,Line,,358,,,370,367,None,Arrow,
