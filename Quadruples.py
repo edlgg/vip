@@ -416,18 +416,26 @@ class Quadruples:
         var.set_address(var_address)
         var.solve_dims(self.r)
 
-    def register_array_dim_lim_inf(self, lim_inf=0):
+    def register_array_dim_lim_inf(self, lim_inf):
         # Register new constant if it hasn't been registered before
         address = self.AT.get_constant_address(lim_inf, Type.INT)
         if address == -1:  # It doesn't exist.
             address = self.memory_manager.set_constant_address(Type.INT)
             self.AT.add_constant_address(lim_inf, Type.INT, address)
         self.current_dim.set_lim_inf(lim_inf)
-        self.current_dim_lim_inf_value = lim_inf
 
     def register_array_dim_lim_sup(self, lim_sup):
-        if self.current_dim_lim_inf_value > lim_sup:
+        # Array dimension declaration using size. e.g. A[5];
+        if self.current_dim.get_lim_inf() == None:
+            self.current_dim.set_lim_inf(0)
+            self.current_dim.set_lim_sup(lim_sup - 1)
+        # Array dimension declaration using interval. e.g. A[1.. 4]
+        else:
+            self.current_dim.set_lim_sup(lim_sup)
+
+        if self.current_dim.get_lim_inf() > lim_sup:
             raise NameError(f'Invalid array dimension interval')
+        
         # Register new constant if it hasn't been registered before
         address = self.AT.get_constant_address(lim_sup, Type.INT)
         if address == -1:  # It doesn't exist.

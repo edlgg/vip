@@ -404,7 +404,7 @@ def p_n_array_dim_done(p):  # YA ESTA
 
 def p_n_array_dim_inf(p):  # YA ESTA
     'n_array_dim_inf : '
-    Q.register_array_dim_lim_inf()
+    Q.register_array_dim_lim_inf(lim_inf=None)
 
 
 def p_n_array_dim_inf_with_interval(p):  # YA ESTA
