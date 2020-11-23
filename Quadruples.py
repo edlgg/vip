@@ -436,13 +436,6 @@ class Quadruples:
                     Type.INT)
                 self.AT.add_constant_address(0, Type.INT, address_lim_inf)
             self.current_dim.set_lim_sup(lim_sup)
-        # Array dimension declaration using interinl. e.g. A[1.. 4]
-        else:
-            self.current_dim.set_lim_sup(lim_sup)
-
-        if self.current_dim.get_lim_inf() > lim_sup:
-            self.current_dim.set_lim_inf(0)
-            self.current_dim.set_lim_sup(lim_sup - 1)
         # Array dimension declaration using interval. e.g. A[1.. 4]
         else:
             self.current_dim.set_lim_sup(lim_sup)
