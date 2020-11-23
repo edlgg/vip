@@ -8,10 +8,17 @@ import os
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 from constants import Type
+from example_strings import input
 
 
 def main():
     type_ = sys.argv[1]
+
+    if type_ == "examples":
+        quadruples, constants = parse(input)
+        vm = VirtualMachine(quadruples, constants)
+        vm.run()
+        return
 
     # Convert diagram to vip code.
     converted_diagram = convert_diagram(type_=type_)

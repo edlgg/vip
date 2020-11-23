@@ -225,3 +225,12 @@ mat_mult = """
         }
 
     """
+
+input = """
+function main () {
+    int d;
+    print("Insert var");
+    read(d);
+    print("var == ", d);
+}
+"""
