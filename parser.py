@@ -212,15 +212,26 @@ def p_term(p):
 
 
 def p_factor(p):
-    '''factor : NOT factor_aux
+    '''factor : not factor_aux
               | factor_aux'''
+    Q.maybe_solve_sign()
 
 
 def p_factor_aux(p):
-    '''factor_aux : L_PARENS n_add_operator expression n_pop_fake_bottom R_PARENS
-                  | PLUS const
-                  | MINUS const
+    '''factor_aux : sign L_PARENS n_add_operator expression n_pop_fake_bottom R_PARENS
+                  | L_PARENS n_add_operator expression n_pop_fake_bottom R_PARENS
+                  | sign const
                   | const'''
+    Q.maybe_solve_sign()
+
+
+def p_not(p):
+    'not : NOT n_register_sign'
+
+
+def p_sign(p):
+    '''sign : PLUS n_register_sign
+            | MINUS n_register_sign'''
 
 
 def p_const(p):
@@ -346,6 +357,11 @@ def p_n_end_while(p):  # YA ESTA
     Q.register_end_while()
 
 
+def p_n_register_sign(p):
+    '''n_register_sign : '''
+    Q.register_sign(p[-1])
+
+
 def p_n_is_global(p):  # YA ESTA
     'n_is_global : '
     Q.set_is_global(True)
@@ -462,7 +478,7 @@ def parse(input):
     # Check the input's syntax
     parser.parse(input)
 
-    Q.print_all()
+    # Q.print_all()
 
     obj_code = Q.generate_obj_code()
 

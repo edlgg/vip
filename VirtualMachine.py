@@ -71,7 +71,23 @@ class VirtualMachine():
             self.quad_pointer += 1
 
     def process_quad(self, quad):
-        if quad[0] == Operator.ASSIGN:
+        # print(quad)
+        if quad[0] == Operator.POSITIVE_SIGN:
+            value = self.get_value_from_address(quad[1])
+            value = + value
+            self.set_value_to_address(value, quad[3])
+            return
+        elif quad[0] == Operator.NEGATIVE_SIGN:
+            value = self.get_value_from_address(quad[1])
+            value = - value
+            self.set_value_to_address(value, quad[3])
+            return
+        elif quad[0] == Operator.NOT:
+            value = self.get_value_from_address(quad[1])
+            value = int(not value)
+            self.set_value_to_address(value, quad[3])
+            return
+        elif quad[0] == Operator.ASSIGN:
             result = self.get_value_from_address(quad[1])
             self.set_value_to_address(result, quad[3])
             return

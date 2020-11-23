@@ -44,6 +44,9 @@ class Operator(Enum):
     END = 23
     FAKE_BOTTOM = 24
     VER = 25
+    POSITIVE_SIGN = 26
+    NEGATIVE_SIGN = 27
+    NOT = 28
 
 
 operators = {
@@ -63,6 +66,7 @@ operators = {
     "gotof": Operator.GOTOF,
     "goto": Operator.GOTO,
     "(": Operator.FAKE_BOTTOM,
+    "not": Operator.NOT
 }
 
 

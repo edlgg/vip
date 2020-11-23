@@ -46,7 +46,10 @@ semantic_cube = {
             Operator.NOT_EQUAL:  Type.INT,
             Operator.AND:        Type.ERROR,
             Operator.OR:         Type.ERROR,
-        }
+        },
+        Operator.POSITIVE_SIGN: Type.INT,
+        Operator.NEGATIVE_SIGN: Type.INT,
+        Operator.NOT: Type.INT
     },
     Type.FLOAT: {
         Type.INT:    {
@@ -94,6 +97,9 @@ semantic_cube = {
             Operator.AND:        Type.ERROR,
             Operator.OR:         Type.ERROR,
         },
+        Operator.POSITIVE_SIGN: Type.FLOAT,
+        Operator.NEGATIVE_SIGN: Type.FLOAT,
+        Operator.NOT: Type.INT
     },
     Type.STRING: {
         Type.INT:    {
@@ -141,5 +147,8 @@ semantic_cube = {
             Operator.AND:        Type.INT,
             Operator.OR:         Type.INT,
         },
+        Operator.POSITIVE_SIGN: Type.ERROR,
+        Operator.NEGATIVE_SIGN: Type.ERROR,
+        Operator.NOT: Type.INT
     },
 }

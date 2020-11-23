@@ -189,6 +189,16 @@ class Quadruples:
 
         self.add_existing_operand(var)
 
+    def register_sign(self, sign):
+        operator = None
+        if sign == '+':
+            operator = Operator.POSITIVE_SIGN
+        elif sign == '-':
+            operator = Operator.NEGATIVE_SIGN
+        else:
+            operator = Operator.NOT
+        self.operators.append(operator)
+
     def assign(self):
         l_operand = self.operands.pop()
         l_type = self.types.pop()
@@ -261,6 +271,26 @@ class Quadruples:
             var = Var(self.AT.current_func_name,
                       func_type, address=func_address)
             self.AT.add_global_address(var)
+
+    def maybe_solve_sign(self):
+        operator = self.get_top_operator()
+
+        if operator in (Operator.POSITIVE_SIGN, Operator.NEGATIVE_SIGN, Operator.NOT):
+            operand = self.operands.pop()
+            operand_type = self.types.pop()
+            operator = self.operators.pop()
+            result_type = semantic_cube[operand_type][operator]
+            if result_type == Type.ERROR:
+                raise NameError(f'Type mismatch {operand_type} {operator}')
+            temp = Operand(op_type=result_type)
+            address = self.memory_manager.set_temp_address(result_type)
+            temp.set_address(address)
+            self.curr_t_count += 1
+            self.generate_quadruple(
+                operator, operand.get_address(), None, temp.get_address())
+
+            self.operands.append(temp)
+            self.types.append(result_type)
 
     def maybe_solve_operation(self, operations):
         operator = self.get_top_operator()
