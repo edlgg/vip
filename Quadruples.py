@@ -48,9 +48,9 @@ class Quadruples:
         self.generate_quadruple(Operator.GOTO, None, None, None)
 
     def print_all(self):
-        print("quadruples: ")
-        for i, q in enumerate(self.quadruples):
-            print(i, q)
+        # print("quadruples: ")
+        # for i, q in enumerate(self.quadruples):
+        #     print(i, q)
 
         self.AT.print_all()
 
@@ -427,10 +427,15 @@ class Quadruples:
 
     def register_array_dim_lim_sup(self, lim_sup):
         # Array dimension declaration using size. e.g. A[5];
-        # Array dimension declaration using size. e.g. A[5];
         if self.current_dim.get_lim_inf() == None:
+            lim_sup -= 1
             self.current_dim.set_lim_inf(0)
-            self.current_dim.set_lim_sup(lim_sup - 1)
+            address_lim_inf = self.AT.get_constant_address(0, Type.INT)
+            if address_lim_inf == -1:  # It doesn't exist.
+                address_lim_inf = self.memory_manager.set_constant_address(
+                    Type.INT)
+                self.AT.add_constant_address(0, Type.INT, address_lim_inf)
+            self.current_dim.set_lim_sup(lim_sup)
         # Array dimension declaration using interinl. e.g. A[1.. 4]
         else:
             self.current_dim.set_lim_sup(lim_sup)

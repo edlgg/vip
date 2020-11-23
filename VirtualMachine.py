@@ -71,7 +71,6 @@ class VirtualMachine():
             self.quad_pointer += 1
 
     def process_quad(self, quad):
-        # print(quad)
         if quad[0] == Operator.POSITIVE_SIGN:
             value = self.get_value_from_address(quad[1])
             value = + value

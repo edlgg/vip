@@ -47,9 +47,9 @@ Id,Name,Shape Library,Page ID,Contained By,Group,Line Source,Line Destination,So
 46,Line,,33,,,36,38,None,Arrow,
 47,Page,,,,,,,,,lists
 48,Terminator,Flowchart Shapes,47,,,,,,,main()
-49,Process,Flowchart Shapes,47,,,,,,,"int a[1 .. 5], b[1 .. 5], c, d;"
-50,Process,Flowchart Shapes,47,,,,,,,"a[4] = 1;b[2] = 4;c = a[4];d = a[b[2]];"
-51,Display,Flowchart Shapes,47,,,,,,,"""a[4], c: "", a[4], c"
+49,Process,Flowchart Shapes,47,,,,,,,"int a[1 .. 5], b[1 .. 5], e[5], c, d;"
+50,Process,Flowchart Shapes,47,,,,,,,"a[4] = 1;b[2] = 4;c = a[4];d = a[b[2]]; e[4] = 4;"
+51,Display,Flowchart Shapes,47,,,,,,,"""a[4], c:, e[4] "", a[4], c, e[4]"
 52,Terminator,Flowchart Shapes,47,,,,,,,
 53,Display,Flowchart Shapes,47,,,,,,,"""a[4] b[2], a[b[2]]: "", a[4], b[2], a[b[2]]"
 54,Line,,47,,,48,49,None,Arrow,
