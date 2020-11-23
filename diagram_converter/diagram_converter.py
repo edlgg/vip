@@ -146,7 +146,9 @@ class DiagramConverter():
             "find": 12,
             "sort": 13,
             "mat_mult": 14,
-            "otro": 15
+            "input": 15,
+            "otro": 16,
+            "otro2": 17
         }
         selected_page_index = d[selected_page]
         df = pd.read_csv(csv_path, index_col=0)
