@@ -179,7 +179,7 @@ class Quadruples:
         # Validate var exists
         var = self.find_var_in_address_table(var_name)
         if var == -1:
-            raise NameError('Variable not declared')
+            raise NameError(f'Undeclared variable {var_name}')
         # Array validation
         if is_array:
             self.current_array_call = var
@@ -206,7 +206,8 @@ class Quadruples:
 
         # Semantic cube checking.
         if not semantic_cube[assigning_type][l_type][Operator.ASSIGN].value:
-            raise NameError('Type mismatch')
+            raise NameError(
+                f'Type mismatch {assigning_type} {Operator.ASSIGN} {l_type}')
         self.generate_quadruple(
             Operator.ASSIGN, l_operand.get_address(), None, assigning_variable.get_address())
         self.operands.append(assigning_variable)
@@ -523,7 +524,7 @@ class Quadruples:
         self.types.pop()
         var = self.find_var_in_address_table(array_id)
         if var == -1:
-            raise NameError(f'Variable {array_id} does not exist')
+            raise NameError(f'Undeclared variable {array_id}')
         if not var.is_array:
             raise NameError(f'Variable {array_id} is not an array')
         self.arrays.append((var, 0))
@@ -532,7 +533,7 @@ class Quadruples:
     def register_read(self, var_name):
         var = self.find_var_in_address_table(var_name)
         if var == -1:
-            raise NameError(f"Undefined variable.")
+            raise NameError(f"Undeclared variable {var_name}")
         else:
             self.generate_quadruple(
                 Operator.READ, None, var.get_type(), var.get_address())

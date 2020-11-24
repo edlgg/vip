@@ -136,7 +136,6 @@ class DiagramConverter():
         df = pd.read_csv(csv_path, index_col=0)
         df = df[df["Name"] == "Page"]
         tabs = df["Text Area 1"].values
-        print(df)
         d = {
             "simple": 1,
             "if": 2,

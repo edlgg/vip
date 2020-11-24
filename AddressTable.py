@@ -34,16 +34,12 @@ class Dim:
         self.lim_inf = None
         self.lim_sup = 0
         self.m = None
-        self.has_range = False
 
     def set_lim_inf(self, lim_inf):
-        self.has_range = True
         self.lim_inf = lim_inf
 
     def set_lim_sup(self, lim_sup):
         self.lim_sup = lim_sup
-        if not self.has_range:
-            self.lim_sup -= 1
 
     def set_m(self, m):
         self.m = m
@@ -238,8 +234,6 @@ class Func:
         return name in self.vars
 
     def assign_return_type(self, return_type):
-        if return_type not in allowed_return_types:
-            raise NameError(f"Invalid return type: {return_type}")
         self.return_type = return_type
 
     def get_var_type(self, name):
