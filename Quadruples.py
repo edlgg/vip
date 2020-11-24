@@ -39,8 +39,6 @@ class Quadruples:
         self.current_dim = None
         self.r = 1
         self.current_array_dim_number = None
-        # To store the lim_inf value (not address) when defining an array dimension
-        self.current_dim_lim_inf_value = None
         # To calculate the current array address
         self.current_array_address = 0
 

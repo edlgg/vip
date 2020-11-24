@@ -8,7 +8,7 @@ import os
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 from constants import Type
-from example_strings import input, mas_un_return
+from example_strings import *
 
 
 def main():
@@ -16,7 +16,7 @@ def main():
 
     quadruples, constants = None, None
     if type_ == "examples":
-        quadruples, constants = parse(mas_un_return)
+        quadruples, constants = parse(test)
     else:
         # Convert diagram to vip code.
         converted_diagram = convert_diagram(type_=type_)

@@ -249,3 +249,10 @@ function main() {
     print(a, " is ", is_uno(a));
 }
 """
+
+test = """
+function main (){
+    int a, a;
+}
+
+"""
