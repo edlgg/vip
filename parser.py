@@ -122,9 +122,7 @@ def p_array_dim_aux(p):
 
 def p_assignment(p):
     '''assignment : ID n_start_assignment ASSIGN expression
-                  | ID n_start_assignment ASSIGN read
                   | array_access ASSIGN  expression
-                  | array_access ASSIGN  read'''
     Q.assign()
 
 
@@ -137,11 +135,11 @@ def p_return(p):
 
 
 def p_if(p):
-    '''if : IF if_condition'''
+    '''if: IF if_condition'''
 
 
 def p_if_condition(p):
-    '''if_condition : L_PARENS expression R_PARENS n_end_condition block ELIF n_start_else if_condition n_end_if
+    '''if_condition: L_PARENS expression R_PARENS n_end_condition block ELIF n_start_else if_condition n_end_if
                     | L_PARENS expression R_PARENS n_end_condition block ELSE n_start_else block n_end_if
                     | L_PARENS expression R_PARENS n_end_condition block n_end_if'''
 
@@ -151,7 +149,7 @@ def p_while(p):
 
 
 def p_print(p):
-    '''print : PRINT L_PARENS print_aux R_PARENS n_end_print
+    '''print: PRINT L_PARENS print_aux R_PARENS n_end_print
              | PRINT L_PARENS R_PARENS'''
 
 

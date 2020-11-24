@@ -48,7 +48,7 @@ Id,Name,Shape Library,Page ID,Contained By,Group,Line Source,Line Destination,So
 47,Page,,,,,,,,,lists
 48,Terminator,Flowchart Shapes,47,,,,,,,main()
 49,Process,Flowchart Shapes,47,,,,,,,"int a[1 .. 5], b[1 .. 5], e[5], c, d;"
-50,Process,Flowchart Shapes,47,,,,,,,"a[4] = 1;b[2] = 4;c = a[4];d = a[b[2]]; e[4] = 4;"
+50,Process,Flowchart Shapes,47,,,,,,,"a[4] = 1;b[2] = 4;c = a[4];d = a[b[2]];e[4] = 2;"
 51,Display,Flowchart Shapes,47,,,,,,,"""a[4], c:, e[4] "", a[4], c, e[4]"
 52,Terminator,Flowchart Shapes,47,,,,,,,
 53,Display,Flowchart Shapes,47,,,,,,,"""a[4] b[2], a[b[2]]: "", a[4], b[2], a[b[2]]"
@@ -380,3 +380,25 @@ Id,Name,Shape Library,Page ID,Contained By,Group,Line Source,Line Destination,So
 379,Line,,358,,,367,368,None,Arrow,
 380,Line,,358,,,369,370,None,Arrow,
 381,Line,,358,,,370,367,None,Arrow,
+382,Page,,,,,,,,,inv_redeclared_var
+383,Terminator,Flowchart Shapes,382,,,,,,,main()
+384,Process,Flowchart Shapes,382,,,,,,,"int a, a;"
+385,Terminator,Flowchart Shapes,382,,,,,,,
+386,Line,,382,,,383,384,None,Arrow,
+387,Line,,382,,,384,385,None,Arrow,
+388,Page,,,,,,,,,inv_function_redeclaration
+389,Terminator,Flowchart Shapes,388,,,,,,,main()
+390,Process,Flowchart Shapes,388,,,,,,,"bark();"
+391,Terminator,Flowchart Shapes,388,,,,,,,
+392,Terminator,Flowchart Shapes,388,,,,,,,bark():void
+393,Display,Flowchart Shapes,388,,,,,,,"""waff waff"""
+394,Terminator,Flowchart Shapes,388,,,,,,,
+395,Terminator,Flowchart Shapes,388,,,,,,,bark():void
+396,Display,Flowchart Shapes,388,,,,,,,"""waff waff"""
+397,Terminator,Flowchart Shapes,388,,,,,,,
+398,Line,,388,,,389,390,None,Arrow,
+399,Line,,388,,,390,391,None,Arrow,
+400,Line,,388,,,392,393,None,Arrow,
+401,Line,,388,,,393,394,None,Arrow,
+402,Line,,388,,,395,396,None,Arrow,
+403,Line,,388,,,396,397,None,Arrow,

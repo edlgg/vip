@@ -153,7 +153,9 @@ class DiagramConverter():
             "mat_mult": 14,
             "input": 15,
             "multiple_returns": 16,
-            "otro": 17
+            "inv_redeclared_var": 17,
+            "inv_redeclared_function": 18,
+            "otro": 19
         }
         selected_page_index = d[selected_page]
         df = pd.read_csv(csv_path, index_col=0)
