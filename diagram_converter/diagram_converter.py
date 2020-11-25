@@ -135,29 +135,12 @@ class DiagramConverter():
     def get_rows(self, csv_path, selected_page):
         df = pd.read_csv(csv_path, index_col=0)
         df = df[df["Name"] == "Page"]
+        selected_page_index = 1
         tabs = df["Text Area 1"].values
-        d = {
-            "simple": 1,
-            "if": 2,
-            "while": 3,
-            "lists": 4,
-            "functions": 5,
-            "all": 6,
-            "global": 7,
-            "factorial_ciclo": 8,
-            "factorial_recursivo": 9,
-            "fibonacci_ciclo": 10,
-            "fibonacci_recursivo": 11,
-            "find": 12,
-            "sort": 13,
-            "mat_mult": 14,
-            "input": 15,
-            "multiple_returns": 16,
-            "inv_redeclared_var": 17,
-            "inv_redeclared_function": 18,
-            "otro": 19
-        }
-        selected_page_index = d[selected_page]
+        for i, tab in enumerate(tabs):
+            if tab == selected_page:
+                selected_page_index = i + 1
+        # selected_page_index = d[selected_page]
         df = pd.read_csv(csv_path, index_col=0)
 
         data = self.get_page_data(df, selected_page_index)
