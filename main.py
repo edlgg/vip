@@ -52,7 +52,7 @@ def print_diagram(type_):
 def convert_diagram(type_):
     dc = DiagramConverter()
     path = dc.get_example_path()
-    if len(sys.argv) > 3:
+    if len(sys.argv) >= 3 and sys.argv[2] == "1":
         print("Printing the intermediate code")
         dc.print_rows(path, type_)
         print("*******************************")
