@@ -199,12 +199,7 @@ class DiagramConverter():
         return string
 
     def get_example_path(self):
-        example_path = "/Users/davidsouza/Documents/ITESM/11vo semestre/Compiladores/"
-        HOME = os.environ["HOME"]
-        if HOME == "/Users/edg":
-            example_path = f"{HOME}/repos/vip/diagram_converter/examples/csvs/diagrams.csv"
-
-        return example_path
+        return "./diagram_converter/examples/csvs/diagrams.csv"
 
 
 def main():

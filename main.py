@@ -43,12 +43,10 @@ def main():
 
 
 def print_diagram(type_):
-    HOME = os.environ["HOME"]
-    if HOME == "/Users/edg":
-        img = mpimg.imread(
-            f"/Users/edg/repos/vip/diagram_converter/examples/images/{type_}.png")
-        plt.imshow(img)
-        plt.show()
+    img = mpimg.imread(
+        f"./diagram_converter/examples/images/{type_}.png")
+    plt.imshow(img)
+    plt.show()
 
 
 def convert_diagram(type_):
